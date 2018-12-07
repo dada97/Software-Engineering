@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>管理員介面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="Admin_style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+          crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body onresize="re_size()">
+
+    <header id="header"></header>
+
+    <aside id="aside">
+           <div class="box" name="page_button" page_tag="user_management">
+            <i class="fas fa-address-book font_style"></i>
+            <a class="font_style"> 帳號管理</a>
+        </div>
+
+        <div class="box" name="page_button" page_tag="society_management">
+            <i class="fab fa-accessible-icon font_style"></i>
+            <a class="font_style"> 看板管理</a>
+        </div>
+
+        <div class="box" name="page_button" page_tag="ad_management">
+            <i class="fab fa-accessible-icon font_style"></i>
+            <a class="font_style"> 廣告管理</a>
+          </div>
+    </aside>
+
+
+    <!--<nav id="nav"> </nav>-->
+  
+
+
+    <section id="section">
+        <div name="page" page_tag="user_management">
+            <form id="user_update_form">
+                <input class="form-control" type="text" name="user" placeholder="帳號" />
+                <input class="form-control" type="text" name="password" placeholder="密碼" />
+            </form>
+            <div id="user_update_submit" class="submit_button" value="true"><i class="fas fa-plus-square"></i> 新增</div>
+
+            <ul class="trstyle">
+                <li style="width : 5%">
+                    #<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 20%">
+                    建立時間<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 20%">
+                    帳號<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 20%">
+                    密碼<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 30%">
+                    管理<i class="fas fa-caret-down"></i>
+                </li>
+
+            </ul>
+            <div id="UserList">
+            </div>
+        </div>
+        
+        <div name="page" page_tag="society_management">
+            <form id="">
+                <input class="form-control" type="text" name="" placeholder="看板名稱" />
+                <input class="form-control" type="text" name="" placeholder="看板..." />
+            </form>
+            <div id="" class="submit_button" value="true"><i class="fas fa-plus-square"></i> 新增</div>
+        </div>
+
+        <div name="page" page_tag="ad_management">
+            <form id="">
+                <input class="form-control" type="text" name="" placeholder="廣告名稱" />
+                <input class="form-control" type="text" name="" placeholder="看板..." />
+            </form>
+            <div id="" class="submit_button" value="true"><i class="fas fa-plus-square"></i> 新增</div>
+        </div>
+
+    </section>
+
+    <script src="Admin.js"></script>
+</body>
+
+
+</html>

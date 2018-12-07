@@ -1,0 +1,223 @@
+body, div, ul, li,header,aside,nav,section,footer,input{
+	margin:0;
+	padding:0;
+}
+
+html
+{
+    height: 100%;
+}
+
+body
+{
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+}
+
+a{
+  text-decoration: none;
+}
+
+#header {
+  border: #ccc solid;
+  border-width: 0px 0px 2px 0px;
+  position: relative;
+  width : 100%;
+  height : 10%;
+  min-height: 60px;
+  text-align: left;
+
+}
+
+#aside {
+  border:2px #ccc solid;
+  border-width: 0px 2px 2px 2px;
+  height : 90%;
+  width : 250px;
+  float: left;
+}
+
+#nav {
+  border:2px rgb(59, 52, 52) solid;
+  border-width: 0px 0px 2px 0px;
+  margin-left: 255px;
+  width : 100% - 250px;
+  height : 25%;
+  display: block;
+}
+
+#section {
+  margin-left:255px;
+  display: block;
+  width : 100% - 250px;
+  height: 60%;
+}
+
+#footer { 
+  width :100%;
+  height :5%;
+  display: inline-block;
+  text-align: left;
+  background-color: #7a715d;
+}
+
+#update_form{
+  display: inline;
+}
+
+.form-control {
+    width: 45%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #55595c;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: .25rem
+}
+
+.box {
+    margin-top: 2px;
+    width: 100%;
+    height: 80px;
+    background-color: #177de2;
+    text-align: center;
+    cursor: pointer;
+}
+
+.icon_box {
+    display: inline-block;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border: 1px rgb(165, 165, 165) solid;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+.font_style{
+  font-size: 30px;
+  font-family:DFKai-sb;
+  color: white;
+  line-height: 80px;
+}
+
+
+.trstyle, .trstylebutton {
+    margin: 10px 0px 0px 20px;
+    border: 2px rgb(165, 165, 165) solid;
+    border-width: 0px 0px 1px 0px;
+    list-style: none;
+    height: 40px;
+    width: 95%;
+}
+
+.trstyle li, .trstylebutton li{
+    list-style: none;
+    clear: both;
+    font-size: 20px;
+    font-family: DFKai-sb;
+    color: black;
+    display: inline-block;
+}
+   
+.trstyle li i, .trstylebutton li i{
+    font-size: 20px;
+    color: black;
+    display: inline-block;
+}
+
+#user_update_form{
+  width: 85%;
+  display: inline-block;
+}
+
+.user_p_up {
+    width: 80%;
+    padding: 0;
+}
+
+.submit_button {
+    display: inline-block;
+    width: 10%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Arial, "微軟正黑體", sans-serif;
+    color: white;
+    background-color: rgb(68, 172, 68);
+    cursor: pointer;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+.edit_button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    width: 50%;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Arial, "微軟正黑體", sans-serif;
+    color: white;
+    background-color: rgb(68, 172, 68);
+    cursor: pointer;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    display :none;
+}
+
+
+.fas_control_menu {
+    position: absolute;
+    right: 5%;
+    top: 10px;
+    font-size: 20px;
+}
+
+.fas_control_right {
+    text-indent: -15px;
+    font-size: 15px;
+}
+
+
+ul.drop-down-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    border-top-right-radius: 10px;
+    border-top: 10px rgb(250, 250, 250) solid;
+}
+
+ul.drop-down-menu li {
+
+  position: relative;
+
+  border:2px #ccc solid;
+  background-color: rgb(235, 232, 232);
+  border-width: 2px 0px 0px 0px;
+  
+  text-indent: 20px;
+}
+ul.drop-down-menu a{
+  color: black;
+  font-weight: bold;
+  line-height: 35px;
+}
+
+ul.drop-down-menu li ul{
+  display: none;
+}  
+
+ul.drop-down-menu li ul li{
+  border-width: 0px 0px 0px 0px;
+  background-color: #f9f9f9;
+}
