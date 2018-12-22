@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hello</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main_style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+          crossorigin="anonymous">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<body id="body" onresize="re_size()" onclick="body_click()">
+   
+    <header id="header">
+     <div class="head-center-block">   
+        <span class="title_text">霹靂啪啦吼禮送</span>
+        <a id="Logout_button" class="logout-style">登出</a>
+        <a id="Home_button" class="home-style">首頁</a>      
+        <span id="Username" class="name-style">熊熊</span>              
+     </div>
+    </header>
+    
+    <div id="main-view">
+        <aside id="aside">          
+            <ul class="drop-down-menu">
+                <li>
+                    <div onclick="Expand(this)">
+                        <a id="tag1-1" href="#">我的看板</a>
+                        <i class="fas fa-angle-down fas_control_menu"></i>
+                    </div>
+                    <ul>
+                        <li>
+                            <div onclick="Expand(this)">
+                                <i class="fas fa-angle-right fas_control_right"></i>
+                                <a id="tag1-1-1" href="#">看板1</a>
+                            </div>
+                            <ul>
+                                <li><a id="tag1-1-1-1" href="#">看板1-1</a></li>
+                                <li><a id="tag1-1-1-2" href="#">看板1-2</a></li>
+                            </ul>
+                        </li>                    
+                    </ul>
+                </li>
+
+                <li>
+                    <div onclick="Expand(this)">
+                        <a id="tag1-1">我的家族</a>
+                        <i class="fas fa-angle-down fas_control_menu"></i>
+                    </div>
+                    <ul>
+                        <li>
+                            <div onclick="Expand(this)">
+                                <i class="fas fa-angle-right fas_control_right"></i>
+                                <a id="tag1-1-1" href="#">家族1</a>
+                            </div>
+                            <ul>
+                                <li><a id="tag1-1-1-1" href="#">家族1-1</a></li>
+                                <li><a id="tag1-1-1-2" href="#">家族1-2</a></li>
+                            </ul>
+                        </li>                    
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        
+        <section id="section">
+
+      
+            <div class="article">
+                <div class="article-header">                
+                        <img class="photo" src="images/1.jpg" >
+                         
+                        <div class="article-title">
+                            <div class="article-name" name="username">熊熊</div>
+                            <div class="article-time" name="username">3分鐘前</div>
+                        </div>                    
+                    </div>
+                    
+                <div class="article-main">
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                </br>
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊</br>生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊</br>生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生</br>日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                </div>
+
+                <div class="article-footer">
+                     <div class="article-footer-button"><i class="fas fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>
+                     <div class="article-footer-button"><i class="fas fa-comment"></i><span class="mag-l-10">我要留言</span></div>
+                </div>                
+            </div>
+     
+            <div class="article">
+                    <div class="article-header">                
+                            <img class="photo" src="images/1.jpg" >
+                             
+                            <div class="article-title">
+                                <div class="article-name" name="username">熊熊</div>
+                                <div class="article-time" name="username">3分鐘前</div>
+                            </div>                    
+                        </div>
+                        
+                    <div class="article-main">
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    </br>
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊</br>生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊</br>生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生</br>日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                    </div>
+    
+                    <div class="article-footer">
+                         <div class="article-footer-button"><i class="fas fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>
+                         <div class="article-footer-button"><i class="fas fa-comment"></i><span class="mag-l-10">我要留言</span></div>
+                    </div>                
+                </div>
+            
+                <div class="article">
+                        <div class="article-header">                
+                                <img class="photo" src="images/1.jpg" >
+                                 
+                                <div class="article-title">
+                                    <div class="article-name" name="username">熊熊</div>
+                                    <div class="article-time" name="username">3分鐘前</div>
+                                </div>                    
+                            </div>
+                            
+                        <div class="article-main">
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        </br>
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊</br>生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊</br>生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生</br>日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                            今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
+                        </div>
+        
+                        <div class="article-footer">
+                             <div class="article-footer-button"><i class="fas fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>
+                             <div class="article-footer-button"><i class="fas fa-comment"></i><span class="mag-l-10">我要留言</span></div>
+                        </div>                
+                    </div>
+        </section>
+
+        <nav id="nav"> <!--廣告區-->
+            
+        </nav>
+    </div>
+
+    <script src="main_script.js"></script>
+</body>
+</html>
