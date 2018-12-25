@@ -6,7 +6,7 @@ import Request    from './request'
 import Response   from './response'
 import Router     from './router'
 
-
+import AccountRouter from './routes/accountRouter.js'
 
 const router = new Router()
 
@@ -18,6 +18,7 @@ const corsConfig = {
 router.use(Parser)
 router.use(cors(corsConfig))
 
+router.use('/account',  AccountRouter)
 
 
 const server = http.createServer(async (req, res) => {

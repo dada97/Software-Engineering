@@ -1,5 +1,5 @@
 import * as mime from 'mime'
-import * as fs   from 'fs'
+import * as fs from 'fs'
 
 export default class Response {
     constructor(res) {
