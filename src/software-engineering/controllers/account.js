@@ -6,9 +6,8 @@ export default class Account {
     }
 
     async login(req,res){
-        console.log(req.body)
         try{
-            res.status(400).json({token:AccountService.login(req)})
+            res.status(400).json({token:AccountService.login(req.body)})
         }catch(e){
             res.status(400).json({error:'login fail'})
         }
@@ -16,16 +15,16 @@ export default class Account {
 
     async register(req,res){
         try{
-            await AccountService.register(req)
+            await AccountService.register(req.body)
             res.status(400).json({succeed:'register suceed'})
         }catch(e){
             res.status(400).json({error:'login fail'})
         }
     }
 
-    async getAllAccounts(req,res){
+    async getAllAccount(req,res){
         try{
-            res.status(400).json({accounts:AccountService.getAllAccounts()})
+            res.status(400).json({accounts:AccountService.getAllAccount()})
         }catch(e){
             res.status(400).json({error:'login fail'})
         }
@@ -33,7 +32,7 @@ export default class Account {
 
     async deleteAccountById(req,res){
         try{
-            await AccountService.deleteAccountById(req)
+            await AccountService.deleteAccountById(res.params.id)
             res.status(400).json({succeed:'delete succeed'})
         }catch(e){
             res.status(400).json({error:'login fail'})
@@ -42,7 +41,7 @@ export default class Account {
 
     async update(req,res){
         try{
-            await AccountService.update(req.params.id,req,req)
+            await AccountService.update(req.params.id,req.body)
             res.status(400).json({succeed:'update succeed'})
         }catch(e){
             res.status(400).json({error:'update fail'})
@@ -51,9 +50,25 @@ export default class Account {
 
     async getAccountById(req,res){
         try{
-            res.status(400).json({account:await AccountService.getAccountById(req.params.id,req,req)})
+            res.status(400).json({account:await AccountService.getAccountById(req.params.id)})
         }catch(e){
             res.status(400).json({error:'get account fail'})
+        }
+    }
+
+    async getAccountByName(req,res){
+        try{
+            res.status(400).json({account:await AccountService.getAccountByName(req.params.name)})
+        }catch(e){
+            res.status(400).json({error:'get account fail'})
+        }
+    }
+
+    async search(req,res){
+        try{
+            res.status(400).json({accounts:await AccountService.search(req.params.search)})
+        }catch(e){
+            res.status(400).json({error:'not found'})
         }
     }
 

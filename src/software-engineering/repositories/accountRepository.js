@@ -21,7 +21,7 @@ export default class Account {
     }
 
     //取得全部帳戶資訊
-    async getAllAccounts(){
+    async getAllAccount(){
 
     }
 
@@ -32,6 +32,16 @@ export default class Account {
 
     //更新帳戶資訊
     async update(id,data){
+
+    }
+
+    //用userName取得帳戶資訊
+    async getAccountByName(name){
+
+    }
+
+    //搜尋
+    async search(searchName){
 
     }
 

@@ -4,10 +4,6 @@ import * as fs from 'fs'
 
 let appRoot = path.join(path.dirname(require.main.filename), '../')
 
-const getPath = function getPath(args) {
-    return path.join(path.dirname(require.main.filename), ...args)
-}
-
 export default class File {
     constructor() {
         
@@ -53,5 +49,10 @@ export default class File {
             })
         })
     }
+
+    getPath(args) {
+        return path.join(path.dirname(require.main.filename), ...args)
+    }
+
 
 }

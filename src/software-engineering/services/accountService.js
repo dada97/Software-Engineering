@@ -40,8 +40,8 @@ export default class Account {
         }
     }
 
-    async getAllAccounts(){
-        const accounts = await this.AccountRepository.getAllAccounts()
+    async getAllAccount(){
+        const accounts = await this.AccountRepository.getAllAccount()
         if(accounts == undefined){
             throw '帳戶不存在'
         }
@@ -79,5 +79,38 @@ export default class Account {
             throw '帳戶不存在'
         }
         await this.AccountRepository.update(id,data)
+    }
+
+    async getAccountByToken(token){
+        if(token== undefined){
+            throw '帳戶不存在'
+        }
+        const id = await this.RedisService.Verify(token)
+        if(id == undefined){
+            throw '帳戶不存在'
+        }
+        return await this.getAccountById(id)
+    }
+
+    async getAccountByName(name){
+        if(name==undefined){
+            throw 'not found'
+        }
+        const account = await this.AccountRepository.getAccountByName(name)
+        if(account == undefined){
+            throw 'not found'
+        }
+        return account
+    }
+
+    async search(searchName){
+        if(search==undefined){
+            throw 'not found'
+        }
+        const accounts = await this.AccountRepository.search(search)
+        if(accounts == undefined){
+            throw 'not found'
+        }
+        return accounts
     }
 }
