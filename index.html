@@ -79,9 +79,10 @@
                 return false;
             else
                 $('#login_submit').text('登入中.....');
+                console.log($('#login_form').serialize());
 
                 $.ajax({
-                url: 'login.js',
+                url: '/account/login',
                 method: 'POST',
                 dataType: 'json',
                 data: $('#login_form').serialize(),
@@ -109,7 +110,7 @@
 
           
                 $.ajax({
-                url: 'register.js',
+                url: '/register',
                 method: 'POST',
                 dataType: 'json',
                 data: $('#register_form').serialize(),
