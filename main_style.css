@@ -80,6 +80,25 @@ a{
     background-color: #7a715d;
 }
 
+.marquee {
+    position: relative; /* 若子物件為position:absolute; 則要position: relative;且 overflow: hidden;才能隱藏溢出結果*/
+    overflow: hidden;
+
+    max-width: 100%;
+    height: 50%;
+    font-size: 20px;
+    color: red;
+    display: flex;
+    align-items: center;
+}
+
+.marquee-word {
+    white-space: nowrap;/*文字溢出必備*/
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+}
+
 .head-center-block{
     display: block;
     margin-left: 10%;
@@ -91,6 +110,13 @@ a{
     height: 60px;
     font-size: 30px;
     color: #ffffff;
+}
+
+.article-input {
+    margin: 20px;
+    font-size: 20px;
+    width: 85%;
+    height: 100px;
 }
 
 .photo{
@@ -135,7 +161,13 @@ a{
     margin-bottom: 20px;
 }
 
+.article-news{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
 .article-footer-button{
+    cursor: pointer;
     text-align: center;
     color: black;
     font-size: 20px;
