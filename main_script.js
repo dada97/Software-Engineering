@@ -64,3 +64,44 @@ function Expand(form) {
         }
     }  
 }
+
+$("#section").on('click', ".nice-b", function () {
+    $this =$(this);
+    
+    console.log($this.parents('.article'));
+   
+});
+
+$("#section").on('click', ".message-b", function () {
+    $this =$(this);
+    console.log($this.parents('.article'));
+
+});
+
+$('#Logout_button').click(function () {
+    document.location.href = "index.html";  
+});
+
+$('#Home_button').click(function () {
+    document.location.href = "main.html";  
+});
+
+/*
+setTimeout(function () {
+    var run = 0;
+    var Marquee_Text = $('#Marquee').text();
+    var size = (20 * (Marquee_Text.length));
+    var body_width = document.body.clientWidth;
+    
+    setInterval(function () {
+        Marquee.style.right = (-size + run)+ 'px';
+        
+        run += 5;
+
+        if (run > body_width + size) {
+            body_width = document.body.clientWidth;
+            run = 0;
+        }
+            
+    }, 20);
+}, 3000);*/
