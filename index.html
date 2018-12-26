@@ -97,17 +97,17 @@
 
             var account = $('#login_form').find("input[name='account']").val()
             var password = $('#login_form').find("input[name='password']").val()
-            console.log(account);
-            console.log(password);
+            var jsonStr = JSON.stringify({
+                account: account,
+                password: password
+            })
 
             $.ajax({
-                url: '123',
+                url: 'account/login',
                 method: 'POST',
                 dataType: 'json',
-                data: {
-                    account: account,
-                    password: password
-                }, //account=123&password=123
+                contentType: 'application/json',
+                data: jsonStr,
 
                 success: function (obj) {
 

@@ -16,8 +16,7 @@ export default class Account {
         this.RedisService = new RedisService()
     }
 
-    async login(data){
-        console.log(data)
+    async login(data){    
         if(data.account == undefined || data.password == undefined){
             throw '登入失敗'
         }
