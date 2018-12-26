@@ -10,13 +10,12 @@ class Account extends Router {
     }
 
     init() {
-        this.get('/',           this.controller.GetAllAccounts)
-        this.get('/name/:name', this.controller.GetAccountsByName)
-        this.get('/:id',        this.controller.GetAccountByID)
-        this.post('/',          this.controller.Register)
-        this.post('/login',     this.controller.Login)
-        this.put('/:id',        this.controller.Edit)
-        this.delete('/:id',     this.controller.Delete)
+        this.get('/:id',        this.controller.getAccountByID)     //用id搜尋帳戶資訊
+        this.get('/',           this.controller.getAllAccounts)     //取得所有帳戶
+        this.post('/register',  this.controller.register)           //註冊
+        this.post('/login',     this.controller.login)              //登入
+        this.put('/:id',        this.controller.update)             //更新帳戶資訊
+        this.delete('/:id',     this.controller.deleteAccountById)  //用id刪除帳戶
     }
 }
 

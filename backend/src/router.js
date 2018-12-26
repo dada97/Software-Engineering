@@ -16,16 +16,16 @@ export default class Router {
             this.routeMap['ANY'].push(this.setRoute(arguments[0], arguments[1]))
         }
     }
-    get(route, fn) {
+    get(route, fn) { //取資料
         this.routeMap['GET'].push(this.setRoute(route, fn))
     }
-    post(route, fn) {
+    post(route, fn) { //傳資料
         this.routeMap['POST'].push(this.setRoute(route, fn))
     }
-    put(route, fn) {
+    put(route, fn) { //改資料
         this.routeMap['PUT'].push(this.setRoute(route, fn))
     }
-    delete(route, fn) {
+    delete(route, fn) { //刪資料
         this.routeMap['DELETE'].push(this.setRoute(route, fn))
     }
 
