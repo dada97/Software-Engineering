@@ -1,5 +1,4 @@
 import Router from '../router'
-
 import FileController from '../software-engineering/controllers/file.js'
 
 class File extends Router {

@@ -15,4 +15,8 @@ export default class Friend {
 
     }
 
+    async deleteFriend(id){
+        
+    }
+
 }

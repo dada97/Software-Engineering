@@ -9,6 +9,9 @@ import Router     from './router'
 
 import AccountRouter from './routes/accountRouter.js'
 import ArticleRouter from './routes/articleRouter.js'
+import FriendRouter from './routes/friendRouter.js'
+import GroupRouter from './routes/groupRouter.js'
+import FileRouter from './routes/fileRouter.js'
 
 const router = new Router()
 
@@ -22,6 +25,9 @@ router.use(cors(corsConfig))
 
 router.use('/account',  AccountRouter)
 router.use('/article',  ArticleRouter)
+router.use('/friend',   FriendRouter)
+router.use('/group',    GroupRouter)
+router.use('/file',     FileRouter)
 
 
 const server = http.createServer(async (req, res) => {
