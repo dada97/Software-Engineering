@@ -3,7 +3,6 @@ import * as url from 'url'
 export default class Request {
     constructor(req) {
         const URL = url.parse(req.url, true)
-
         this.req    = req
         this.path   = URL.pathname.split('/')
         this.path.splice(0, 1)

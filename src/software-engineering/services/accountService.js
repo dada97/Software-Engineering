@@ -17,6 +17,7 @@ export default class Account {
     }
 
     async login(data){
+        console.log(data)
         if(data.account == undefined || data.password == undefined){
             throw '登入失敗'
         }

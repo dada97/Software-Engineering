@@ -79,13 +79,19 @@
                 return false;
             else
                 $('#login_submit').text('登入中.....');
-                console.log($('#login_form').serialize());
+               //var account = $('#login_form').find("input[name='account']").val()
+               console.log(account)
+               //var password = $('#logon_form').find("input[name='password]").val()
+               console.log(password)
 
                 $.ajax({
                 url: '/account/login',
                 method: 'POST',
                 dataType: 'json',
-                data: $('#login_form').serialize(),
+                data: {
+                    account:account,
+                    password:password
+                },
                 success: function (obj) {
 
                     if (obj.message == "yes") {

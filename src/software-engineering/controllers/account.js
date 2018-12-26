@@ -7,6 +7,7 @@ export default class Account {
 
     async login(req,res){
         console.log("test")
+        console.log(req)
         try{
             res.status(400).json({token:AccountService.login(req)})
         }catch(e){
