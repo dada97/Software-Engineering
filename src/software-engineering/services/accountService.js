@@ -24,6 +24,8 @@ export default class Account {
         if(account == undefined){
             throw '登入失敗'
         }
+
+        
         // const hashPassword = hashFunction(data.password)
         // if(hashPassword !== account.password){
         //     throw '登入失敗'
@@ -32,15 +34,18 @@ export default class Account {
             throw '登入失敗'
         }
         const token = this.RedisService.generateToken()
-        this.RedisService.store(token,account.id)
+        this.RedisService.Store(token,account.ID)
+        
         return token
     }
 
     async register(data){
+        console.log("test")
         const account = await this.AccountRepository.getAccountByAccount(data.account) //判斷帳號是否已被使用
         if(account !== undefined){
             throw '此帳號已被註冊'
         }
+        await this.AccountRepository.createAccount(data)
     }
 
     async getAllAccount(){

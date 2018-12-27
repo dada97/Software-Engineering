@@ -15,8 +15,9 @@ export default class Friend {
 
     }
 
-    async deleteFriend(id){
-        
+    //刪除好友關係
+    async deleteFriend(data){
+
     }
 
 }

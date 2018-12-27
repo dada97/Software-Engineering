@@ -1,5 +1,4 @@
 import Router from '../router.js'
-
 import AccountController from '../software-engineering/controllers/account.js'
 
 class Account extends Router {
