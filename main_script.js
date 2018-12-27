@@ -41,7 +41,7 @@ function Expand(form) {
     var form_ul = form_parent_obj.getElementsByTagName('ul');
     var form_parent_ul_obj = form.parentElement.parentElement;
     var $ul_obj = $(form_parent_ul_obj);
- 
+    $('#section').css('visibility','visible');
     if (form_ul.length != 0) {
      
         if (form_ul[0].style.display != 'block') {
@@ -84,6 +84,12 @@ $('#Logout_button').click(function () {
 
 $('#Home_button').click(function () {
     document.location.href = "main.html";  
+});
+
+$('#Topic_button').click(function () {
+    $('#aside').css('display','block');
+    $('#section').css('visibility','hidden');
+    //visible
 });
 
 $('#Article_submit').click(function () {

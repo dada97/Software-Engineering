@@ -19,6 +19,7 @@ html {
   padding-bottom: 100px
 }
 
+
 .navbar-brand {
   font-size: 1.5rem;
   padding-top: 0 !important;
@@ -6494,4 +6495,10 @@ a.text-danger:hover {
   .hidden-print {
     display: none !important
   }
+}
+
+.select-style{
+  width: 300px !important;
+  height: 50px;
+  border-radius: 10px;
 }
