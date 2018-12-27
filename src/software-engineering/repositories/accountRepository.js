@@ -11,8 +11,10 @@ export default class Account {
     }
 
     //用帳號搜尋帳戶資訊
-    async getAccountByAccount(account){
-       // return await this.AccountModel.where("account",account);
+    async getAccountByAccount(account){		
+	//var result= await this.AccountModel.where("accountname",account);
+	console.log("get");
+     return await this.AccountModel.where("accountname",account);
     }
 
     //用id取得帳戶資訊
@@ -22,6 +24,7 @@ export default class Account {
 
     //取得全部帳戶資訊
     async getAllAccount(){
+		
 		return this.AccountModel.select();
     }
 
