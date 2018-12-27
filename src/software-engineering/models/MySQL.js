@@ -16,18 +16,18 @@ export default class Model {
 
 
 async addAccount(account,password,username,gender){
-	this.connection.connect(function(err,con) {
-		console.log("db connected");
-	var myDate = new Date().toJSON().slice(0, 19).replace('T', ' ');
-	var sql = "INSERT INTO account (account,password,username,gender,createtime) VALUES ('"+account+"','"+password+"','"+username+"','"+gender+"','"+myDate+"')";
-		con.query(sql, function (err, result) {
+	return new Promise((resolve, reject) => {
+		this.connection.connect(function(err,con) {
+			console.log("db connected");
+			var myDate = new Date().toJSON().slice(0, 19).replace('T', ' ');
+			var sql = "INSERT INTO account (account,password,username,gender,createtime) VALUES ('"+account+"','"+password+"','"+username+"','"+gender+"','"+myDate+"')";
+			con.query(sql, function (err, result) {
 			if (err) throw err;
 			console.log("1 record inserted");
-			this.connection.end();
-			return result;
+			resolve(result[0]);
+			});
+		con.release();
 		});
-		
-		this.connection.end();
 	});
 }
 
