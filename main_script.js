@@ -86,6 +86,48 @@ $('#Home_button').click(function () {
     document.location.href = "main.html";  
 });
 
+$('#Article_submit').click(function () {
+
+    if($('#Article_input').val() == '')
+            return false;
+
+    var articele_obj = '<div class="article" articleid="1">'+
+    '<div class="article-header"> '+               
+            '<img class="photo" src="images/1.jpg">'+           
+            '<div class="article-title">'+
+                '<div class="article-name" name="username">熊熊</div>'+
+                '<div class="article-time" name="username">3分鐘前</div>'+
+            '</div>'+                
+        '</div>'+
+        
+    '<div class="article-main">'+                
+    $('#Article_input').val() +     //文章內容
+    '</div>'+
+
+    '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
+    '100'+ //案讚人數
+    '</span></div>'+
+
+    '<div class="article-footer">'+
+         '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>'+
+         '<div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>'+
+    '</div>' +            
+'</div>';
+
+    $('#Article_list').prepend(articele_obj);
+  
+    $('#Article_input').val('');
+});
+
+
+$(window).scroll(function () {
+  
+    if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+        console.log("滚动条已经到达底部为" + $(document).scrollTop());
+      }
+  
+});
+
 /*
 setTimeout(function () {
     var run = 0;

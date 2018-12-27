@@ -124,17 +124,16 @@ a{
     border-radius: 25px;
     width: 50px;
     height: 50px;
+    margin-bottom: 30px;
 }
 
 .article{
-    margin-top: 5%;
+    margin-top: 3%;
     margin-right: 10%;
     margin-left: 10%;
 }
 
 .article-header{
-    margin-top: 10px;
-    margin-bottom: 10px;
     display: inline-block;
 }
 

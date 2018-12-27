@@ -97,6 +97,7 @@
 
             var account = $('#login_form').find("input[name='account']").val()
             var password = $('#login_form').find("input[name='password']").val()
+            
             var jsonStr = JSON.stringify({
                 account: account,
                 password: password
@@ -106,13 +107,13 @@
                 url: 'account/login',
                 method: 'POST',
                 dataType: 'json',
-                headers:{"Auth":token},
                 contentType: 'application/json',
                 data: jsonStr,
 
-                success: function (obj) {
-
-                    if (obj.message == "yes") {
+                success: function (data) {
+                  
+                    if (data.error == "") {
+                        document.cookie = data.token;
                         document.location.href = "main.html";
                     }
                     else {
@@ -132,22 +133,41 @@
             else
                 $('#register_submit').text('註冊中.....');
 
+            var username = $('#register_form').find("input[name='username']").val()
+            var account = $('#register_form').find("input[name='account']").val()
+            var password = $('#register_form').find("input[name='password']").val()
+            var reconfirm = $('#register_form').find("input[name='reconfirm']").val()
+
+            if(password != reconfirm)
+            {
+                alert('密碼再確認錯誤');
+                $('#register_submit').text('註冊');
+                return false;
+            }
+
+            var jsonStr = JSON.stringify({
+                username:username,
+                account: account,
+                password: password
+            })
 
             $.ajax({
-                url: 'register.js',
+                url: 'account/register',
                 method: 'POST',
                 dataType: 'json',
-                data: $('#register_form').serialize(),
-                success: function (obj) {
+                contentType: 'application/json',
+                data: jsonStr,
 
-                    if (obj.message == "yes") {
+                success: function (data) {
+                  
+                    if (data.error == "") {
                         alert('註冊成功');
                     }
                     else {
-                        alert(obj.message);  //若錯誤則印出錯誤訊息
+                        alert(obj.message);
                     }
 
-                    $('#login_submit').text('註冊');
+                    $('#register_submit').text('註冊');
                 },
             });
 
