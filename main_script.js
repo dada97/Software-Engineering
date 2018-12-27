@@ -88,6 +88,13 @@ $('#Home_button').click(function () {
 
 $('#Article_submit').click(function () {
 
+    var Article_Text =  $('#Article_input').val();
+   Article_Text = Article_Text.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
+    for(var i =0; i < Article_Text.length ; i++)
+    {
+        console.log(Article_Text[i]);
+    }
+
     if($('#Article_input').val() == '')
             return false;
 
@@ -101,7 +108,7 @@ $('#Article_submit').click(function () {
         '</div>'+
         
     '<div class="article-main">'+                
-    $('#Article_input').val() +     //文章內容
+    Article_Text +     //文章內容
     '</div>'+
 
     '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
@@ -115,13 +122,15 @@ $('#Article_submit').click(function () {
 '</div>';
 
     $('#Article_list').prepend(articele_obj);
-  
+
+   
     $('#Article_input').val('');
 });
 
 
 $(window).scroll(function () {
   
+    //讀取新文章
     if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
         console.log("滚动条已经到达底部为" + $(document).scrollTop());
       }
