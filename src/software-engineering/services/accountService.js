@@ -17,7 +17,6 @@ export default class Account {
     }
 
     async login(data){
-		console.log(data)
         if(data.account == undefined || data.password == undefined){
             throw '登入失敗'
         }
@@ -25,8 +24,11 @@ export default class Account {
         if(account == undefined){
             throw '登入失敗'
         }
-        const hashPassword = hashFunction(data.password)
-        if(hashPassword !== account.password){
+        // const hashPassword = hashFunction(data.password)
+        // if(hashPassword !== account.password){
+        //     throw '登入失敗'
+        // }
+        if(data.password !== account.password){
             throw '登入失敗'
         }
         const token = this.RedisService.generateToken()
