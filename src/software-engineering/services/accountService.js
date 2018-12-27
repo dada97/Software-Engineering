@@ -4,10 +4,10 @@ import AccountRepository  from '../repositories/accountRepository.js'
 import FileService  from './fileService.js'
 import RedisService from './redisService.js'
 
-
+/*
 const hashFunction = function(msg){
     return crypto.createHash('sha256').update(String(msg)).digest('hex')
-}
+}*/
 
 export default class Account {
     constructor() {
@@ -16,7 +16,8 @@ export default class Account {
         this.RedisService = new RedisService()
     }
 
-    async login(data){    
+    async login(data){
+		console.log(data)
         if(data.account == undefined || data.password == undefined){
             throw '登入失敗'
         }

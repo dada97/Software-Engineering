@@ -20,6 +20,7 @@ export default class Router {
         this.routeMap['GET'].push(this.setRoute(route, fn))
     }
     post(route, fn) { //傳資料
+
         this.routeMap['POST'].push(this.setRoute(route, fn))
     }
     put(route, fn) { //改資料

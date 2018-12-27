@@ -7,9 +7,11 @@ export default class Account {
 
     async login(req,res){
         try{
-            res.status(400).json({token:AccountService.login(req.body)})
-        }catch(e){
-            res.status(400).json({error:'login fail'})
+			token = await this.AccountService.register(req.body)
+            res.status(200).json({token:token})
+       }catch(e){
+		   console.log(e)
+           res.status(400).json({error:'login fail'})
         }
     }
 
