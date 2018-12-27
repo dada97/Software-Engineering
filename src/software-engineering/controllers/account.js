@@ -4,6 +4,7 @@ export default class Account {
     constructor() {
         this.AccountService = new AccountService()
 
+        this.getAccountByToken = this.getAccountByToken.bind(this)
         this.login = this.login.bind(this)
         this.register = this.register.bind(this)
         this.getAllAccount = this.getAllAccount.bind(this)
@@ -12,6 +13,15 @@ export default class Account {
         this.getAccountById = this.getAccountById(this)
         this.getAccountByName = this.getAccountByName(this)
         this.search = this.search.bind(this)
+    }
+
+    async getAccountByToken(req,res){
+        try{
+            res.status(200).json({account:await this.AccountService.getAccountByToken(req.header.authorization)})
+        }catch(e){
+            console.log(e)
+            res.status(400).json({error:'login fail'})
+        }
     }
 
     async login(req,res){
@@ -34,7 +44,7 @@ export default class Account {
 
     async getAllAccount(req,res){
         try{
-            res.status(200).json({accounts:AccountService.getAllAccount()})
+            res.status(200).json({accounts:AccountService.getAllAccount(req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'login fail'})
         }
@@ -42,7 +52,7 @@ export default class Account {
 
     async deleteAccountById(req,res){
         try{
-            await AccountService.deleteAccountById(res.params.id)
+            await AccountService.deleteAccountById(res.params.id,req.header.authorization)
             res.status(200).json({succeed:'delete succeed'})
         }catch(e){
             res.status(400).json({error:'login fail'})
@@ -51,7 +61,7 @@ export default class Account {
 
     async update(req,res){
         try{
-            await AccountService.update(req.params.id,req.body)
+            await AccountService.update(req.params.id,req.header.authorization,req.body)
             res.status(200).json({succeed:'update succeed'})
         }catch(e){
             res.status(400).json({error:'update fail'})

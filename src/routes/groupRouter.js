@@ -8,10 +8,10 @@ class Group extends Router {
         this.init()
     }
 
-    init() {
+    init() {  
         this.post('/search/:search',this.controller.search)     //搜尋家族
         this.post('/join/:id',  this.controller.join)           //加入家族(:id為家族id)
-        this.post('/:id',       this.controller.createGroup)    //創建家族(:id為創建者id)
+        this.post('/',       this.controller.createGroup)    //創建家族
         this.put('/:id',        this.controller.update)         //修改家族資訊
         this.delete('/quit/:id',this.controller.quit)           //退出家族(:id為家族id)
         //this.delete('/:id',  this.controller.deleteFriend)    //刪除家族

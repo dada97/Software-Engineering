@@ -13,6 +13,8 @@ const sort = function(arr){
 export default class Article {
     constructor() {
         this.articleRepository  = new articleRepository()
+        this.friendRepository = new friendRepository()
+        this.groupRepository = new groupRepository()
     }
 
     //取得所有貼文
@@ -24,10 +26,19 @@ export default class Article {
         return articles
     }
 
+    async getArticleByAccountId(id){
+        let articles = await this.articleRepository.getArticleByAccountId(id)
+        if(articles == undefined){
+            throw 'not found'
+        }
+        articles = sort(articles)
+        return articles
+    }
+
     //取得特定帳戶貼文
     async getArticleById(id){
         const article = await this.articleRepository.getArticleById(id)
-        if(article==undefined){
+        if(articles==undefined){
             throw 'not found'
         }
         return article
@@ -43,7 +54,7 @@ export default class Article {
         if(article.acID !== data.acID){
             throw 'update fail'
         }
-        await this.articleRepository.update(data)
+        await this.articleRepository.update(id,data)
     }
 
     //刪除貼文
@@ -57,28 +68,47 @@ export default class Article {
 
     //取得好友貼文
     async getFriendArticleByAccountId(id){
-        const friend = await friendRepository.getFriendByAccountId(id)
+        const friend = await this.friendRepository.getFriendByAccountId(id)
         if(friend == undefined){
             throw 'no frineds'
         }
-        let article = []
+        let articles = []
         for(var i in friend){
-            article.push(await articleRepository.getArticleByAccountId(friend[i]))
+            articles.push(await this.articleRepository.getArticleByAccountId(friend[i]))
         }
-        article = sort(article)
-        return article
+        articles = sort(articles)
+        return articles
 
     }
 
-    //取得家族貼文
+    //用家族id取得家族貼文
     async getGroupArticleById(id){
-        let article = await groupRepository.getGroupArticleById(id)
-        if(article==undefined){
+        let articles = await this.groupRepository.getGroupArticleById(id)
+        if(articles==undefined){
             throw 'not found'
         }
-        article = sort(article)
-        return article
+        articles = sort(articles)
+        return articles
     }
 
-    
+
+    //新增貼文
+    async createArticle(data){
+        if(data.accountID ==undefined){
+            throw 'create fail'
+        }
+        await this.articleRepository.createArticle(data)
+    }
+
+
+    //用看板id取得看板文章
+    async getBoradArticleById(id){
+        if(id == undefined){
+            throw 'not found'
+        }
+        let articles = await this.articleRepository.getBoradArticleById(id)
+        articles = sort(articles)
+        return articles
+    }
+
 }

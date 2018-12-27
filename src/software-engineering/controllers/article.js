@@ -7,6 +7,8 @@ export default class Article {
         this.getArticleById = this.getArticleById.bind(this)
         this.getArticleByAccountId = this.getArticleByAccountId.bind(this)
         this.getFriendArticleByAccountId = this.getFriendArticleByAccountId.bind(this)
+        this.getGroupArticleById = this.getGroupArticleById.bind(this)
+        this.getBoardArticleById = this.getBoardArticleById.bind(this)
         this.update = this.update.bind(this)
         this.deleteArticleById = this.deleteArticleById.bind(this)
         this.getAllArticle = this.getAllArticle.bind(this)
@@ -74,6 +76,22 @@ export default class Article {
             res.status(200).json({succeed:'create succeed'})
         }catch(e){
             res.status(400).json({error:'create fail'})
+        }
+    }
+
+    async getGroupArticleById(req,res){
+        try{
+            res.status(200).json({articles: await ArticleService.getGroupArticleById(req.params.id)})
+        }catch(e){
+            res.status(400).json({error:'not found'})
+        }
+    }
+
+    async getBoardArticleById(req,res){
+        try{
+            res.status(200).json({articles: await ArticleService.getBoardArticleById(req.params.id)})
+        }catch(e){
+            res.status(400).json({error:'not found'})
         }
     }
 }
