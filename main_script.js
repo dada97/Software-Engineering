@@ -8,6 +8,8 @@ var user_name;
 var limit_time = 10;
 var is_logout = false;
 var is_online = false;
+var sex_url;
+var Account_Data;
 
 window.onload = function () {
     
@@ -18,32 +20,32 @@ window.onload = function () {
 
     var timer = new Date();
     last_click_time = timer.getTime();
-
     var userAgent = navigator.userAgent;
 
-
-    var token = getCookie('token');
-    $.ajax({
-        url: 'account/token',
-        method: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: {},
-        success: function (data) {
-
-            if (data.error == "") {
-
-            }
-            else {
-                alert(data.message);
-            }
-
-        },
-    });
+    send_token();
+    initial();
 }
 
+function initial()
+{
+    $('#Username').text(Account_Data.username);
 
+    if(Account_Data.gender == 'M')
+    {
+        console.log('男');
+        sex_url = "images/boy.png";
+    }
+    else if(Account_Data.gender == 'F')
+    {
+        console.log('女');
+        sex_url = "images/girl.png"
+    }
+    else
+    {
+        console.log('人妖?');
+    }
+
+}
 
 function getCookie(c_name) {
     if (document.cookie.length > 0) {
@@ -57,10 +59,53 @@ function getCookie(c_name) {
     }
     return ""
 }
+
+function send_token(){
+    var token = getCookie('token');
+    console.log(token);
+    $.ajax({
+        url: 'account/token',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+        success: function (data) {
+            Account_Data = data;
+            //gender
+          get_friend();
+        },
+        error: function(data){
+            console.log("token error");
+         }
+    });
+}
+
+var myfriend;
 function get_friend(){
 
+    var jsonStr = JSON.stringify({
+        account: this_Account,
+    })
+
+    $.ajax({
+        url: 'friend/getFriendByAccountId',
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: jsonStr,
+
+        success: function (data) {
+          myfriend=data.friends
+          console.log(myfriend);
+        },
+        error: function(data){
+           console.log("friend error");
+        }
+    });
+
 }
-function send_token(){}
+
 //登入網頁三秒後執行，只會執行一次
 setTimeout(function () {
   
@@ -142,7 +187,7 @@ $('#Article_submit').click(function () {
 
     var articele_obj = '<div class="article" articleid="1">'+
     '<div class="article-header"> '+               
-            '<img class="photo" src="images/1.jpg">'+           
+            '<img class="photo" src="'+ sex_url +'">'+           
             '<div class="article-title">'+
                 '<div class="article-name" name="username">熊熊</div>'+
                 '<div class="article-time" name="username">3分鐘前</div>'+
