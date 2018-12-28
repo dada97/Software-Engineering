@@ -7,14 +7,12 @@ export default class Account {
 
     //建立帳戶
     async createAccount(data){
-<<<<<<< HEAD
 		return this.AccountModel.addAccount(account,password,username,gender);
     }
 
     //用帳號搜尋帳戶資訊
     async getAccountByAccount(account){
        return this.AccountModel.where("account",account);
-=======
 		console.log(data);
 		try{
 			return this.AccountModel.addAccount(data.account,data.password,data.username,data.gender);
@@ -29,7 +27,6 @@ export default class Account {
 	//var result= await this.AccountModel.where("accountname",account);
 	console.log("get");
      return await this.AccountModel.where("accountname",account);
->>>>>>> d310ce85845d81c570078b574da9e98ca07399f7
     }
 
     //用id取得帳戶資訊
@@ -39,10 +36,6 @@ export default class Account {
 
     //取得全部帳戶資訊
     async getAllAccount(){
-<<<<<<< HEAD
-=======
-		
->>>>>>> d310ce85845d81c570078b574da9e98ca07399f7
 		return this.AccountModel.select();
     }
 

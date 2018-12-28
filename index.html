@@ -115,7 +115,9 @@
                 data: jsonStr,
 
                 success: function (data) {
-                    document.cookie = data.token;
+                    document.cookie = "token=" + data.token;
+					document.location.href = "main.html";
+					console.log(data.token)
                    /* if (data.error == "") {
                         document.cookie = data.token;
                         document.location.href = "main.html";
