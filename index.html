@@ -180,17 +180,13 @@
                 contentType: 'application/json',
                 data: jsonStr,
 
-                success: function (data) {
-                  
-                    if (data.error == "") {
-                        alert('註冊成功');
-                    }
-                    else {
-                        alert(obj.message);
-                    }
-
+                success: function (data) {                                    
+                        alert('註冊成功');                
                     $('#register_submit').text('註冊');
                 },
+                error:function(data){
+                    alert('註冊失敗'); 
+                }
             });
 
         });
