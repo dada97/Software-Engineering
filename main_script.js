@@ -9,7 +9,9 @@ var limit_time = 10;
 var is_logout = false;
 var is_online = false;
 var sex_url = "images/boy.png";
-
+var AllArticle = [];
+AllArticle[0]={ context : "context1"}
+AllArticle[1]={ context : "context2"}
 var Account_Data;/*={
     account : "123",
     password : "654",
@@ -27,6 +29,7 @@ window.onload = function () {
     var timer = new Date();
     last_click_time = timer.getTime();
     var userAgent = navigator.userAgent;
+   // dispaly_Article();
    // initial();
    // get_Friend();
    // get_AllArticlebyfriend();
@@ -88,8 +91,6 @@ function getCookie(c_name) {
     return ""
 }
 
-
-
 var myfriend;
 function get_Friend(){
 
@@ -123,12 +124,57 @@ function get_AllArticlebyfriend(){
 
         success: function (data) {
             AllArticle = data.articles
-          console.log(myfriend);
+            //dispaly_Article();
         },
         error: function(data){
            console.log("get_AllArticlebyfriend error");
         }
     });
+
+}
+
+function dispaly_Article(){
+ 
+    for(var i = 0 ; i < 10 ; i++){
+        var random_number = Math.floor((Math.random() * AllArticle.length));
+        Article_ID =  AllArticle[i].ID;
+        Article_Context = AllArticle[i].context;
+        console.log(Article_ID);
+        console.log(Article_Context);
+        console.log(random_number);
+    }
+
+    Article_Context = Article_Text.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
+   
+    if($('#Article_input').val() == '')
+            return false;
+
+    var articele_obj = '<div class="article" articleid="1">'+
+    '<div class="article-header"> '+               
+            '<img class="photo" src="'+ sex_url +'">'+           
+            '<div class="article-title">'+
+                '<div class="article-name" name="username">熊熊</div>'+
+                '<div class="article-time" name="username">3分鐘前</div>'+
+            '</div>'+                
+        '</div>'+
+        
+    '<div class="article-main">'+                
+    Article_Text +     //文章內容
+    '</div>'+
+
+    '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
+    '100'+ //案讚人數
+    '</span></div>'+
+
+    '<div class="article-footer">'+
+         '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>'+
+         '<div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>'+
+    '</div>' +            
+'</div>';
+
+    $('#Article_list').prepend(articele_obj);
+
+    $('#Article_input').val('');
 
 }
 //登入網頁三秒後執行，只會執行一次
@@ -210,8 +256,8 @@ $('#Article_submit').click(function () {
     })
 
     $.ajax({
-        url: 'article/createArticle',
-        method: 'POST',
+        url: 'article/'+ Account_Data.ID,
+        method: 'PUT',
         dataType: 'json',
         contentType: 'application/json',
         data: jsonStr,
@@ -225,41 +271,7 @@ $('#Article_submit').click(function () {
     });
 
 
-   Article_Text = Article_Text.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
-    for(var i =0; i < Article_Text.length ; i++)
-    {
-        console.log(Article_Text[i]);
-    }
-
-    if($('#Article_input').val() == '')
-            return false;
-
-    var articele_obj = '<div class="article" articleid="1">'+
-    '<div class="article-header"> '+               
-            '<img class="photo" src="'+ sex_url +'">'+           
-            '<div class="article-title">'+
-                '<div class="article-name" name="username">熊熊</div>'+
-                '<div class="article-time" name="username">3分鐘前</div>'+
-            '</div>'+                
-        '</div>'+
-        
-    '<div class="article-main">'+                
-    Article_Text +     //文章內容
-    '</div>'+
-
-    '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
-    '100'+ //案讚人數
-    '</span></div>'+
-
-    '<div class="article-footer">'+
-         '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>'+
-         '<div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>'+
-    '</div>' +            
-'</div>';
-
-    $('#Article_list').prepend(articele_obj);
-
-    $('#Article_input').val('');
+  
 });
 
 
