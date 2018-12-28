@@ -8,8 +8,14 @@ var user_name;
 var limit_time = 10;
 var is_logout = false;
 var is_online = false;
-var sex_url;
-var Account_Data;
+var sex_url = "images/boy.png";
+
+var Account_Data;/*={
+    account : "123",
+    password : "654",
+    username : "兔兔",
+    gender : "M"
+};*/
 
 window.onload = function () {
     
@@ -21,9 +27,32 @@ window.onload = function () {
     var timer = new Date();
     last_click_time = timer.getTime();
     var userAgent = navigator.userAgent;
-
+   // initial();
+   // get_Friend();
+   // get_AllArticlebyfriend();
     send_token();
-    initial();
+}
+
+function send_token(){
+    var token = getCookie('token');
+    //console.log(token);
+    $.ajax({
+        url: 'account/token',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+        success: function (data) {
+          Account_Data = data.account;
+          initial();
+          get_Friend();
+          get_AllArticlebyfriend();
+        },
+        error: function(data){
+            console.log("token error");
+         }
+    });
 }
 
 function initial()
@@ -44,7 +73,6 @@ function initial()
     {
         console.log('人妖?');
     }
-
 }
 
 function getCookie(c_name) {
@@ -60,52 +88,49 @@ function getCookie(c_name) {
     return ""
 }
 
-function send_token(){
-    var token = getCookie('token');
-    console.log(token);
+
+
+var myfriend;
+function get_Friend(){
+
     $.ajax({
-        url: 'account/token',
+        url: 'friend/' + Account_Data.ID,
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: {},
-        success: function (data) {
-            Account_Data = data;
-            //gender
-          get_friend();
-        },
-        error: function(data){
-            console.log("token error");
-         }
-    });
-}
-
-var myfriend;
-function get_friend(){
-
-    var jsonStr = JSON.stringify({
-        account: this_Account,
-    })
-
-    $.ajax({
-        url: 'friend/getFriendByAccountId',
-        method: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: jsonStr,
 
         success: function (data) {
-          myfriend=data.friends
+          myfriend = data.friends
           console.log(myfriend);
         },
         error: function(data){
-           console.log("friend error");
+           console.log("getFriendByAccountId error");
         }
     });
 
 }
 
+var AllArticle;
+function get_AllArticlebyfriend(){
+
+    $.ajax({
+        url: 'article/friend/'+ Account_Data.ID,
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: jsonStr,
+
+        success: function (data) {
+            AllArticle = data.articles
+          console.log(myfriend);
+        },
+        error: function(data){
+           console.log("get_AllArticlebyfriend error");
+        }
+    });
+
+}
 //登入網頁三秒後執行，只會執行一次
 setTimeout(function () {
   
@@ -145,22 +170,23 @@ function Expand(form) {
         }
     }  
 }
-
+//案讚
 $("#section").on('click', ".nice-b", function () {
     $this =$(this);
     
     console.log($this.parents('.article'));
    
 });
-
+//留言
 $("#section").on('click', ".message-b", function () {
     $this =$(this);
     console.log($this.parents('.article'));
 
 });
-
+//登出
 $('#Logout_button').click(function () {
-    document.location.href = "index.html";  
+    document.location.href = "index.html";
+    document.cookie ="token=";   
 });
 
 $('#Home_button').click(function () {
@@ -173,9 +199,32 @@ $('#Topic_button').click(function () {
     //visible
 });*/
 
+//發文
 $('#Article_submit').click(function () {
 
     var Article_Text =  $('#Article_input').val();
+
+    var jsonStr = JSON.stringify({
+        ID: Account_Data.ID,
+        Text: Article_Text
+    })
+
+    $.ajax({
+        url: 'article/createArticle',
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: jsonStr,
+
+        success: function (data) {
+            alert('發文成功');
+        },
+        error: function(data){
+            alert('發文失敗');         
+        }
+    });
+
+
    Article_Text = Article_Text.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
     for(var i =0; i < Article_Text.length ; i++)
     {
@@ -210,7 +259,6 @@ $('#Article_submit').click(function () {
 
     $('#Article_list').prepend(articele_obj);
 
-   
     $('#Article_input').val('');
 });
 
