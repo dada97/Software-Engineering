@@ -115,17 +115,22 @@
                 data: jsonStr,
 
                 success: function (data) {
-                  
-                    if (data.error == "") {
+                    document.cookie = "token=" + data.token;
+					document.location.href = "main.html";
+					console.log(data.token)
+                   /* if (data.error == "") {
                         document.cookie = data.token;
                         document.location.href = "main.html";
                     }
                     else {
-                        alert(obj.message);
-                    }
+                        alert(data.message);
+                    }*/
 
                     $('#login_submit').text('登入');
                 },
+                error: function(data){
+
+                }
             });
 
         });

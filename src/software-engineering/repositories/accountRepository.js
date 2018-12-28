@@ -7,7 +7,19 @@ export default class Account {
 
     //建立帳戶
     async createAccount(data){
-		return this.AccountModel.addAccount(data.account,data.password,data.username,data.gender);
+		return this.AccountModel.addAccount(account,password,username,gender);
+    }
+
+    //用帳號搜尋帳戶資訊
+    async getAccountByAccount(account){
+       return this.AccountModel.where("account",account);
+		console.log(data);
+		try{
+			return this.AccountModel.addAccount(data.account,data.password,data.username,data.gender);
+		}catch(e){
+			console.log("test")
+		}
+		
     }
 
     //用帳號搜尋帳戶資訊
@@ -24,7 +36,6 @@ export default class Account {
 
     //取得全部帳戶資訊
     async getAllAccount(){
-		
 		return this.AccountModel.select();
     }
 

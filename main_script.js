@@ -11,7 +11,7 @@ var is_online = false;
 
 
 window.onload = function () {
-
+    send_token();
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -24,6 +24,35 @@ window.onload = function () {
 
 }
 
+function send_token(){
+
+    var token = document.cookie["token"];
+    console.log("token : " + token);
+    $.ajax({
+        url: 'account/token',
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function(xhr){xhr.setRequestHeader('authorization', token);},
+        data: {},
+        success: function (data) {
+          
+      
+            if (data.error == "") {
+               
+            }
+            else {
+                alert(data.message);
+            }
+          
+        },
+    });
+}
+
+function get_friend(){
+
+}
+function send_token(){}
 //登入網頁三秒後執行，只會執行一次
 setTimeout(function () {
   
@@ -85,12 +114,12 @@ $('#Logout_button').click(function () {
 $('#Home_button').click(function () {
     document.location.href = "main.html";  
 });
-
+/*
 $('#Topic_button').click(function () {
     $('#aside').css('display','block');
     $('#section').css('visibility','hidden');
     //visible
-});
+});*/
 
 $('#Article_submit').click(function () {
 
