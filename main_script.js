@@ -26,7 +26,7 @@ window.onload = function () {
 
 function send_token(){
 
-    var token = document.cookie;
+    var token = document.cookie["token"];
     console.log("token : " + token);
     $.ajax({
         url: 'account/token',
@@ -37,7 +37,7 @@ function send_token(){
         data: {},
         success: function (data) {
           
-            console.log("token success")
+      
             if (data.error == "") {
                
             }
@@ -114,12 +114,12 @@ $('#Logout_button').click(function () {
 $('#Home_button').click(function () {
     document.location.href = "main.html";  
 });
-
+/*
 $('#Topic_button').click(function () {
     $('#aside').css('display','block');
     $('#section').css('visibility','hidden');
     //visible
-});
+});*/
 
 $('#Article_submit').click(function () {
 
