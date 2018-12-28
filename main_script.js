@@ -11,7 +11,7 @@ var is_online = false;
 
 
 window.onload = function () {
-
+    send_token();
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -24,6 +24,35 @@ window.onload = function () {
 
 }
 
+function send_token(){
+
+    var token = document.cookie;
+    
+    $.ajax({
+        url: '',
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function(xhr){xhr.setRequestHeader('authorization', token);},
+        data: {},
+        success: function (data) {
+          
+            console.log("token success")
+            if (data.error == "") {
+               
+            }
+            else {
+                alert(data.message);
+            }
+          
+        },
+    });
+}
+
+function get_friend(){
+
+}
+function send_token(){}
 //登入網頁三秒後執行，只會執行一次
 setTimeout(function () {
   
