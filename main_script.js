@@ -27,7 +27,7 @@ window.onload = function () {
 function send_token(){
 
     var token = document.cookie;
-    
+    console.log("token : " + token);
     $.ajax({
         url: '',
         method: 'POST',
