@@ -8,10 +8,11 @@ var user_name;
 var limit_time = 10;
 var is_logout = false;
 var is_online = false;
-
+var sex_url;
+var Account_Data;
 
 window.onload = function () {
-    send_token();
+    
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -19,41 +20,92 @@ window.onload = function () {
 
     var timer = new Date();
     last_click_time = timer.getTime();
-
     var userAgent = navigator.userAgent;
 
+    send_token();
+    initial();
+}
+
+function initial()
+{
+    $('#Username').text(Account_Data.username);
+
+    if(Account_Data.gender == 'M')
+    {
+        console.log('男');
+        sex_url = "images/boy.png";
+    }
+    else if(Account_Data.gender == 'F')
+    {
+        console.log('女');
+        sex_url = "images/girl.png"
+    }
+    else
+    {
+        console.log('人妖?');
+    }
+
+}
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=")
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1
+            c_end = document.cookie.indexOf(";", c_start)
+            if (c_end == -1) c_end = document.cookie.length
+            return unescape(document.cookie.substring(c_start, c_end))
+        }
+    }
+    return ""
 }
 
 function send_token(){
-
-    var token = document.cookie["token"];
-	
-    console.log("token : " + token);
+    var token = getCookie('token');
+    console.log(token);
     $.ajax({
         url: 'account/token',
-        method: 'POST',
+        method: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-        beforeSend: function(xhr){xhr.setRequestHeader('authorization', token);},
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: {},
         success: function (data) {
-          
-      
-            if (data.error == "") {
-               
-            }
-            else {
-                alert(data.message);
-            }
-          
+            Account_Data = data;
+            //gender
+          get_friend();
         },
+        error: function(data){
+            console.log("token error");
+         }
     });
 }
 
+var myfriend;
 function get_friend(){
 
+    var jsonStr = JSON.stringify({
+        account: this_Account,
+    })
+
+    $.ajax({
+        url: 'friend/getFriendByAccountId',
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: jsonStr,
+
+        success: function (data) {
+          myfriend=data.friends
+          console.log(myfriend);
+        },
+        error: function(data){
+           console.log("friend error");
+        }
+    });
+
 }
-function send_token(){}
+
 //登入網頁三秒後執行，只會執行一次
 setTimeout(function () {
   
@@ -71,7 +123,6 @@ function Expand(form) {
     var form_ul = form_parent_obj.getElementsByTagName('ul');
     var form_parent_ul_obj = form.parentElement.parentElement;
     var $ul_obj = $(form_parent_ul_obj);
-    $('#section').css('visibility','visible');
     if (form_ul.length != 0) {
      
         if (form_ul[0].style.display != 'block') {
@@ -136,7 +187,7 @@ $('#Article_submit').click(function () {
 
     var articele_obj = '<div class="article" articleid="1">'+
     '<div class="article-header"> '+               
-            '<img class="photo" src="images/1.jpg">'+           
+            '<img class="photo" src="'+ sex_url +'">'+           
             '<div class="article-title">'+
                 '<div class="article-name" name="username">熊熊</div>'+
                 '<div class="article-time" name="username">3分鐘前</div>'+

@@ -115,21 +115,12 @@
                 data: jsonStr,
 
                 success: function (data) {
-                    document.cookie = "token=" + data.token;
-					document.location.href = "main.html";
-					console.log(data.token)
-                   /* if (data.error == "") {
-                        document.cookie = data.token;
-                        document.location.href = "main.html";
-                    }
-                    else {
-                        alert(data.message);
-                    }*/
-
-                    $('#login_submit').text('登入');
+                    document.cookie ="token=" + data.token;                 
+                    document.location.href = "main.html";  
                 },
                 error: function(data){
-
+                    alert('登入錯誤');
+                    $('#login_submit').text('登入');
                 }
             });
 
