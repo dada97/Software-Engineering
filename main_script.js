@@ -29,7 +29,7 @@ function send_token(){
     var token = document.cookie;
     console.log("token : " + token);
     $.ajax({
-        url: '',
+        url: 'account/token',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/json',
