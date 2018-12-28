@@ -34,7 +34,6 @@ export default class Account {
     }
 
     async register(req,res){
-		console.log(req.body)
         try{
             await this.AccountService.register(req.body)
             res.status(200).json({succeed:'register suceed'})
@@ -46,7 +45,8 @@ export default class Account {
 
     async getAllAccount(req,res){
         try{
-            res.status(200).json({accounts:AccountService.getAllAccount(req.header.authorization)})
+			console.log(req.header.authorization)
+            res.status(200).json({accounts:await this.AccountService.getAllAccount(req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'login fail'})
         }
@@ -72,7 +72,7 @@ export default class Account {
 
     async getAccountById(req,res){
         try{
-            res.status(200).json({account:await AccountService.getAccountById(req.params.id)})
+            res.status(200).json({account:await this.AccountService.getAccountById(req.params.id,req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'get account fail'})
         }
@@ -80,7 +80,7 @@ export default class Account {
 
     async getAccountByName(req,res){
         try{
-            res.status(200).json({account:await AccountService.getAccountByName(req.params.name)})
+            res.status(200).json({account:await this.AccountService.getAccountByName(req.params.name)})
         }catch(e){
             res.status(400).json({error:'get account fail'})
         }

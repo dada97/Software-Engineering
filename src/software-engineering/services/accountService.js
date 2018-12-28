@@ -4,7 +4,7 @@ import AccountRepository  from '../repositories/accountRepository.js'
 import FileService  from './fileService.js'
 import RedisService from './redisService.js'
 
-const specID = ''
+const specID = '1'
 
 const hashFunction = function(msg){
     return crypto.createHash('sha256').update(String(msg)).digest('hex')
@@ -52,8 +52,10 @@ export default class Account {
     async getAllAccount(token){
         const ID = await this.RedisService.Verify(token)
         if(ID !== specID){
+			console.log("test")
             throw '權限不足'
         }
+		console.log("test")
         const accounts = await this.AccountRepository.getAllAccount()
         if(accounts == undefined){
             throw '帳戶不存在'
@@ -61,7 +63,7 @@ export default class Account {
         return accounts
     }
 
-    async getAccountById(id){
+    async getAccountById(id,token){
         if(id == undefined){
             throw '帳戶不存在'
         }
