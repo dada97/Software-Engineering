@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
 <html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>霹靂啪啦吼禮送</title>
+    <title>霹靂啪啦厚禮送</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="login_style.css">
     <link rel="stylesheet" type="text/css" media="screen" href="main_style.css">
@@ -14,39 +14,39 @@
 
 <body id="body"> <!--< onresize="re_size()" onclick="body_click()">-->
    
+    <div id="update_password_view" class="container page" style="background-color:#fff;">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-xs-12">
+                <h2 class="text-xs-center mar-b-20 mar-t-25">更改帳戶資訊</h2>
+
+                <form id="update_password_form" method="post">                  
+                    <fieldset class="form-group">
+                        <input class="form-control form-control-lg" type="text" name="username" placeholder="請輸入新名稱" />
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <input class="form-control form-control-lg" type="password" name="password" placeholder="請輸入新密碼" />
+                    </fieldset>
+                    <fieldset class="form-group">
+                            <input class="form-control form-control-lg" type="password" name="reconfirm" placeholder="再確認新密碼" />
+                     </fieldset>
+                </form>
+                <button id="update_data_button" class="btn btn-lg btn-primary center-block">更改</button>
+
+            </div>
+        </div>
+    </div>
+
     <header id="header">
      <div class="head-center-block">   
-        <span class="title_text">霹靂啪啦吼禮送</span>
-        <a id="Logout_button" class="logout-style">登出</a>
-        <a id="Home_button" class="home-style">首頁</a> 
-        <a id="PassWord_button" class="home-style">更改資料</a> 
+        <span class="title_text">霹靂啪啦厚禮送</span>
+        <span id="Logout_button" class="logout-style cur_point">登出</span>
+        <span id="Home_button" class="home-style cur_point">首頁</span> 
+        <span id="PassWord_button" class="data-style cur_point">更改資料</span> 
         <span id="Username" class="name-style">熊熊</span>   
         
         
-     <!--  <div id="update_password_view" class="container page" style="background-color:#fff;">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 col-xs-12">
-                    <h1 class="text-xs-center">更改密碼</h1>
-    
-                    <form id="update_password_form" method="post">                  
-                        <fieldset class="form-group">
-                            <input class="form-control form-control-lg" type="hidden" name="user" value="" />
-                        </fieldset>
-                        <fieldset class="form-group">
-                            <input class="form-control form-control-lg" type="password" name="password" placeholder="請輸入原密碼" />
-                        </fieldset>
-                        <fieldset class="form-group">
-                                <input class="form-control form-control-lg" type="password" name="update_password" placeholder="請輸入更改密碼" />
-                         </fieldset>
-                    </form>
-    
-                    <button id="return_button" class="btn btn-lg btn-primary pull-xs-left">返回</button>
-                    <button id="update_password_button" class="btn btn-lg btn-primary pull-xs-right">更改</button>
-    
-                </div>
-            </div>
-        </div>
-        --> 
+     
+         
      </div>
 
     

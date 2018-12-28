@@ -36,7 +36,7 @@ a{
 #header {
   background-color:#006aa6;
   width : 100%;
-  height : 60px;
+  height : 75px;
   position: fixed;
   z-index: 1;
   /*min-height: 60px;*/
@@ -80,6 +80,26 @@ a{
     background-color: #7a715d;
 }
 
+#update_password_view{
+    display: none;
+    position: fixed;
+    top: 33%;
+    left: 33%;
+    width: 500px;
+    height: 400px;
+    border-radius: 50px;
+    z-index: 3;
+}
+
+.cur_point{
+    cursor: pointer;
+}
+.mar-t-25{
+    margin-top: 25px;
+}
+.mar-b-20{
+    margin-bottom: 20px;
+}
 .marquee {
     position: relative; /* 若子物件為position:absolute; 則要position: relative;且 overflow: hidden;才能隱藏溢出結果*/
     overflow: hidden;
@@ -194,10 +214,11 @@ a{
     overflow-x: hidden;
     overflow-y: scroll;
 }
-
+.data-style,
 .name-style,
 .logout-style,
 .home-style{
+    line-height: 80px;
     padding-left: 20px;
     font-size:20px;
     color: #ffffff;

@@ -10,8 +10,8 @@ var is_logout = false;
 var is_online = false;
 var sex_url = "images/boy.png";
 var AllArticle = [];
-AllArticle[0]={ context : "context1"}
-AllArticle[1]={ context : "context2"}
+AllArticle[0]={ ID: "1" ,context : "context1"}
+AllArticle[1]={ ID: "2" ,context : "context2"}
 var Account_Data;/*={
     account : "123",
     password : "654",
@@ -29,7 +29,7 @@ window.onload = function () {
     var timer = new Date();
     last_click_time = timer.getTime();
     var userAgent = navigator.userAgent;
-   // dispaly_Article();
+    dispaly_Article();
    // initial();
    // get_Friend();
    // get_AllArticlebyfriend();
@@ -60,7 +60,6 @@ function send_token(){
 
 function initial()
 {
-	console.log(Account_Data)
     $('#Username').text(Account_Data.username);
 
     if(Account_Data.gender == 'M')
@@ -103,10 +102,8 @@ function get_Friend(){
         data: {},
 
         success: function (data) {
-
           myfriend = data.friends
           console.log(myfriend);
-
         },
         error: function(data){
            console.log("getFriendByAccountId error");
@@ -138,21 +135,18 @@ function get_AllArticlebyfriend(){
 
 function dispaly_Article(){
  
+    var Article_Context;
+    var Article_ID;
     for(var i = 0 ; i < 10 ; i++){
         var random_number = Math.floor((Math.random() * AllArticle.length));
-        Article_ID =  AllArticle[i].ID;
-        Article_Context = AllArticle[i].context;
-        console.log(Article_ID);
+        Article_ID =  AllArticle[random_number].ID;
+        Article_Context = AllArticle[random_number].context;
+       // console.log(Article_ID);
         console.log(Article_Context);
         console.log(random_number);
-    }
+        Article_Context = Article_Context.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
 
-    Article_Context = Article_Text.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
-   
-    if($('#Article_input').val() == '')
-            return false;
-
-    var articele_obj = '<div class="article" articleid="1">'+
+        var articele_obj = '<div class="article" articleid="'+ Article_ID +'">'+
     '<div class="article-header"> '+               
             '<img class="photo" src="'+ sex_url +'">'+           
             '<div class="article-title">'+
@@ -162,7 +156,7 @@ function dispaly_Article(){
         '</div>'+
         
     '<div class="article-main">'+                
-    Article_Text +     //文章內容
+    Article_Context +     //文章內容
     '</div>'+
 
     '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
@@ -178,6 +172,14 @@ function dispaly_Article(){
     $('#Article_list').prepend(articele_obj);
 
     $('#Article_input').val('');
+    }
+
+    
+   
+   // if($('#Article_input').val() == '')
+    //        return false;
+
+    
 
 }
 //登入網頁三秒後執行，只會執行一次
@@ -223,13 +225,13 @@ function Expand(form) {
 $("#section").on('click', ".nice-b", function () {
     $this =$(this);
     
-    console.log($this.parents('.article'));
+    console.log($this.parents('.article').attr("articleid"));//getarticleid
    
 });
 //留言
 $("#section").on('click', ".message-b", function () {
     $this =$(this);
-    console.log($this.parents('.article'));
+    console.log($this.parents('.article')); 
 
 });
 //登出
@@ -238,9 +240,48 @@ $('#Logout_button').click(function () {
     document.cookie ="token=";   
 });
 
+$('#PassWord_button').click(function () {
+    if($('#update_password_view').css('display') == 'none')
+    $('#update_password_view').css('display','block');  
+    else
+    $('#update_password_view').css('display','none');  
+});
+
 $('#Home_button').click(function () {
     document.location.href = "main.html";  
 });
+
+$('#update_data_button').click(function () {
+    var username = $('#update_password_form').find("input[name='username']").val()
+    //var accountid =  Account_Data.ID
+    var password = $('#update_password_form').find("input[name='password']").val()
+    var reconfirm = $('#update_password_form').find("input[name='reconfirm']").val()
+   
+    if(password != reconfirm)
+    {
+        alert('密碼再確認錯誤');
+        return false;
+    }
+    else if(username == '' || password =='')
+    {
+        if(username == '')
+        alert('請輸入使用者名稱');
+        else if(password == '')
+        alert('請輸入密碼');
+     
+        return false;
+    }
+    else if(username.length >= 20 || password.length >= 20)
+    {       
+        alert('帳號密碼輸入過長');
+        return false;
+    }
+
+    $('#update_password_form').find("input[name='username']").val('');
+    $('#update_password_form').find("input[name='password']").val('');
+    $('#update_password_form').find("input[name='reconfirm']").val('');
+});
+
 /*
 $('#Topic_button').click(function () {
     $('#aside').css('display','block');
@@ -273,8 +314,6 @@ $('#Article_submit').click(function () {
         }
     });
 
-
-  
 });
 
 
