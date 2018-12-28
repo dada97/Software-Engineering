@@ -26,7 +26,7 @@ export default class Account {
     async getAccountByAccount(account){		
 	//var result= await this.AccountModel.where("accountname",account);
 	console.log("get");
-     return await this.AccountModel.where("accountname",account);
+     return await this.AccountModel.where("account",account);
     }
 
     //用id取得帳戶資訊

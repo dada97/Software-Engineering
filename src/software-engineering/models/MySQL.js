@@ -22,7 +22,7 @@ async addAccount(account,password,username,gender){
 		this.connection.getConnection(function(err,con) {
 			console.log("db connected");
 			var myDate = new Date().toJSON().slice(0, 19).replace('T', ' ');
-			var sql = "INSERT INTO account (accountname,password,username,gender,createtime) VALUES ('"+account+"','"+password+"','"+username+"','"+gender+"','"+myDate+"')";
+			var sql = "INSERT INTO account_table (account,password,username,gender,createtime) VALUES ('"+account+"','"+password+"','"+username+"','"+gender+"','"+myDate+"')";
 			con.query(sql, function (err, result) {
 				
 			if (result == undefined) {
@@ -61,7 +61,7 @@ async where(col_name,target){
 	return new Promise((resolve, reject) => {
 		this.connection.getConnection(function(err,con) {
 			console.log("db connected");
-			con.query("SELECT * FROM account WHERE " +col_name +" = '"+target+"'", function (err, result) {
+			con.query("SELECT * FROM account_table WHERE " +col_name +" = '"+target+"'", function (err, result) {
 			if (result == undefined) {
 				reject()
 				return				
