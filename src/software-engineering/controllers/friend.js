@@ -3,6 +3,10 @@ import FriendService from '../services/friendService.js'
 export default class Friend {
     constructor() {
         this.FriendService = new FriendService()
+
+        this.getFriendByAccountId = this.getFriendByAccountId.bind(this)
+        this.createFriend = this.createFriend.bind(this)
+        this.deleteFriend = this.deleteFriend.bind(this)
     }
    
     //取得帳戶的好友資訊

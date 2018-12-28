@@ -1,5 +1,5 @@
 import FriendRepository  from '../repositories/friendRepository.js'
-import AccountRepository from '../repositories/accountRepository.js'
+
 
 export default class Friend {
     constructor() {
@@ -21,10 +21,16 @@ export default class Friend {
             userId: id,
             friendId: data.id 
         }
-        //雙向連結
+
         await this.FriendRepository.createFriend(obj)
-        obj.userId = data.id
-        obj.friendId =  id
-        await this.FriendRepository.createFriend(obj)
+    }
+
+    async deleteFriend(id,data){
+        let obj ={
+            userId: id,
+            friendId: data.id 
+        }
+
+        await this.FriendRepository.deleteFriend(obj)
     }
 }

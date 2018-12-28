@@ -3,11 +3,21 @@ import ArticleService from '../services/articleService.js'
 export default class Article {
     constructor() {
         this.ArticleService = new ArticleService()
+
+        this.getArticleById = this.getArticleById.bind(this)
+        this.getArticleByAccountId = this.getArticleByAccountId.bind(this)
+        this.getFriendArticleByAccountId = this.getFriendArticleByAccountId.bind(this)
+        this.getGroupArticleById = this.getGroupArticleById.bind(this)
+        this.getBoardArticleById = this.getBoardArticleById.bind(this)
+        this.update = this.update.bind(this)
+        this.deleteArticleById = this.deleteArticleById.bind(this)
+        this.getAllArticle = this.getAllArticle.bind(this)
+        this.createArticle = this.createArticle.bind(this)
     }
     //取得特定id的article
     async getArticleById(req,res){
         try{
-            res.status(400).json({article:ArticleService.getArticleById(req.params.id)})
+            res.status(200).json({article:ArticleService.getArticleById(req.params.id)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -16,7 +26,7 @@ export default class Article {
     //取得該帳戶id所有好友的article
     async getArticleByAccountId(req,res){
         try{
-            res.status(400).json({articles:ArticleService.getArticleByAccountId(req.params.id)})
+            res.status(200).json({articles:ArticleService.getArticleByAccountId(req.params.id)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -25,7 +35,7 @@ export default class Article {
     //用帳戶Id取得所有好友貼文
     async getFriendArticleByAccountId(req,res){
         try{
-            res.status(400).json({articles:ArticleService.getFriendArticleByAccountId(req.params.id)})
+            res.status(200).json({articles:ArticleService.getFriendArticleByAccountId(req.params.id)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -35,7 +45,7 @@ export default class Article {
     async update(req,res){
         try{
             await ArticleService.update(req.params.id,req.body)
-            res.status(400).json({succeed:'update succeed'})
+            res.status(200).json({succeed:'update succeed'})
         }catch(e){
             res.status(400).json({error:'update error'})
         }
@@ -44,7 +54,7 @@ export default class Article {
     //刪除特定id的article
     async deleteArticleById(req,res){
         try{
-            res.status(400).json({token:ArticleService.deleteArticleById(req.params.id,req.body)})
+            res.status(200).json({token:ArticleService.deleteArticleById(req.params.id,req.body)})
         }catch(e){
             res.status(400).json({error:'delete error'})
         }
@@ -53,7 +63,7 @@ export default class Article {
     //取得所有article
     async getAllArticle(req,res){
         try{
-            res.status(400).json({articles:ArticleService.getAllArticle()})
+            res.status(200).json({articles:ArticleService.getAllArticle()})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -63,9 +73,25 @@ export default class Article {
     async createArticle(req,res){
         try{
             await ArticleService.createArticle(req.body)
-            res.status(400).json({succeed:'create succeed'})
+            res.status(200).json({succeed:'create succeed'})
         }catch(e){
             res.status(400).json({error:'create fail'})
+        }
+    }
+
+    async getGroupArticleById(req,res){
+        try{
+            res.status(200).json({articles: await ArticleService.getGroupArticleById(req.params.id)})
+        }catch(e){
+            res.status(400).json({error:'not found'})
+        }
+    }
+
+    async getBoardArticleById(req,res){
+        try{
+            res.status(200).json({articles: await ArticleService.getBoardArticleById(req.params.id)})
+        }catch(e){
+            res.status(400).json({error:'not found'})
         }
     }
 }

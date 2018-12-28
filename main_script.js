@@ -11,7 +11,7 @@ var is_online = false;
 
 
 window.onload = function () {
-
+    send_token();
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -24,6 +24,35 @@ window.onload = function () {
 
 }
 
+function send_token(){
+
+    var token = document.cookie["token"];
+    console.log("token : " + token);
+    $.ajax({
+        url: 'account/token',
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function(xhr){xhr.setRequestHeader('authorization', token);},
+        data: {},
+        success: function (data) {
+          
+      
+            if (data.error == "") {
+               
+            }
+            else {
+                alert(data.message);
+            }
+          
+        },
+    });
+}
+
+function get_friend(){
+
+}
+function send_token(){}
 //登入網頁三秒後執行，只會執行一次
 setTimeout(function () {
   
@@ -41,7 +70,7 @@ function Expand(form) {
     var form_ul = form_parent_obj.getElementsByTagName('ul');
     var form_parent_ul_obj = form.parentElement.parentElement;
     var $ul_obj = $(form_parent_ul_obj);
- 
+    $('#section').css('visibility','visible');
     if (form_ul.length != 0) {
      
         if (form_ul[0].style.display != 'block') {
@@ -85,8 +114,21 @@ $('#Logout_button').click(function () {
 $('#Home_button').click(function () {
     document.location.href = "main.html";  
 });
+/*
+$('#Topic_button').click(function () {
+    $('#aside').css('display','block');
+    $('#section').css('visibility','hidden');
+    //visible
+});*/
 
 $('#Article_submit').click(function () {
+
+    var Article_Text =  $('#Article_input').val();
+   Article_Text = Article_Text.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
+    for(var i =0; i < Article_Text.length ; i++)
+    {
+        console.log(Article_Text[i]);
+    }
 
     if($('#Article_input').val() == '')
             return false;
@@ -101,7 +143,7 @@ $('#Article_submit').click(function () {
         '</div>'+
         
     '<div class="article-main">'+                
-    $('#Article_input').val() +     //文章內容
+    Article_Text +     //文章內容
     '</div>'+
 
     '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
@@ -115,13 +157,15 @@ $('#Article_submit').click(function () {
 '</div>';
 
     $('#Article_list').prepend(articele_obj);
-  
+
+   
     $('#Article_input').val('');
 });
 
 
 $(window).scroll(function () {
   
+    //讀取新文章
     if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
         console.log("滚动条已经到达底部为" + $(document).scrollTop());
       }

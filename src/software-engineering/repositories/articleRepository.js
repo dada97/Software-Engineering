@@ -11,12 +11,12 @@ export default class Article {
     }
 
     //修改特定id的article資料
-    async update(id){
+    async update(id,data){
 
     }
 
     //取得特定id的article
-    async getArticleById(){
+    async getArticleById(id){
 
     }
 
@@ -32,6 +32,16 @@ export default class Article {
 
     //建立新article
     async createArticle(data){
+
+    }
+
+    //取得家族貼文
+    async getGroupArticleById(id){
+
+    }
+
+    //取得看板貼文
+    async getBoardArticleById(id){
 
     }
 }
