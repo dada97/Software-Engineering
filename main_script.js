@@ -27,6 +27,7 @@ window.onload = function () {
 function send_token(){
 
     var token = document.cookie["token"];
+	
     console.log("token : " + token);
     $.ajax({
         url: 'account/token',
