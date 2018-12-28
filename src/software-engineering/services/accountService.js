@@ -43,6 +43,7 @@ export default class Account {
 
     async register(data){
         const account = await this.AccountRepository.getAccountByAccount(data.account) //判斷帳號是否已被使用
+		data.password = hashFunction(data.password)
         if(account !== undefined){
             throw '此帳號已被註冊'
         }

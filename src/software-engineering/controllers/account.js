@@ -34,10 +34,12 @@ export default class Account {
     }
 
     async register(req,res){
+		console.log(req.body)
         try{
             await this.AccountService.register(req.body)
             res.status(200).json({succeed:'register suceed'})
         }catch(e){
+			console.log(e)
             res.status(400).json({error:'login fail'})
         }
     }
