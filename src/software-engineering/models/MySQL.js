@@ -31,7 +31,7 @@ async addAccount(account,password,username,gender){
 			}		
 			console.log("1 record inserted");
 			
-			resolve(result[0]);
+			resolve(result);
 			});
 		con.release();
 		})
@@ -50,7 +50,8 @@ async select(){
 				return				
 			}
 			console.log("return all data");
-			resolve(result[0]);
+			
+			resolve(result);
 			});
 		con.release();
 		});
@@ -66,8 +67,8 @@ async where(col_name,target){
 				reject()
 				return				
 			}
-			console.log("found");	
-			resolve(result[0]);
+			console.log("found");
+			resolve(result);
 			});	
 		con.release();
 		});
@@ -84,7 +85,7 @@ async delete_(col_name,target){
 				return				
 			}
 			console.log("delete one record");
-			resolve(result[0]);
+			resolve(result);
 			});
 		con.release();
 		});
@@ -102,7 +103,7 @@ async update(id,data){
 				return				
 			}	
 			console.log("record(s) updated");
-			resolve(result[0]);
+			resolve(result);
 			});		
 		con.release();
 		});

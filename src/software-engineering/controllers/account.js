@@ -10,8 +10,8 @@ export default class Account {
         this.getAllAccount = this.getAllAccount.bind(this)
         this.deleteAccountById = this.deleteAccountById.bind(this)
         this.update = this.update.bind(this)
-        this.getAccountById = this.getAccountById(this)
-        this.getAccountByName = this.getAccountByName(this)
+        this.getAccountById = this.getAccountById.bind(this)
+        this.getAccountByName = this.getAccountByName.bind(this)
         this.search = this.search.bind(this)
     }
 
@@ -88,8 +88,9 @@ export default class Account {
 
     async search(req,res){
         try{
-            res.status(200).json({accounts:await AccountService.search(req.params.search)})
+            res.status(200).json({accounts:await this.AccountService.search(req.params.search)})
         }catch(e){
+			console.log(e)
             res.status(400).json({error:'not found'})
         }
     }

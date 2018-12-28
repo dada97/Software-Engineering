@@ -28,6 +28,7 @@ window.onload = function () {
 
 function initial()
 {
+	console.log(Account_Data)
     $('#Username').text(Account_Data.username);
 
     if(Account_Data.gender == 'M')
@@ -71,7 +72,8 @@ function send_token(){
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: {},
         success: function (data) {
-            Account_Data = data;
+			console.log(data)
+            Account_Data = data.account;
             //gender
           get_friend();
         },

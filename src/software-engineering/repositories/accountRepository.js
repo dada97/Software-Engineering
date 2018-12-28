@@ -12,22 +12,11 @@ export default class Account {
 
     //用帳號搜尋帳戶資訊
     async getAccountByAccount(account){
-       return this.AccountModel.where("account",account);
-		console.log(data);
-		try{
-			return this.AccountModel.addAccount(data.account,data.password,data.username,data.gender);
-		}catch(e){
-			console.log("test")
-		}
-		
+		let accounts = []
+		accounts  = await this.AccountModel.where("account",account);
+		return accounts[0]
     }
 
-    //用帳號搜尋帳戶資訊
-    async getAccountByAccount(account){		
-	//var result= await this.AccountModel.where("accountname",account);
-	console.log("get");
-     return await this.AccountModel.where("account",account);
-    }
 
     //用id取得帳戶資訊
     async getAccountById(id){
@@ -56,7 +45,7 @@ export default class Account {
 
     //搜尋
     async search(searchName){
-		return this.AccountModel.where("username",name);
+		return this.AccountModel.where("username",searchName);
     }
 
 }

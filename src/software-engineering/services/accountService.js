@@ -23,7 +23,6 @@ export default class Account {
             throw '登入失敗'
         }
         const account = await this.AccountRepository.getAccountByAccount(data.account);
-		;
         if(account == undefined){
             throw '登入失敗'
         }
@@ -126,15 +125,17 @@ export default class Account {
     }
 
     async search(searchName){
-        if(search==undefined){
+        if(searchName==undefined){
             throw 'not found'
         }
-        const accounts = await this.AccountRepository.search(search)
+        const accounts = await this.AccountRepository.search(searchName)
         if(accounts == undefined){
             throw 'not found'
         }
         let obj = []
+		console.log(accounts)
         for(var i in accounts){
+			console.log(accounts[0])
             var t ={
                 id: accounts[i].ID,
                 username: accounts[i].username,
