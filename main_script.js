@@ -9,9 +9,8 @@ var limit_time = 10;
 var is_logout = false;
 var is_online = false;
 
-
 window.onload = function () {
-    send_token();
+    
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -22,33 +21,42 @@ window.onload = function () {
 
     var userAgent = navigator.userAgent;
 
-}
 
-function send_token(){
-
-    var token = document.cookie["token"];
-    console.log("token : " + token);
+    var token = getCookie('token');
     $.ajax({
         url: 'account/token',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        beforeSend: function(xhr){xhr.setRequestHeader('authorization', token);},
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: {},
         success: function (data) {
-          
-      
+
             if (data.error == "") {
-               
+
             }
             else {
                 alert(data.message);
             }
-          
+
         },
     });
 }
 
+
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=")
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1
+            c_end = document.cookie.indexOf(";", c_start)
+            if (c_end == -1) c_end = document.cookie.length
+            return unescape(document.cookie.substring(c_start, c_end))
+        }
+    }
+    return ""
+}
 function get_friend(){
 
 }
@@ -70,7 +78,6 @@ function Expand(form) {
     var form_ul = form_parent_obj.getElementsByTagName('ul');
     var form_parent_ul_obj = form.parentElement.parentElement;
     var $ul_obj = $(form_parent_ul_obj);
-    $('#section').css('visibility','visible');
     if (form_ul.length != 0) {
      
         if (form_ul[0].style.display != 'block') {
