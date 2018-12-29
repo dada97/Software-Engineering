@@ -193,16 +193,16 @@ a{
 .foricon{
     display: inline-block;
     border-radius: 25px;
-    width: 65px;
-    height: 65px;
+    width: 75px;
+    height: 75px;
     margin-right:10px;
     margin-bottom: 25px;
 }
 .fortitle{
     border-radius: 25px;
-    width: 370px;
-    height: 65px;
-    margin-bottom: 20px;
+    width: 280px;
+    height: 50px;
+    margin-bottom: 18px;
 }
 
 .article{
