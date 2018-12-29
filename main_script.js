@@ -24,11 +24,14 @@ window.onload = function () {
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
-    meun_button_obj = document.getElementById('meun_button');
 
     var timer = new Date();
     last_click_time = timer.getTime();
     var userAgent = navigator.userAgent;
+
+    //顯示search
+    $('#Search-block').find("input[name='friend_search']").css('display','block');
+   
     dispaly_Article();
    // initial();
    // get_Friend();
@@ -60,14 +63,14 @@ function send_token(){
 
 function initial()
 {
-    $('#Username').text(Account_Data.username);
+    $('#Username').text(Account_Data[0].username);
 
-    if(Account_Data.gender == 'M')
+    if(Account_Data[0].gender == 'M')
     {
         console.log('男');
         sex_url = "images/boy.png";
     }
-    else if(Account_Data.gender == 'F')
+    else if(Account_Data[0].gender == 'F')
     {
         console.log('女');
         sex_url = "images/girl.png"
@@ -103,6 +106,7 @@ function get_Friend(){
 
         success: function (data) {
           myfriend = data.friends
+          console.log('myfriend');
           console.log(myfriend);
         },
         error: function(data){
@@ -120,10 +124,12 @@ function get_AllArticlebyfriend(){
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-        data: jsonStr,
+        data: {},
 
         success: function (data) {
             AllArticle = data.articles
+            console.log('AllArticle');
+            console.log(AllArticle);
             //dispaly_Article();
         },
         error: function(data){
@@ -251,6 +257,21 @@ $('#Home_button').click(function () {
     document.location.href = "main.html";  
 });
 
+$('#Search').click(function () {
+    console.log("123");
+    $('#Search-block').find('input').each(function () {
+        if ($(this).css('display') == 'block')
+        {
+            console.log($(this));
+            return;
+        }
+       /* if ($(this).prop("checked") == true) {
+            right_username.push($(this).parents("ul.trstyle").children("li[name='user']").text());
+        }*/
+    });
+});
+
+//search"
 $('#update_data_button').click(function () {
     var username = $('#update_password_form').find("input[name='username']").val()
     //var accountid =  Account_Data.ID
