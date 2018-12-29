@@ -189,6 +189,21 @@ a{
     margin-bottom: 30px;
 }
 
+.foricon{
+    display: inline-block;
+    border-radius: 25px;
+    width: 65px;
+    height: 65px;
+    margin-right:10px;
+    margin-bottom: 25px;
+}
+.fortitle{
+    border-radius: 25px;
+    width: 370px;
+    height: 65px;
+    margin-bottom: 20px;
+}
+
 .article{
     margin-top: 3%;
     margin-right: 10%;
