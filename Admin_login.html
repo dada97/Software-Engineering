@@ -1,0 +1,82 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>霹靂啪啦厚禮送</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="login_style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--<script src="script.js"></script>-->
+</head>
+
+<body onKeyDown="keypressInBox()">
+
+    <div id="login_view" class="container page">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-xs-12">
+                <h1 class="text-xs-center">後台登入</h1>
+
+                <form id="login_form" method="post">
+                    <fieldset class="form-group">
+                        <input class="form-control form-control-lg" type="text" name="account" placeholder="帳號" />
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <input class="form-control form-control-lg" type="password" name="password" placeholder="密碼" />
+                    </fieldset>
+                </form>
+
+                <button id="login_submit" class="btn btn-lg btn-primary pull-xs-right">後台登入</button>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function keypressInBox() {
+
+            if (event.which == 13 || event.keyCode == 13 || event.whitch == 13)//whitch ie
+            {
+                if ($('#login_view').css('display') == 'block')
+                    $('#login_submit').click();
+            }
+        }
+
+        $('#login_submit').click(function () {
+
+            if ($('#login_submit').text() == '登入中.....')
+                return false;
+            else
+                $('#login_submit').text('登入中.....');
+
+            var account = $('#login_form').find("input[name='account']").val()
+            var password = $('#login_form').find("input[name='password']").val()
+            
+            var jsonStr = JSON.stringify({
+                account: account,
+                password: password
+            })
+
+            $.ajax({
+                url: 'account/login',
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: jsonStr,
+
+                success: function (data) {
+                    document.cookie ="token=" + data.token;                 
+                    document.location.href = "Admin_main.html";  
+                },
+                error: function(data){
+                    alert('登入錯誤');
+                    $('#login_submit').text('後台登入');
+                }
+            });
+
+        });
+
+    </script>
+</body>
+</html>

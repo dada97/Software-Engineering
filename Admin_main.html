@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html>
 
 <head>
     <meta charset="utf-8" />
@@ -40,30 +39,39 @@
 
     <section id="section">
         <div name="page" page_tag="user_management">
-            <form id="user_update_form">
-                <input class="form-control" type="text" name="user" placeholder="帳號" />
-                <input class="form-control" type="text" name="password" placeholder="密碼" />
+            <form id="user_add_form">
+                <input class="form-control" type="text" name="ID" placeholder="使用者名稱" style="width :22%" />
+                <input class="form-control" type="text" name="username" placeholder="帳號" style="width :22%" />
+                <input class="form-control" type="text" name="password" placeholder="密碼" style="width :22%" />
+                <select class="select-style" id="select_sex" >
+                    <option value="M">男生</option>
+                    <option value="F">女生</option>
+                </select>
+                <div id="user_add_submit" class="submit_button" value="true" ><i class="fas fa-plus-square"></i> 新增</div>
             </form>
-            <div id="user_update_submit" class="submit_button" value="true"><i class="fas fa-plus-square"></i> 新增</div>
 
             <ul class="trstyle">
                 <li style="width : 5%">
                     #<i class="fas fa-caret-down"></i>
                 </li>
 
-                <li style="width : 20%">
-                    建立時間<i class="fas fa-caret-down"></i>
+                <li style="width : 15%">
+                    ID<i class="fas fa-caret-down"></i>
                 </li>
 
-                <li style="width : 20%">
+                <li style="width : 15%">
                     帳號<i class="fas fa-caret-down"></i>
                 </li>
 
-                <li style="width : 20%">
+                <li style="width : 15%">
                     密碼<i class="fas fa-caret-down"></i>
                 </li>
 
-                <li style="width : 30%">
+                <li style="width : 5%">
+                    性別<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 35%">
                     管理<i class="fas fa-caret-down"></i>
                 </li>
 
