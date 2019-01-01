@@ -3,7 +3,6 @@ var mysql = require('mysql');
 export default class Model {
     constructor(table){
         this.table =table;
-
 		this.connection= mysql.createPool({
 		host: "localhost",
 		user: "root",
@@ -17,13 +16,28 @@ export default class Model {
 
 
 
-async addAccount(account,password,username,gender){
+async insert(table,data){
 	return new Promise((resolve, reject) => {
 		this.connection.getConnection(function(err,con) {
+			
 			console.log("db connected");
 			var myDate = new Date().toJSON().slice(0, 19).replace('T', ' ');
-			var sql = "INSERT INTO account_table (account,password,username,gender,createtime) VALUES ('"+account+"','"+password+"','"+username+"','"+gender+"','"+myDate+"')";
-			console.log(sql);
+		var sql="INSERT INTO "+table+" ("
+			var keys = Object.keys(data);
+			for(var i=0;i<keys.length;i++){
+				sql+=keys[i];
+				if(i<keys.length-1)
+					sql+=","
+			}
+			sql+=") VALUES ("
+			console.log(data)
+			for(var i=0;i<keys.length;i++){
+				sql+="'"+data[keys[i]]+"'"
+				if(i<keys.length-1)
+					sql+=","
+			}
+			sql+=")"
+		
 			con.query(sql, function (err, result) {
 				
 			if (result == undefined) {
@@ -40,11 +54,11 @@ async addAccount(account,password,username,gender){
 	})
 }
 
-async select(){
+async select(table){
 	return new Promise((resolve, reject) => {
 		this.connection.getConnection(function(err,con) {
 			console.log("db connected");
-			con.query("SELECT * FROM account_table", function (err, result) {
+			con.query("SELECT * FROM "+table, function (err, result) {
 			
 			if (result == undefined) {
 				reject()
@@ -59,11 +73,14 @@ async select(){
 	});
 }
 
-async where(col_name,target){
+async where(table,col_name,target){
+
 	return new Promise((resolve, reject) => {
+
 		this.connection.getConnection(function(err,con) {
 			console.log("db connected");
-			con.query("SELECT * FROM account_table WHERE " +col_name +" = '"+target+"'", function (err, result) {
+			console.log(table+" "+col_name);
+			con.query("SELECT * FROM "+table+" WHERE " +col_name +" = '"+target+"'", function (err, result) {
 			if (result == undefined) {
 				reject()
 				return				
@@ -76,11 +93,11 @@ async where(col_name,target){
 	});
 }
 
-async delete_(col_name,target){
+async delete_(table,col_name,target){
 	return new Promise((resolve, reject) => {
 	this.connection.getConnection(function(err,con) {
 			console.log("db connected");
-			con.query("DELETE FROM account_table WHERE " +col_name +" = '"+target+"'", function (err, result) {	
+			con.query("DELETE FROM "+table+" WHERE " +col_name +" = '"+target+"'", function (err, result) {	
 			if (result == undefined) {
 				reject()
 				return				
@@ -97,7 +114,16 @@ async update(id,data){
 	return new Promise((resolve, reject) => {
 	this.connection.getConnection(function(err,con) {
 			console.log("db connected");
-			var sql = "UPDATE account_table SET password = '"+data.password+"', username = ‘"+data.username+"',gender = '"+data.gender+"' WHERE id = "+id;
+			var sql="UPDATE "+table+" SET "
+			var keys = Object.keys(data);
+			for(var i=0;i<keys.length;i++){
+				sql+=keys[i]+" = '"+data[keys[i]]+"'";
+				if(i<keys.length-1)
+					sql+=", "
+			}
+			sql+=" WHERE id ="id;
+			
+			//var sql = "UPDATE account_table SET password = '"+data.password+"', username = ‘"+data.username+"',gender = '"+data.gender+"' WHERE id = "+id;
 			con.query(sql, function (err, result) {
 			if (result == undefined) {
 				reject()
