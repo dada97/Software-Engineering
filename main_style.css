@@ -38,7 +38,6 @@ a{
   width : 100%;
   height : 75px;
   position: fixed;
-  z-index: 1;
   /*min-height: 60px;*/
 }
 
@@ -100,6 +99,49 @@ a{
 .mar-b-20{
     margin-bottom: 20px;
 }
+
+.top-search-block {
+    position: absolute;
+    left: 30%;
+    width: 30%;
+    height: 100%;
+    top :0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-icon{
+    color:gray;
+    font-size :18px;
+    border:2px;
+    cursor:pointer;
+}
+
+.search-icon-div{
+    padding-left: 10px;
+    padding-top: 10px;
+    background-color: white;
+    border:1.8px #ccc solid;
+    border-width: 1.8px 1.8px 1.8px 1.8px; 
+    width:42px; 
+    height:42px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.top-search {
+    display: none;
+    width: 100%;
+    padding: .45rem .45rem;
+    font-size: 1rem;
+    z-index: 1;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1.8px #ccc solid;
+    border-width: 1.8px 1.8px 1.8px 0px;
+}
+
 .marquee {
     position: relative; /* 若子物件為position:absolute; 則要position: relative;且 overflow: hidden;才能隱藏溢出結果*/
     overflow: hidden;

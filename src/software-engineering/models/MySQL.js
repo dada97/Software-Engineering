@@ -23,6 +23,7 @@ async addAccount(account,password,username,gender){
 			console.log("db connected");
 			var myDate = new Date().toJSON().slice(0, 19).replace('T', ' ');
 			var sql = "INSERT INTO account_table (account,password,username,gender,createtime) VALUES ('"+account+"','"+password+"','"+username+"','"+gender+"','"+myDate+"')";
+			console.log(sql);
 			con.query(sql, function (err, result) {
 				
 			if (result == undefined) {

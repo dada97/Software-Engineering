@@ -7,7 +7,7 @@ export default class Account {
 
     //建立帳戶
     async createAccount(data){
-		return this.AccountModel.addAccount(account,password,username,gender);
+		return this.AccountModel.addAccount(data.account,data.password,data.username,data.gender);
     }
 
     //用帳號搜尋帳戶資訊
