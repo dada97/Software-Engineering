@@ -12,6 +12,30 @@ var sex_url = "images/boy.png";
 var AllArticle = [];
 AllArticle[0]={ ID: "1" ,context : "context1"}
 AllArticle[1]={ ID: "2" ,context : "context2"}
+AllArticle[2]={ ID: "1" ,context : "context3"}
+AllArticle[3]={ ID: "2" ,context : "context4"}
+AllArticle[4]={ ID: "1" ,context : "context5"}
+AllArticle[5]={ ID: "2" ,context : "context6"}
+AllArticle[6]={ ID: "1" ,context : "context7"}
+AllArticle[7]={ ID: "2" ,context : "context8"}
+AllArticle[8]={ ID: "1" ,context : "context9"}
+AllArticle[9]={ ID: "2" ,context : "context10"}
+AllArticle[10]={ ID: "1" ,context : "context11"}
+AllArticle[11]={ ID: "2" ,context : "context12"}
+AllArticle[12]={ ID: "1" ,context : "context13"}
+AllArticle[13]={ ID: "2" ,context : "context14"}
+AllArticle[14]={ ID: "1" ,context : "context15"}
+AllArticle[15]={ ID: "2" ,context : "context16"}
+AllArticle[16]={ ID: "1" ,context : "context17"}
+AllArticle[17]={ ID: "2" ,context : "context18"}
+AllArticle[18]={ ID: "1" ,context : "context19"}
+AllArticle[19]={ ID: "2" ,context : "context20"}
+AllArticle[20]={ ID: "1" ,context : "context21"}
+AllArticle[21]={ ID: "2" ,context : "context22"}
+AllArticle[22]={ ID: "1" ,context : "context23"}
+AllArticle[23]={ ID: "2" ,context : "context24"}
+AllArticle[24]={ ID: "1" ,context : "context25"}
+AllArticle[25]={ ID: "2" ,context : "context26\n1123"}
 var Account_Data;/*={
     account : "123",
     password : "654",
@@ -37,6 +61,8 @@ window.onload = function () {
    // get_Friend();
    // get_AllArticlebyfriend();
     send_token();
+
+  //  $(document).scrollTop() = 0;
 }
 
 function send_token(){
@@ -143,10 +169,21 @@ function dispaly_Article(){
  
     var Article_Context;
     var Article_ID;
+    var max_random;
     for(var i = 0 ; i < 10 ; i++){
-        var random_number = Math.floor((Math.random() * AllArticle.length));
+
+        if(AllArticle.length == 0)
+                 break;
+        else if(AllArticle.length > 10)
+            max_random = 10;
+        else
+            max_random =  AllArticle.length;
+
+        var random_number = Math.floor((Math.random() * max_random));
         Article_ID =  AllArticle[random_number].ID;
         Article_Context = AllArticle[random_number].context;
+        AllArticle.splice(random_number, 1);
+       
        // console.log(Article_ID);
         console.log(Article_Context);
         console.log(random_number);
@@ -175,7 +212,7 @@ function dispaly_Article(){
     '</div>' +            
 '</div>';
 
-    $('#Article_list').prepend(articele_obj);
+    $('#Article_list').append(articele_obj);
 
     $('#Article_input').val('');
     }
@@ -237,7 +274,13 @@ $("#section").on('click', ".nice-b", function () {
 //留言
 $("#section").on('click', ".message-b", function () {
     $this =$(this);
-    console.log($this.parents('.article')); 
+    console.log($this.parents('.article').attr("articleid"));//getarticleid
+   
+});
+
+$("#section").on('click', ".new-friend-button", function () {
+    $this =$(this);
+    console.log($this.parents('.friend').attr("friendid"));//getarticleid
 
 });
 //登出
@@ -341,8 +384,8 @@ $('#Article_submit').click(function () {
 $(window).scroll(function () {
   
     //讀取新文章
-    if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-        console.log("滚动条已经到达底部为" + $(document).scrollTop());
+    if ($(document).scrollTop() >= ($(document).height() - $(window).height()) - 100) {
+        dispaly_Article();
       }
   
 });
