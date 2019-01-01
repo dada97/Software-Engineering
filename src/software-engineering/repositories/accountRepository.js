@@ -27,7 +27,6 @@ export default class Account {
 
     //取得全部帳戶資訊
     async getAllAccount(){
-		console.log("test");
 		return this.AccountModel.select(this.AccountModel.table);
     }
 
