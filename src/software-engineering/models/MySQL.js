@@ -30,7 +30,6 @@ async insert(table,data){
 					sql+=","
 			}
 			sql+=") VALUES ("
-			console.log(data)
 			for(var i=0;i<keys.length;i++){
 				sql+="'"+data[keys[i]]+"'"
 				if(i<keys.length-1)
@@ -121,7 +120,7 @@ async update(id,data){
 				if(i<keys.length-1)
 					sql+=", "
 			}
-			sql+=" WHERE id ="id;
+			sql+=" WHERE id = "+id;
 			
 			//var sql = "UPDATE account_table SET password = '"+data.password+"', username = ‘"+data.username+"',gender = '"+data.gender+"' WHERE id = "+id;
 			con.query(sql, function (err, result) {

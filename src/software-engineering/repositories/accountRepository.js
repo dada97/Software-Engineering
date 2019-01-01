@@ -7,6 +7,8 @@ export default class Account {
 
     //建立帳戶
     async createAccount(data){
+		data.createtime = new Date().toJSON().slice(0, 19).replace('T', ' ');
+		data.coin=0;
 		return this.AccountModel.insert(this.AccountModel.table,data);
     }
 
