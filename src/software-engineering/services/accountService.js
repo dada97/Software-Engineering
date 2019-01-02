@@ -41,7 +41,7 @@ export default class Account {
     }
 
     async register(data){
-        data.coin=0;
+        data.coin = 0;
         const account = await this.AccountRepository.getAccountByAccount(data.account) //判斷帳號是否已被使用
 		data.password = hashFunction(data.password)
         if(account !== undefined){

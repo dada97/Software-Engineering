@@ -17,6 +17,7 @@ export default class Comment {
 	
 	//刪除特定id的Comment
 	async deleteCommentById(id){
+		console.log(id)
 		return await this.CommentModel.delete_(this.CommentModel.table,"ID",id);
     }
 	

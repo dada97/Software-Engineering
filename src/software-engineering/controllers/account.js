@@ -39,7 +39,7 @@ export default class Account {
             res.status(200).json({succeed:'register suceed'})
         }catch(e){
 			console.log(e)
-            res.status(400).json({error:'login fail'})
+            res.status(400).json({error:'register fail'})
         }
     }
 
@@ -47,7 +47,7 @@ export default class Account {
         try{
             res.status(200).json({accounts:await this.AccountService.getAllAccount(req.header.authorization)})
         }catch(e){
-            res.status(400).json({error:'login fail'})
+            res.status(400).json({error:'get account fail'})
         }
     }
 
@@ -56,7 +56,7 @@ export default class Account {
             await this.AccountService.deleteAccountById(req.params.id,req.header.authorization)
             res.status(200).json({succeed:'delete succeed'})
         }catch(e){
-            res.status(400).json({error:'login fail'})
+            res.status(400).json({error:'delete fail'})
         }
     }
 

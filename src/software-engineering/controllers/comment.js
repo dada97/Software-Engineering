@@ -14,17 +14,16 @@ export default class Comment {
     async getCommentById(req,res){
         try{
             res.status(200).json({comments: await this.CommentService.getCommentById(req.params.id)})
-        }
-        catch(e){
+        }catch(e){
             res.status(400).json({error:'not found'})
         }
     }
     async createComment(req,res){
         try{
-            await this.CommentService.createComment(req.params.id,req.header.authorization,req.body)
-            res.status(200).json({succeed:"succeed"})
-        }
-        catch(e){
+            const result = await this.CommentService.createComment(req.params.id,req.header.authorization,req.body)
+            res.status(200).json({succeed:'create suceed'})
+        }catch(e){
+            console.log(e)
             res.status(400).json({error:'create fail'})
         }
     }
@@ -32,19 +31,16 @@ export default class Comment {
     async update(req,res){
         try{
             await this.CommentService.update(req.params.id,req.header.authorization,req.body)
-            res.status(200).json({succeed:"succeed"})
-        }
-        catch(e){
+            res.status(200).json({succeed:'update succeed'})
+        }catch(e){
             res.status(400).json({error:'update fail'})
         }
     }
     async deleteComment(req,res){
-        console.log("test")
         try{
             await this.CommentService.deleteComment(req.params.id,req.header.authorization)
-            res.status(200).json({succeed:"succeed"})
-        }
-        catch(e){
+            res.status(200).json({succeed:'delete succeed'})
+        }catch(e){
             res.status(400).json({error:'delete fail'})
         }
     }

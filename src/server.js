@@ -33,7 +33,7 @@ router.use('/group',    GroupRouter)
 router.use('/file',     FileRouter)
 router.use('/board',     BoardRouter)
 router.use('/comment', CommentRouter)
-router.use('/like', LikeRouter)
+router.use('/like',  LikeRouter)
 
 
 const server = http.createServer(async (req, res) => {
