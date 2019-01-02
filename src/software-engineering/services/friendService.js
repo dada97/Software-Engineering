@@ -38,7 +38,7 @@ export default class Friend {
         }
 
         let obj ={
-            ID: ID,
+            userID: ID,
             friendID: id 
         }
 
@@ -56,11 +56,15 @@ export default class Friend {
             throw 'not found'
         }
 
-        let obj ={
-            ID: ID,
-            friendID: id 
+        const friends = await this.FriendRepository.getFriendByAccountId(ID)
+
+        for(var i in friends){
+            if(friends[i].friendID == id){
+                await this.FriendRepository.deleteFriend(friends[i].ID)
+                break
+            }
         }
 
-        await this.FriendRepository.deleteFriend(obj)
+        
     }
 }

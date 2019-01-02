@@ -116,9 +116,9 @@ async update(table,id,data){
 			var keys = Object.keys(data);
 			for(var i=0;i<keys.length;i++){
 				if(data[keys[i]]==null)
-					sql+=keys[i]+" = '"+data[keys[i]]+"'";
+					sql+=keys[i]+" = "+data[keys[i]];		
 				else
-					sql+=keys[i]+" = "+data[keys[i]];
+					sql+=keys[i]+" = '"+data[keys[i]]+"'";
 				if(i<keys.length-1)
 					sql+=", "
 			}
