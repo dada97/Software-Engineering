@@ -72,7 +72,7 @@ export default class Account {
 
     async getAccountById(req,res){
         try{
-            res.status(200).json({account:await this.AccountService.getAccountById(req.params.id,req.header.authorization)})
+            res.status(200).json({account:await this.AccountService.getAccountById(req.params.id)})
         }catch(e){
             res.status(400).json({error:'get account fail'})
         }

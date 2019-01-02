@@ -63,7 +63,7 @@ export default class Account {
         return accounts
     }
 
-    async getAccountById(id,token){
+    async getAccountById(id){
         if(id == undefined){
             throw '帳戶不存在'
         }
