@@ -30,7 +30,7 @@ a{
     display: block;
     margin-left: 10%;
     margin-right: 10%;
-    top:60px;  
+    top:60px; 
 }
 
 #header {
@@ -38,13 +38,14 @@ a{
   width : 100%;
   height : 75px;
   position: fixed;
+  z-index: 1;
   /*min-height: 60px;*/
 }
 
 #aside {
     margin-top: 20px;
     height : 100%;
-    width : 200px;
+    width : 14%;
     position: fixed;
     float: left;
     background-color:#00324e;
@@ -63,7 +64,7 @@ a{
 
 #section {
     margin-top: 20px;
-    margin-left: 215px;
+    margin-left: 15%;
     width: 50%;
     height: auto;
     display: inline-block;
@@ -90,9 +91,7 @@ a{
     z-index: 3;
 }
 
-.cur_point{
-    cursor: pointer;
-}
+
 .mar-t-25{
     margin-top: 25px;
 }
@@ -109,8 +108,10 @@ a{
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 90px;
 }
 
+.friend-icon,
 .search-icon{
     color:gray;
     font-size :18px;
@@ -118,6 +119,7 @@ a{
     cursor:pointer;
 }
 
+.new-friend-button, 
 .search-icon-div{
     padding-left: 10px;
     padding-top: 10px;
@@ -130,6 +132,12 @@ a{
     border-bottom-left-radius: 10px;
 }
 
+.new-friend-button{
+    float:right;
+    margin-top :10px;
+}
+
+.new-friend,
 .top-search {
     display: none;
     width: 100%;
@@ -190,6 +198,9 @@ a{
 }
 
 .foricon{
+    position: absolute;
+    top:10%;
+    left:10%;
     display: inline-block;
     border-radius: 25px;
     width: 75px;
@@ -198,34 +209,40 @@ a{
     margin-bottom: 25px;
 }
 .fortitle{
+    position: absolute;
+    top:25%;
+    left: 15%;
     border-radius: 25px;
     width: 280px;
     height: 50px;
     margin-bottom: 18px;
 }
 
+.friend,
 .article{
     margin-top: 3%;
     margin-right: 10%;
     margin-left: 10%;
 }
 
+.friend-header,
 .article-header{
     display: inline-block;
 }
 
+.friend-title,
 .article-title{
     display: inline-block;
     margin-left: 10px;
 }
 
+.friend-name,
+.friend-count,
+.article-time,
 .article-name{
     font-size: 20px;
 }
 
-.article-time{
-    font-size: 20px;
-}
 
 .article-main{
     font-size: 20px;
@@ -271,15 +288,13 @@ a{
     overflow-x: hidden;
     overflow-y: scroll;
 }
-.data-style,
-.name-style,
-.logout-style,
-.home-style{
+.header-select{
     line-height: 80px;
     padding-left: 20px;
     font-size:20px;
     color: #ffffff;
     float:right;
+    cursor: pointer;
 }
 
 .border_li{
@@ -309,6 +324,7 @@ a{
     width: 300px;
     height: auto;
 }
+
 
 ul.drop-down-menu {
   margin: 0;
@@ -365,14 +381,44 @@ ul.drop-down-menu li ul li li ul{ /*5*/
      top : 0px;  
 }
 
-@media only screen and (max-width: 800px)
+@media only screen and (max-width: 1300px)
 {
+    .top-search-block{
+        width: 27%;
+    }
+    .header-select{
+        font-size: 18px;
+        padding-left: 16px;
+    }
 
+    .foricon{
+        width: 75px;
+        height: 75px;
+        margin-right:10px;
+        margin-bottom: 25px;
+    }
+    .fortitle{
+        border-radius: 25px;
+        width: 280px;
+        height: 50px;
+        margin-bottom: 18px;
+    }
+
+    .head-center-block{
+        margin-right: 5%;
+    }
 }
 
-@media only screen and (max-width: 600px)
+@media only screen and (max-width: 1000px)
 {
- 
+    .top-search-block{
+        width: 22%;
+    }
+
+    .header-select{
+        font-size: 16px;
+        padding-left: 14px;
+    }
 }
 
 @media only screen and (max-width: 480px)

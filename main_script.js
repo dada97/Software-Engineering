@@ -42,6 +42,9 @@ var Account_Data;/*={
     username : "兔兔",
     gender : "M"
 };*/
+var Add_firend = [];
+Add_firend[0] ={ Name : "朋友0" }
+Add_firend[0] ={ Name : "朋友1" }
 
 window.onload = function () {
     
@@ -165,6 +168,12 @@ function get_AllArticlebyfriend(){
 
 }
 
+
+function dispaly_add_friend(){
+
+}
+
+
 function dispaly_Article(){
  
     var Article_Context;
@@ -278,11 +287,30 @@ $("#section").on('click', ".message-b", function () {
    
 });
 
+
 $("#section").on('click', ".new-friend-button", function () {
     $this =$(this);
-    console.log($this.parents('.friend').attr("friendid"));//getarticleid
+    var friend_id  = $this.parents('.friend').attr("friendid");
+   
+    $.ajax({
+        url: 'friend/' + friend_id,
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+        success: function (data) {
+            console.log("新增成功");
+        },
+        error: function(data){
+            console.log("新增失敗");
+         }
+    });
+
 
 });
+
+
 //登出
 $('#Logout_button').click(function () {
     document.location.href = "index.html";
@@ -301,18 +329,24 @@ $('#Home_button').click(function () {
 });
 
 $('#Search').click(function () {
-    console.log("123");
+    
     $('#Search-block').find('input').each(function () {
         if ($(this).css('display') == 'block')
         {
-            console.log($(this));
+            console.log($(this).val());
+           
             return;
-        }
-       /* if ($(this).prop("checked") == true) {
-            right_username.push($(this).parents("ul.trstyle").children("li[name='user']").text());
-        }*/
+        }   
     });
 });
+
+
+$('#search_friend_button').click(function () {
+    
+
+   
+});
+
 
 //search"
 $('#update_data_button').click(function () {
@@ -390,6 +424,10 @@ $(window).scroll(function () {
   
 });
 
+//搜尋大小再改
+function re_size(){
+
+}
 /*
 setTimeout(function () {
     var run = 0;
