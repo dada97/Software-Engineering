@@ -98,9 +98,11 @@ export default class Account {
             throw '帳戶不存在'
         }
         const ID = await this.RedisService.Verify(token)
-        if(ID == undefined || id!==ID){
-            throw '帳戶不存在'
-        }
+        if(ID !== specID){
+            if(ID == undefined || id!==ID){
+                throw '帳戶不存在'
+            }
+        } 
         const account = await this.getAccountById(id)
         if(account == undefined){
             throw '帳戶不存在'
