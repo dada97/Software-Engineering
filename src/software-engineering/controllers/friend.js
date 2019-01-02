@@ -12,7 +12,7 @@ export default class Friend {
     //取得帳戶的好友資訊
     async getFriendByAccountToken(req,res){
         try{
-            res.status(200).json({friends: await FriendService.getFriendByAccountToken(req.params.id,req.header.authorization)})
+            res.status(200).json({friends: await this.FriendService.getFriendByAccountToken(req.params.id,req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -20,8 +20,9 @@ export default class Friend {
 
     //新增好友
     async createFriend(req,res){
+        console.log("test")
         try{
-            await FriendService.createFriend(req.params.id,req.header.authorization)
+            await this.FriendService.createFriend(req.params.id,req.header.authorization)
             res.status(200).json({succeed: 'create succeed'})
         }catch(e){
             res.status(400).json({error:'create fail'})
@@ -31,7 +32,7 @@ export default class Friend {
     //刪除好友
     async deleteFriend(req,res){
         try{
-            await FriendService.deleteFriend(req.params.id,req.header.authorization)
+            await this.FriendService.deleteFriend(req.params.id,req.header.authorization)
             res.status(200).json({succeed: 'delete succeed'})
         }catch(e){
             res.status(400).json({error:'delete fail'})

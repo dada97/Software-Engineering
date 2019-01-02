@@ -26,7 +26,7 @@ export default class Friend {
 
     //新增好友
     async createFriend(id,token){
-        const ID = this.RedisService.Verify(token)
+        const ID = await this.RedisService.Verify(token)
         if(ID == undefined){
             throw 'not found'
         }
@@ -38,8 +38,8 @@ export default class Friend {
         }
 
         let obj ={
-            userId: ID,
-            friendId: id 
+            ID: ID,
+            friendID: id 
         }
 
         await this.FriendRepository.createFriend(obj)
@@ -57,8 +57,8 @@ export default class Friend {
         }
 
         let obj ={
-            userId: ID,
-            friendId: id 
+            ID: ID,
+            friendID: id 
         }
 
         await this.FriendRepository.deleteFriend(obj)

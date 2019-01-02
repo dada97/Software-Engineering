@@ -12,6 +12,7 @@ export default class Article {
 
     //修改特定id的article資料
     async update(id,data){
+      console.log(data)
 		return await this.ArticleModel.update(this.ArticleModel.table,id,data);
     }
 

@@ -115,13 +115,18 @@ async update(table,id,data){
 			var sql="UPDATE "+table+" SET "
 			var keys = Object.keys(data);
 			for(var i=0;i<keys.length;i++){
-				sql+=keys[i]+" = '"+data[keys[i]]+"'";
+				if(data[keys[i]]==null)
+					sql+=keys[i]+" = '"+data[keys[i]]+"'";
+				else
+					sql+=keys[i]+" = "+data[keys[i]];
 				if(i<keys.length-1)
 					sql+=", "
 			}
 			sql+=" WHERE ID = '"+id+"'";
+			console.log(sql);
 			con.query(sql, function (err, result) {
 			if (result == undefined) {
+				console.log("reject")
 				reject()
 				return				
 			}	
