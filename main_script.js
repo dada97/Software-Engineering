@@ -11,7 +11,7 @@ var is_online = false;
 var sex_url = "images/boy.png";
 var AllArticle = [];
 var token;
-AllArticle[0]={ ID: "1" ,context : "context1"}
+AllArticle[0]={ ID: "6" ,context : "666666666666666666"}
 AllArticle[1]={ ID: "2" ,context : "context2"}
 AllArticle[2]={ ID: "1" ,context : "context3"}
 AllArticle[3]={ ID: "2" ,context : "context4"}
@@ -210,11 +210,7 @@ function get_AllArticlebyfriend(){ //not ok
     $.ajax({
         url: 'article/friend/token',
         method: 'GET',
-        dataType: 'json',
-        contentType: 'application/json',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: {},
-
         success: function (data) {
             AllArticle = data.articles
             console.log('AllArticle');
@@ -228,12 +224,12 @@ function get_AllArticlebyfriend(){ //not ok
 }
 
 //發文 新增貼文
-$('#Article_submit').click(function () {
+$('#Article_submit').click(function () { //ok
 
     var Article_Text =  $('#Article_input').val();
 
     var jsonStr = JSON.stringify({
-        Text: Article_Text
+        content: Article_Text
     })
 
     $.ajax({
@@ -318,10 +314,7 @@ $("#section").on('click', ".nice-b", function () {
     $.ajax({
         url: 'like/' + articleid,
         method: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: {},
 
         success: function (data) {
             alert('案讚成功');
@@ -335,7 +328,7 @@ $("#section").on('click', ".nice-b", function () {
 
 //留言
 $("#section").on('click', ".message-b", function () {
-  
+    var articleid =  $(this).parents('.article').attr("articleid");
     var $article_footer_obj =  $(this).parents('.article').find(".article-footer");
     var message_obj = '<div class="article-message">'+
     '<div class="name"></div>' +
@@ -346,14 +339,14 @@ $("#section").on('click', ".message-b", function () {
   //  console.log(articleid);//getarticleid
   
     $.ajax({
-        url: '',
+        url: 'comment/'+ articleid,
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json',    
         data: {},
 
         success: function (data) {
-            console.log(data)//)
+         
             alert('取得留言成功');
         },
         error: function(data){
@@ -369,13 +362,18 @@ $("#section").on('click', ".article-edit-button", function () {
     var articleid =  $(this).parents('.article').attr("articleid");
     console.log(articleid);//getarticleid
    
+    context ='12545465645643';
+    var jsonStr = JSON.stringify({
+        context: context
+    })
+
     $.ajax({
         url: 'article/' + articleid,
         method: 'put',
         dataType: 'json',
         contentType: 'application/json',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: {},
+        data: jsonStr,
 
         success: function (data) {
             alert('編輯文章成功');
@@ -392,19 +390,11 @@ $("#section").on('click', ".article-delete-button", function () {
     var articleid =  $(this).parents('.article').attr("articleid");
     console.log(articleid);//getarticleid
 
-    context ='123';
-    var jsonStr = JSON.stringify({
-        context: context
-    })
-
+   
     $.ajax({
         url: 'article/' + articleid,
         method: 'delete',
-        dataType: 'json',
-        contentType: 'application/json',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: jsonStr,
-
         success: function (data) {
             alert('刪除文章成功');
         },
@@ -442,7 +432,7 @@ function get_Friend(){// not ok
         success: function (data) {
           myfriends = data.friends
           console.log('myfriend');
-          console.log(myfriend);
+          console.log(myfriends);
         },
         error: function(data){
            console.log("getFriendByAccountId error");
@@ -459,14 +449,11 @@ function dispaly_add_friend(){
 $("#section").on('click', ".new-friend-button", function () {
     $this =$(this);
     var friend_id  = $this.parents('.friend').attr("friendid");
-   
+   console.log('friend/' + friend_id);
     $.ajax({
         url: 'friend/' + friend_id,
-        method: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
+        method: 'POST',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: {},
         success: function (data) {
             alert("新增好友成功");
         },
@@ -484,10 +471,7 @@ $("#section").on('click', ".delete-friend-button", function () {
     $.ajax({
         url: 'friend/' + friend_id,
         method: 'delete',
-        dataType: 'json',
-        contentType: 'application/json',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: {},
         success: function (data) {
             alert("刪除好友成功");
         },
@@ -634,16 +618,19 @@ $('#Search').click(function () {
                 dataType: 'json',
                 contentType: 'application/json',              
                 data: {},
-                success: function (data) {
-                    var account = data.account;
+                success: function (data) {   
+                    
+                    var accounts = data.accounts;
+                    
                     $('#section').html('');
 
-
-                    var friend_obj = '<div class="friend" friendid="'+ account.ID +'">' +
+                for(var i = 0 ; i < accounts.length ; i++)
+                {
+                    var friend_obj = '<div class="friend" friendid="'+ accounts[i].id +'">' +
                     '<div class="friend-header">' +             
                             '<img class="photo" src="images/1.jpg">'+
                              '<div class="friend-title">'+
-                                '<div class="friend-name" name="username">'+ account.username +'</div>'+
+                                '<div class="friend-name" name="username">'+ accounts[i].username +'</div>'+
                                 //'<div class="friend-count" name="">153名好友</div>'+
                             '</div>'+                    
                         '</div>'+
@@ -653,6 +640,8 @@ $('#Search').click(function () {
                 '</div>';
                 
                 $('#section').append(friend_obj);
+                }
+                   
                     console.log("搜尋成功");
                 },
                 error: function(data){

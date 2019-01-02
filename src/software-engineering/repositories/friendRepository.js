@@ -7,7 +7,7 @@ export default class Friend {
 
     //取得帳戶的好友資訊
     async getFriendByAccountId(id){
-		return this.FriendModel.where(this.FriendModel.table,"ID",id);
+		return this.FriendModel.where(this.FriendModel.table,"userID",id);
     }
 
     //建立好友關係

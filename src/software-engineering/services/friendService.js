@@ -13,7 +13,7 @@ export default class Friend {
 
     //取得帳戶好友資訊
     async getFriendByAccountToken(id,token){
-        const ID = this.RedisService.Verify(token)
+        const ID = await this.RedisService.Verify(token)
         if(ID == undefined){
             throw 'create fail'
         }
@@ -26,6 +26,7 @@ export default class Friend {
 
     //新增好友
     async createFriend(id,token){
+       console.log("test")
         const ID = await this.RedisService.Verify(token)
         if(ID == undefined){
             throw 'not found'

@@ -150,9 +150,9 @@ export default class Account {
             throw 'not found'
         }
         let obj = []
-		console.log(accounts)
+		//console.log(accounts)
         for(var i in accounts){
-			console.log(accounts[0])
+		//	console.log(accounts[0])
             var t ={
                 id: accounts[i].ID,
                 username: accounts[i].username,

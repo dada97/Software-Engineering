@@ -23,8 +23,9 @@ export default class Friend {
         console.log("test")
         try{
             await this.FriendService.createFriend(req.params.id,req.header.authorization)
-            res.status(200).json({succeed: 'create succeed'})
+            res.status(200).json({succeed: "create succeed"})
         }catch(e){
+            console.log(e)
             res.status(400).json({error:'create fail'})
         }
     }
