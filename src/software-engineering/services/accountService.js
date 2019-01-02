@@ -90,6 +90,7 @@ export default class Account {
     }
 
     async update(id,token,data){
+        var list = ['password','gender','username']
         if(id == undefined){
             throw '帳戶不存在'
         }
@@ -101,7 +102,16 @@ export default class Account {
         if(account == undefined){
             throw '帳戶不存在'
         }
-        await this.AccountRepository.update(id,data)
+        let obj = account
+        for(var i of list){
+            if(data[i] !== undefined){
+                if(i == 'password'){
+                    data[i] = hashFunction(data[i])
+                }
+                obj[i] = data[i]
+            }
+        }
+        await this.AccountRepository.update(id,obj)
     }
 
     async getAccountByToken(token){
