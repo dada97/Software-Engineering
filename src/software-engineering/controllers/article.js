@@ -36,7 +36,7 @@ export default class Article {
     async getFriendArticleByAccountToken(req,res){
         try{
             const articles = await this.ArticleService.getFriendArticleByAccountToken(req.header.authorization)
-            console.log(articles)
+            //console.log(articles)
             res.status(200).json({articles:articles})
         }catch(e){
             res.status(400).json({error:'not found'})

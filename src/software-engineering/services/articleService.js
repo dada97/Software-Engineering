@@ -9,7 +9,7 @@ const specID = '1'
 //用id從大到小排序
 const sort = function(arr){
     arr = arr.sort(function(a,b){
-        return a.id < b.id ? 1 : -1
+        return a.ID < b.ID ? 1 : -1
     })
     return arr
 }

@@ -3,7 +3,7 @@ import * as crypto from 'crypto'
 import LikeRepository  from '../repositories/LikeRepository.js'
 import RedisService from './redisService.js'
 import AccountRepository  from '../repositories/accountRepository.js'
-
+import ArticleRepository  from '../repositories/articleRepository.js'
 
 
 export default class Like {
@@ -19,7 +19,6 @@ export default class Like {
         if(ID==undefined){
             throw 'create fail'
         }
-        data.userid = ID
         if(id == ''){
             throw 'not found'
         }
@@ -31,17 +30,17 @@ export default class Like {
             throw 'not found'
         }
 
-        const likes = await this.LikeRepository.getLikeByArticleId(id)
-        for(var i in likes){
-            if(likes[i].userid == ID){
-                throw 'like error'
-            }
-        }
+        // const likes = await this.LikeRepository.getLikeByArticleId(id)
+        // console.log("test")
+        // for(var i in likes){
+        //     if(likes[i].userid == ID){
+        //         throw 'like error'
+        //     }
+        // }
         let obj = {
         }
         obj.articleid = id
         obj.userid = ID
-        console.log(obj)
         return await this.LikeRepository.createLike(obj)
     }
 
