@@ -6,7 +6,7 @@ export default class Article {
 
         this.getArticleById = this.getArticleById.bind(this)
         this.getArticleByAccountId = this.getArticleByAccountId.bind(this)
-        this.getFriendArticleByAccountId = this.getFriendArticleByAccountId.bind(this)
+        this.getFriendArticleByAccountToken = this.getFriendArticleByAccountToken.bind(this)
         this.getGroupArticleById = this.getGroupArticleById.bind(this)
         this.getBoardArticleById = this.getBoardArticleById.bind(this)
         this.update = this.update.bind(this)
@@ -17,7 +17,7 @@ export default class Article {
     //取得特定id的article
     async getArticleById(req,res){
         try{
-            res.status(200).json({article:ArticleService.getArticleById(req.params.id)})
+            res.status(200).json({article: await this.ArticleService.getArticleById(req.params.id)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -26,16 +26,16 @@ export default class Article {
     //取得該帳戶id所有好友的article
     async getArticleByAccountId(req,res){
         try{
-            res.status(200).json({articles:ArticleService.getArticleByAccountId(req.params.id)})
+            res.status(200).json({articles: await this.ArticleService.getArticleByAccountId(req.params.id)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
     }
 
     //用帳戶Id取得所有好友貼文
-    async getFriendArticleByAccountId(req,res){
+    async getFriendArticleByAccountToken(req,res){
         try{
-            res.status(200).json({articles:ArticleService.getFriendArticleByAccountId(req.params.id)})
+            res.status(200).json({articles:await this.ArticleService.getFriendArticleByAccountId(req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -44,7 +44,7 @@ export default class Article {
     //修改特定id的article資料
     async update(req,res){
         try{
-            await ArticleService.update(req.params.id,req.body)
+            await this.ArticleService.update(req.params.id,req.body,req.header.authorization)
             res.status(200).json({succeed:'update succeed'})
         }catch(e){
             res.status(400).json({error:'update error'})
@@ -53,8 +53,10 @@ export default class Article {
 
     //刪除特定id的article
     async deleteArticleById(req,res){
+        console.log("test")
         try{
-            res.status(200).json({token:ArticleService.deleteArticleById(req.params.id,req.body)})
+            await this.ArticleService.deleteArticleById(req.params.id,req.header.authorization)
+            res.status(200).json({succeed:'delete succeed'})
         }catch(e){
             res.status(400).json({error:'delete error'})
         }
@@ -63,7 +65,7 @@ export default class Article {
     //取得所有article
     async getAllArticle(req,res){
         try{
-            res.status(200).json({articles:ArticleService.getAllArticle()})
+            res.status(200).json({articles: await this.ArticleService.getAllArticle(req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -72,7 +74,7 @@ export default class Article {
     //建立新article
     async createArticle(req,res){
         try{
-            await ArticleService.createArticle(req.body)
+            await this.ArticleService.createArticle(req.body,req.header.authorization)
             res.status(200).json({succeed:'create succeed'})
         }catch(e){
             res.status(400).json({error:'create fail'})
@@ -81,7 +83,7 @@ export default class Article {
 
     async getGroupArticleById(req,res){
         try{
-            res.status(200).json({articles: await ArticleService.getGroupArticleById(req.params.id)})
+            res.status(200).json({articles: await this.ArticleService.getGroupArticleById(req.params.id)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -89,7 +91,7 @@ export default class Article {
 
     async getBoardArticleById(req,res){
         try{
-            res.status(200).json({articles: await ArticleService.getBoardArticleById(req.params.id)})
+            res.status(200).json({articles: await this.ArticleService.getBoardArticleById(req.params.id)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }

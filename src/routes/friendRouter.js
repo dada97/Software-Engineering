@@ -9,7 +9,7 @@ class Friend extends Router {
     }
 
     init() {
-        this.get('/:id',     this.controller.getFriendByAccountId) //取得帳戶的好友資訊
+        this.get('/token',     this.controller.getFriendByAccountId) //取得帳戶的好友資訊
         this.post('/:id',    this.controller.createFriend)         //新增好友
         this.delete('/:id',  this.controller.deleteFriend)         //刪除好友
     }

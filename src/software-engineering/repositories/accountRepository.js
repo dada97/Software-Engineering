@@ -7,8 +7,7 @@ export default class Account {
 
     //建立帳戶
     async createAccount(data){
-		data.coin=0;
-		return this.AccountModel.insert(this.AccountModel.table,data);
+		return await this.AccountModel.insert(this.AccountModel.table,data);
     }
 
     //用帳號搜尋帳戶資訊
@@ -28,12 +27,12 @@ export default class Account {
 
     //取得全部帳戶資訊
     async getAllAccount(){
-		return this.AccountModel.select(this.AccountModel.table);
+		return await this.AccountModel.select(this.AccountModel.table);
     }
 
     //刪除特定id帳戶
     async deleteAccountById(id){
-		return this.AccountModel.delete_(this.AccountModel.table,"ID",id);
+		return await this.AccountModel.delete_(this.AccountModel.table,"ID",id);
     }
 
     //更新帳戶資訊
@@ -43,12 +42,12 @@ export default class Account {
 
     //用userName取得帳戶資訊
     async getAccountByName(name){
-		return this.AccountModel.where(this.AccountModel.table,"username",name);
+		return await this.AccountModel.where(this.AccountModel.table,"username",name);
     }
 
     //搜尋
     async search(searchName){
-		return this.AccountModel.where(this.AccountModel.table,"username",searchName);
+		return await this.AccountModel.where(this.AccountModel.table,"username",searchName);
     }
 
 }
