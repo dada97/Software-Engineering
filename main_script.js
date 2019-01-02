@@ -47,7 +47,7 @@ Add_firend[0] ={ Name : "朋友0" }
 Add_firend[0] ={ Name : "朋友1" }
 
 window.onload = function () {
-    
+    send_token();
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -63,14 +63,15 @@ window.onload = function () {
    // initial();
    // get_Friend();
    // get_AllArticlebyfriend();
-    send_token();
+   
 
   //  $(document).scrollTop() = 0;
 }
 
 function send_token(){
     var token = getCookie('token');
-    //console.log(token);
+    console.log(token);
+
     $.ajax({
         url: 'account/token',
         method: 'GET',
@@ -80,9 +81,10 @@ function send_token(){
         data: {},
         success: function (data) {
           Account_Data = data.account;
+          console.log(Account_Data);
           initial();
-          get_Friend();
-          get_AllArticlebyfriend();
+         // get_Friend();
+         // get_AllArticlebyfriend();
         },
         error: function(data){
             console.log("token error");
@@ -194,8 +196,8 @@ function dispaly_Article(){
         AllArticle.splice(random_number, 1);
        
        // console.log(Article_ID);
-        console.log(Article_Context);
-        console.log(random_number);
+       // console.log(Article_Context);
+      //  console.log(random_number);
         Article_Context = Article_Context.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
 
         var articele_obj = '<div class="article" articleid="'+ Article_ID +'">'+
