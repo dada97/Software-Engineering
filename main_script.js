@@ -95,7 +95,7 @@ function send_token(){
 function initial()
 {
     $('#Username').text(Account_Data[0].username);
-
+    user_name = Account_Data[0].username;
     if(Account_Data[0].gender == 'M')
     {
         console.log('男');
@@ -449,3 +449,17 @@ setTimeout(function () {
             
     }, 20);
 }, 3000);*/
+
+
+function keypressInBox() {
+
+    if (event.which == 81 || event.keyCode == 81 || event.whitch == 81)//whitch ie
+    {
+        console.log('Account_Data');
+        console.log(Account_Data);
+        console.log('AllArticle');
+        console.log(AllArticle); 
+        console.log('user_name');
+        console.log(user_name);             
+    }
+}
