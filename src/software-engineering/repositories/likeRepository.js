@@ -7,7 +7,7 @@ export default class Like {
 	 
 	
 	//取得按讚的賬戶id
-    async getLikeByAccountId(id){
+    async getLikeByArticleId(id){
 		return this.LikeModel.where(this.LikeModel.table,"articleid",id);
     }
 

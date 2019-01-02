@@ -9,7 +9,7 @@ class Like extends Router {
     }
 
     init() {  
-        this.post('/:id',this.controller.like)     //按讚
+        this.post('/:id',this.controller.createLike)     //文章按讚
         this.get('/:id',this.controller.getArticleLike) //取得文章按讚的人
     }
 }
