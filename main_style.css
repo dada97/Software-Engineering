@@ -113,12 +113,17 @@ a{
 
 .friend-icon,
 .search-icon{
+    padding-top: auto;
+    padding-bottom: auto;
     color:gray;
     font-size :18px;
     border:2px;
     cursor:pointer;
 }
 
+.article-delete-button,
+.article-edit-button,
+.delete-friend-button,
 .new-friend-button, 
 .search-icon-div{
     padding-left: 10px;
@@ -132,9 +137,20 @@ a{
     border-bottom-left-radius: 10px;
 }
 
+.article-delete-button,
+.article-edit-button,
+.delete-friend-button,
 .new-friend-button{
     float:right;
     margin-top :10px;
+}
+
+
+.article-delete-button,
+.article-edit-button{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-right: 10px;
 }
 
 .new-friend,
@@ -148,6 +164,11 @@ a{
     border-bottom-right-radius: 10px;
     border: 1.8px #ccc solid;
     border-width: 1.8px 1.8px 1.8px 0px;
+}
+
+.article-delete-icon,
+.article-edit-icon{
+    font-size: 20px;
 }
 
 .marquee {
@@ -230,6 +251,11 @@ a{
     display: inline-block;
 }
 
+.article-header
+{
+    display: block;
+}
+
 .friend-title,
 .article-title{
     display: inline-block;
@@ -242,7 +268,9 @@ a{
 .article-name{
     font-size: 20px;
 }
-
+.article-time{
+    display: block;
+}
 
 .article-main{
     font-size: 20px;
@@ -268,6 +296,23 @@ a{
     display: inline-block;
 }
 
+.article-message{
+    width: 100%;
+    min-height: 50px ;
+    height:auto;
+    background-color: white;
+    border-radius: 25px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.name{
+    font-size :20px;
+    color: #006aa6;
+}
+.message{
+    font-size :20px;
+}
 .mag-l-10{
     margin-left: 10px;
 }
@@ -354,32 +399,12 @@ ul.drop-down-menu li ul{ /*2*/
   display: none;
 }
 
-ul.drop-down-menu li ul li{ /*2*/
+ul.drop-down-menu li li{ /*2*/
     border-width: 0px 0px 0px 0px;
     background-color: #f9f9f9;
     text-indent: 40px;
 }
 
-ul.drop-down-menu li li li{ /*3*/
-    text-indent: 52px;
-    position: relative;
-}
-
-ul.drop-down-menu li li li:hover {/*3*/
-    background-color: #555; 
-}
-
-ul.drop-down-menu li li li:hover a {/*3*/
-    color: white; 
-}
-
-ul.drop-down-menu li ul li li ul{ /*5*/
-     display : none; 
-     position: absolute;
-     list-style: none;
-     right: -130px;
-     top : 0px;  
-}
 
 @media only screen and (max-width: 1300px)
 {
@@ -419,14 +444,4 @@ ul.drop-down-menu li ul li li ul{ /*5*/
         font-size: 16px;
         padding-left: 14px;
     }
-}
-
-@media only screen and (max-width: 480px)
-{
-  
-}
-
-@media only screen and (max-width: 350px)
-{
- 
 }

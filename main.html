@@ -12,7 +12,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 
-<body id="body" onresize="re_size()"><!-- onclick="body_click()">-->
+<body id="body" onresize="re_size()" onKeyDown="keypressInBox()"><!-- onclick="body_click()">-->
    
     <div id="update_password_view" class="container page" style="background-color:#fff;">
         <div class="row">
@@ -43,7 +43,7 @@
         <img class="fortitle" src="images/title2.png" >
         <span id="Logout_button" class="header-select">登出</span>
         <span id="PassWord_button" class="header-select">更改資料</span> 
-        <span id="search_friend_button" class="header-select">尋找好友</span> 
+        <span id="display_friend_button" class="header-select">好友</span> 
         <span id="Home_button" class="header-select">首頁</span>        
         <span id="Username" class="header-select">熊熊</span>        
      </div>
@@ -76,13 +76,9 @@
                     <ul>
                         <li>
                             <div onclick="Expand(this)">
-                                <i class="fas fa-angle-right fas_control_right"></i>
+                                <i class="fas_control_right"></i>
                                 <a id="tag1-1-1" href="#">看板1</a>
-                            </div>
-                            <ul>
-                                <li><a id="tag1-1-1-1" href="#">看板1-1</a></li>
-                                <li><a id="tag1-1-1-2" href="#">看板1-2</a></li>
-                            </ul>
+                            </div>                           
                         </li>                    
                     </ul>
                 </li>
@@ -95,13 +91,9 @@
                     <ul>
                         <li>
                             <div onclick="Expand(this)">
-                                <i class="fas fa-angle-right fas_control_right"></i>
+                                <i class="fas_control_right"></i>
                                 <a id="tag1-1-1" href="#">家族1</a>
-                            </div>
-                            <ul>
-                                <li><a id="tag1-1-1-1" href="#">家族1-1</a></li>
-                                <li><a id="tag1-1-1-2" href="#">家族1-2</a></li>
-                            </ul>
+                            </div>                       
                         </li>                    
                     </ul>
                 </li>
@@ -128,16 +120,19 @@
                                 </div>    
                     </div>
                     
-              <!--  <div class="article" articleid="1">
+                <div class="article" articleid="1">
+                    
                     <div class="article-header">                
                             <img class="photo" src="images/1.jpg" >
                              
                             <div class="article-title">
                                 <div class="article-name" name="username">熊熊</div>
-                                <div class="article-time" name="username">3分鐘前</div>
-                            </div>                    
+                                <div class="article-time" name="username">3分鐘前</div>                            
+                            </div>  
+                            <div class="article-edit-button"><i class="far fa-trash-alt article-delete-icon"></i></div>
+                            <div class="article-delete-button"><i class="far fa-edit article-edit-icon"></i></div>                                     
                         </div>
-                        
+                       
                     <div class="article-main">                 
                         今天熊熊生</br>日今天熊熊生日今天熊熊生日今天熊熊生日
                         今天熊熊生日今天熊熊生日今天熊熊生日今天熊熊生日
@@ -150,10 +145,18 @@
                     <div class="article-footer">
                          <div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>
                          <div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>
-                    </div>                
+                    </div>   
+                    
+                    <div class="article-message">
+                        <div class="name"></div>
+                        <div class="message"></div>
+                    </div>
+                    <div class="article-message">
+                        
+                        </div>
                 </div>
             </div>
-           -->
+           
            
         </section>
 

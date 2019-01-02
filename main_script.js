@@ -10,6 +10,7 @@ var is_logout = false;
 var is_online = false;
 var sex_url = "images/boy.png";
 var AllArticle = [];
+var token;
 AllArticle[0]={ ID: "1" ,context : "context1"}
 AllArticle[1]={ ID: "2" ,context : "context2"}
 AllArticle[2]={ ID: "1" ,context : "context3"}
@@ -36,18 +37,14 @@ AllArticle[22]={ ID: "1" ,context : "context23"}
 AllArticle[23]={ ID: "2" ,context : "context24"}
 AllArticle[24]={ ID: "1" ,context : "context25"}
 AllArticle[25]={ ID: "2" ,context : "context26\n1123"}
-var Account_Data;/*={
-    account : "123",
-    password : "654",
-    username : "兔兔",
-    gender : "M"
-};*/
-var Add_firend = [];
-Add_firend[0] ={ Name : "朋友0" }
-Add_firend[0] ={ Name : "朋友1" }
+var Account_Data;
+
+var myfriends = [];
+myfriends[0] ={ ID : '0' ,username : "朋友0" }
+myfriends[1] ={ ID : '1' ,username : "朋友1" }
 
 window.onload = function () {
-    
+    send_token();
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -60,17 +57,24 @@ window.onload = function () {
     $('#Search-block').find("input[name='friend_search']").css('display','block');
    
     dispaly_Article();
-   // initial();
-   // get_Friend();
-   // get_AllArticlebyfriend();
-    send_token();
 
   //  $(document).scrollTop() = 0;
 }
 
-function send_token(){
-    var token = getCookie('token');
-    //console.log(token);
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+//帳戶相關
+
+function send_token(){//ok
+    token = getCookie('token');
+    console.log(token);
+
     $.ajax({
         url: 'account/token',
         method: 'GET',
@@ -80,6 +84,7 @@ function send_token(){
         data: {},
         success: function (data) {
           Account_Data = data.account;
+          console.log(Account_Data);
           initial();
           get_Friend();
           get_AllArticlebyfriend();
@@ -89,17 +94,17 @@ function send_token(){
          }
     });
 }
-
-function initial()
+//初始化 更新性別和名稱
+function initial()//ok
 {
-    $('#Username').text(Account_Data[0].username);
-
-    if(Account_Data[0].gender == 'M')
+    $('#Username').text(Account_Data.username);
+    user_name = Account_Data.username;
+    if(Account_Data.gender == 'M')
     {
         console.log('男');
         sex_url = "images/boy.png";
     }
-    else if(Account_Data[0].gender == 'F')
+    else if(Account_Data.gender == 'F')
     {
         console.log('女');
         sex_url = "images/girl.png"
@@ -109,7 +114,7 @@ function initial()
         console.log('人妖?');
     }
 }
-
+//得到cookie
 function getCookie(c_name) {
     if (document.cookie.length > 0) {
         c_start = document.cookie.indexOf(c_name + "=")
@@ -123,43 +128,97 @@ function getCookie(c_name) {
     return ""
 }
 
-var myfriend;
-function get_Friend(){
+//顯示更改帳號密碼的畫面
+$('#PassWord_button').click(function () {
+
+    if($('#update_password_view').css('display') == 'none')
+    $('#update_password_view').css('display','block');  
+    else
+    $('#update_password_view').css('display','none');  
+
+});
+
+
+//更新帳戶
+$('#update_data_button').click(function () { 
+    var username = $('#update_password_form').find("input[name='username']").val()
+    //var accountid =  Account_Data.ID
+    var password = $('#update_password_form').find("input[name='password']").val()
+    var reconfirm = $('#update_password_form').find("input[name='reconfirm']").val()
+   
+    if(password != reconfirm)
+    {
+        alert('密碼再確認錯誤');
+        return false;
+    }
+    else if(username == '' || password =='')
+    {
+        if(username == '')
+        alert('請輸入使用者名稱');
+        else if(password == '')
+        alert('請輸入密碼');
+     
+        return false;
+    }
+    else if(username.length >= 20 || password.length >= 20)
+    {       
+        alert('帳號密碼輸入過長');
+        return false;
+    }
+
+    var jsonStr = JSON.stringify({
+        username: username,
+        password: password
+    })
+
 
     $.ajax({
-        url: 'friend/' + Account_Data.ID,
-        method: 'GET',
+        url: 'account/' +  Account_Data.ID,
+        method: 'put',
         dataType: 'json',
         contentType: 'application/json',
-        data: {},
-
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: jsonStr,
         success: function (data) {
-          myfriend = data.friends
-          console.log('myfriend');
-          console.log(myfriend);
+            console.log("帳號資訊更新成功");
         },
         error: function(data){
-           console.log("getFriendByAccountId error");
-        }
+            console.log("帳號資訊更新失敗");
+         }
     });
 
-}
 
+    $('#update_password_form').find("input[name='username']").val('');
+    $('#update_password_form').find("input[name='password']").val('');
+    $('#update_password_form').find("input[name='reconfirm']").val('');
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+//文章相關
+
+//得到所有好友的文章
 var AllArticle;
-function get_AllArticlebyfriend(){
+function get_AllArticlebyfriend(){ //not ok
 
     $.ajax({
-        url: 'article/friend/'+ Account_Data.ID,
+        url: 'article/friend/token',
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: {},
 
         success: function (data) {
             AllArticle = data.articles
             console.log('AllArticle');
             console.log(AllArticle);
-            //dispaly_Article();
         },
         error: function(data){
            console.log("get_AllArticlebyfriend error");
@@ -168,12 +227,34 @@ function get_AllArticlebyfriend(){
 
 }
 
+//發文 新增貼文
+$('#Article_submit').click(function () {
 
-function dispaly_add_friend(){
+    var Article_Text =  $('#Article_input').val();
 
-}
+    var jsonStr = JSON.stringify({
+        Text: Article_Text
+    })
 
+    $.ajax({
+        url: 'article/',
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: jsonStr,
 
+        success: function (data) {
+            alert('發文成功');
+        },
+        error: function(data){
+            alert('發文失敗');         
+        }
+    });
+
+});
+
+//顯示貼文
 function dispaly_Article(){
  
     var Article_Context;
@@ -194,8 +275,8 @@ function dispaly_Article(){
         AllArticle.splice(random_number, 1);
        
        // console.log(Article_ID);
-        console.log(Article_Context);
-        console.log(random_number);
+       // console.log(Article_Context);
+      //  console.log(random_number);
         Article_Context = Article_Context.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
 
         var articele_obj = '<div class="article" articleid="'+ Article_ID +'">'+
@@ -204,7 +285,9 @@ function dispaly_Article(){
             '<div class="article-title">'+
                 '<div class="article-name" name="username">熊熊</div>'+
                 '<div class="article-time" name="username">3分鐘前</div>'+
-            '</div>'+                
+            '</div>'+      
+            '<div class="article-edit-button"><i class="far fa-trash-alt article-delete-icon"></i></div>'+
+            '<div class="article-delete-button"> <i class="far fa-edit article-edit-icon"></i></div>'+            
         '</div>'+
         
     '<div class="article-main">'+                
@@ -225,24 +308,236 @@ function dispaly_Article(){
 
     $('#Article_input').val('');
     }
+}
 
-    
+//案讚
+$("#section").on('click', ".nice-b", function () {   
+    var articleid =  $(this).parents('.article').attr("articleid");
+    console.log(articleid);//getarticleid
+
+    $.ajax({
+        url: 'like/' + articleid,
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+
+        success: function (data) {
+            alert('案讚成功');
+        },
+        error: function(data){
+            alert('案讚失敗');         
+        }
+    });
    
-   // if($('#Article_input').val() == '')
-    //        return false;
+});
 
-    
+//留言
+$("#section").on('click', ".message-b", function () {
+  
+    var $article_footer_obj =  $(this).parents('.article').find(".article-footer");
+    var message_obj = '<div class="article-message">'+
+    '<div class="name"></div>' +
+    '<div class="message"></div>' +
+'</div>';
+    $article_footer_obj.after(message_obj);
+
+  //  console.log(articleid);//getarticleid
+  
+    $.ajax({
+        url: '',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',    
+        data: {},
+
+        success: function (data) {
+            console.log(data)//)
+            alert('取得留言成功');
+        },
+        error: function(data){
+            alert('取得留言失敗');         
+        }
+    });
+   
+});
+
+
+//編輯貼文
+$("#section").on('click', ".article-edit-button", function () {   
+    var articleid =  $(this).parents('.article').attr("articleid");
+    console.log(articleid);//getarticleid
+   
+    $.ajax({
+        url: 'article/' + articleid,
+        method: 'put',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+
+        success: function (data) {
+            alert('編輯文章成功');
+        },
+        error: function(data){
+            alert('編輯文章失敗');         
+        }
+    });
+   
+});
+
+//刪除貼文
+$("#section").on('click', ".article-delete-button", function () {   
+    var articleid =  $(this).parents('.article').attr("articleid");
+    console.log(articleid);//getarticleid
+
+    context ='123';
+    var jsonStr = JSON.stringify({
+        context: context
+    })
+
+    $.ajax({
+        url: 'article/' + articleid,
+        method: 'delete',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: jsonStr,
+
+        success: function (data) {
+            alert('刪除文章成功');
+        },
+        error: function(data){
+            alert('刪除文章失敗');         
+        }
+    });
+   
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+
+//好友相關
+
+var myfriends;
+function get_Friend(){// not ok
+  
+    $.ajax({
+        url: 'friend/token',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+
+        success: function (data) {
+          myfriends = data.friends
+          console.log('myfriend');
+          console.log(myfriend);
+        },
+        error: function(data){
+           console.log("getFriendByAccountId error");
+        }
+    });
 
 }
-//登入網頁三秒後執行，只會執行一次
-setTimeout(function () {
-  
-}, 3000);
 
-//每20秒執行一次
-setInterval(function () {
+function dispaly_add_friend(){
+
+}
+
+//新增好友
+$("#section").on('click', ".new-friend-button", function () {
+    $this =$(this);
+    var friend_id  = $this.parents('.friend').attr("friendid");
    
-}, 20000);
+    $.ajax({
+        url: 'friend/' + friend_id,
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+        success: function (data) {
+            alert("新增好友成功");
+        },
+        error: function(data){
+            alert("新增好友失敗");
+         }
+    });
+});
+
+//刪除好友
+$("#section").on('click', ".delete-friend-button", function () {
+    $this =$(this);
+    var friend_id  = $this.parents('.friend').attr("friendid");
+
+    $.ajax({
+        url: 'friend/' + friend_id,
+        method: 'delete',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+        success: function (data) {
+            alert("刪除好友成功");
+        },
+        error: function(data){
+            alert("刪除好友失敗");
+         }
+    });
+});
+
+//顯示好友列表 並且可以刪除
+$('#display_friend_button').click(function () {
+    $('#section').html('');
+
+
+    for(var i = 0 ; i < myfriends.length ; i++)
+    {
+        var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '1">'+
+        '<div class="friend-header">' +             
+                '<img class="photo" src="images/1.jpg">'+
+                 '<div class="friend-title">'+
+                    '<div class="friend-name" name="username">'+ myfriends[i].username+'</div>'+
+                   // '<div class="friend-count" name="">153名好友</div>'+
+                '</div>'+                    
+            '</div>'+
+            '<div class="delete-friend-button">'+
+            '<i class="fas fa-user-minus friend-icon"></i>' +                           
+            '</div>'+
+        '</div>';
+        $('#section').append(friend_obj);
+    }
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+//其他
+//登出
+$('#Logout_button').click(function () {
+    document.location.href = "index.html";
+    document.cookie ="token=";   
+});
+
+//回到main
+$('#Home_button').click(function () {
+    document.location.href = "main.html";  
+});
 
 //展開
 function Expand(form) {
@@ -273,112 +568,6 @@ function Expand(form) {
         }
     }  
 }
-//案讚
-$("#section").on('click', ".nice-b", function () {
-    $this =$(this);
-    
-    console.log($this.parents('.article').attr("articleid"));//getarticleid
-   
-});
-//留言
-$("#section").on('click', ".message-b", function () {
-    $this =$(this);
-    console.log($this.parents('.article').attr("articleid"));//getarticleid
-   
-});
-
-
-$("#section").on('click', ".new-friend-button", function () {
-    $this =$(this);
-    var friend_id  = $this.parents('.friend').attr("friendid");
-   
-    $.ajax({
-        url: 'friend/' + friend_id,
-        method: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
-        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: {},
-        success: function (data) {
-            console.log("新增成功");
-        },
-        error: function(data){
-            console.log("新增失敗");
-         }
-    });
-
-
-});
-
-
-//登出
-$('#Logout_button').click(function () {
-    document.location.href = "index.html";
-    document.cookie ="token=";   
-});
-
-$('#PassWord_button').click(function () {
-    if($('#update_password_view').css('display') == 'none')
-    $('#update_password_view').css('display','block');  
-    else
-    $('#update_password_view').css('display','none');  
-});
-
-$('#Home_button').click(function () {
-    document.location.href = "main.html";  
-});
-
-$('#Search').click(function () {
-    
-    $('#Search-block').find('input').each(function () {
-        if ($(this).css('display') == 'block')
-        {
-            console.log($(this).val());
-           
-            return;
-        }   
-    });
-});
-
-
-$('#search_friend_button').click(function () {
-    
-
-   
-});
-
-
-//search"
-$('#update_data_button').click(function () {
-    var username = $('#update_password_form').find("input[name='username']").val()
-    //var accountid =  Account_Data.ID
-    var password = $('#update_password_form').find("input[name='password']").val()
-    var reconfirm = $('#update_password_form').find("input[name='reconfirm']").val()
-   
-    if(password != reconfirm)
-    {
-        alert('密碼再確認錯誤');
-        return false;
-    }
-    else if(username == '' || password =='')
-    {
-        if(username == '')
-        alert('請輸入使用者名稱');
-        else if(password == '')
-        alert('請輸入密碼');
-     
-        return false;
-    }
-    else if(username.length >= 20 || password.length >= 20)
-    {       
-        alert('帳號密碼輸入過長');
-        return false;
-    }
-
-    $('#update_password_form').find("input[name='username']").val('');
-    $('#update_password_form').find("input[name='password']").val('');
-    $('#update_password_form').find("input[name='reconfirm']").val('');
-});
 
 /*
 $('#Topic_button').click(function () {
@@ -386,33 +575,12 @@ $('#Topic_button').click(function () {
     $('#section').css('visibility','hidden');
     //visible
 });*/
-
-//發文
-$('#Article_submit').click(function () {
-
-    var Article_Text =  $('#Article_input').val();
-
-    var jsonStr = JSON.stringify({
-        ID: Account_Data.ID,
-        Text: Article_Text
-    })
-
-    $.ajax({
-        url: 'article/'+ Account_Data.ID,
-        method: 'PUT',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: jsonStr,
-
-        success: function (data) {
-            alert('發文成功');
-        },
-        error: function(data){
-            alert('發文失敗');         
-        }
-    });
-
-});
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 
 
 $(window).scroll(function () {
@@ -426,24 +594,72 @@ $(window).scroll(function () {
 
 //搜尋大小再改
 function re_size(){
+    var Top_sezrch_height;
 
+    $('#Search-block').find('input').each(function () {
+        if ($(this).css('display') == 'block')
+        {
+            Top_sezrch_height = this.offsetHeight;
+            console.log(Top_sezrch_height);
+            $(this).outerHeight(Top_sezrch_height);
+            $('#Search').outerHeight(Top_sezrch_height);
+            return;
+        }   
+    });
 }
-/*
-setTimeout(function () {
-    var run = 0;
-    var Marquee_Text = $('#Marquee').text();
-    var size = (20 * (Marquee_Text.length));
-    var body_width = document.body.clientWidth;
-    
-    setInterval(function () {
-        Marquee.style.right = (-size + run)+ 'px';
-        
-        run += 5;
 
-        if (run > body_width + size) {
-            body_width = document.body.clientWidth;
-            run = 0;
-        }
-            
-    }, 20);
-}, 3000);*/
+function keypressInBox() {
+
+    if (event.which == 81 || event.keyCode == 81 || event.whitch == 81)//whitch ie
+    {
+        console.log('Account_Data');
+        console.log(Account_Data);
+        console.log('AllArticle');
+        console.log(AllArticle); 
+        console.log('user_name');
+        console.log(user_name);             
+    }
+}
+
+
+//搜尋帳戶(好友) (看板) (家族)
+$('#Search').click(function () {
+    
+    $('#Search-block').find('input').each(function () {
+        if ($(this).css('display') == 'block')
+        {
+            $.ajax({
+                url: 'account/search/' + $(this).val(),
+                method: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',              
+                data: {},
+                success: function (data) {
+                    var account = data.account;
+                    $('#section').html('');
+
+
+                    var friend_obj = '<div class="friend" friendid="'+ account.ID +'">' +
+                    '<div class="friend-header">' +             
+                            '<img class="photo" src="images/1.jpg">'+
+                             '<div class="friend-title">'+
+                                '<div class="friend-name" name="username">'+ account.username +'</div>'+
+                                //'<div class="friend-count" name="">153名好友</div>'+
+                            '</div>'+                    
+                        '</div>'+
+                        '<div class="new-friend-button">'+
+                        '<i class="fas fa-user-plus friend-icon"></i>' +                           
+                        '</div>'+
+                '</div>';
+                
+                $('#section').append(friend_obj);
+                    console.log("搜尋成功");
+                },
+                error: function(data){
+                    console.log("搜尋無此結果");
+                 }
+            });        
+            return;
+        }   
+    });
+});
