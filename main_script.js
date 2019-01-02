@@ -47,7 +47,7 @@ Add_firend[0] ={ Name : "朋友0" }
 Add_firend[0] ={ Name : "朋友1" }
 
 window.onload = function () {
-    send_token();
+    
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -63,15 +63,14 @@ window.onload = function () {
    // initial();
    // get_Friend();
    // get_AllArticlebyfriend();
-   
+    send_token();
 
   //  $(document).scrollTop() = 0;
 }
 
 function send_token(){
     var token = getCookie('token');
-    console.log(token);
-
+    //console.log(token);
     $.ajax({
         url: 'account/token',
         method: 'GET',
@@ -81,10 +80,9 @@ function send_token(){
         data: {},
         success: function (data) {
           Account_Data = data.account;
-          console.log(Account_Data);
           initial();
-         // get_Friend();
-         // get_AllArticlebyfriend();
+          get_Friend();
+          get_AllArticlebyfriend();
         },
         error: function(data){
             console.log("token error");
@@ -94,9 +92,15 @@ function send_token(){
 
 function initial()
 {
-    $('#Username').text(Account_Data.username);
+$('#Username').text(Account_Data.username);
+    user_name = Account_Data.username;
+    if(Account_Data.gender == 'M')<<<<<<< .mine
     user_name = Account_Data.username;
     if(Account_Data.gender == 'M')
+=======
+
+    if(Account_Data[0].gender == 'M')
+>>>>>>> .theirs
     {
         console.log('男');
         sex_url = "images/boy.png";
@@ -196,8 +200,8 @@ function dispaly_Article(){
         AllArticle.splice(random_number, 1);
        
        // console.log(Article_ID);
-       // console.log(Article_Context);
-      //  console.log(random_number);
+        console.log(Article_Context);
+        console.log(random_number);
         Article_Context = Article_Context.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
 
         var articele_obj = '<div class="article" articleid="'+ Article_ID +'">'+
@@ -449,17 +453,3 @@ setTimeout(function () {
             
     }, 20);
 }, 3000);*/
-
-
-function keypressInBox() {
-
-    if (event.which == 81 || event.keyCode == 81 || event.whitch == 81)//whitch ie
-    {
-        console.log('Account_Data');
-        console.log(Account_Data);
-        console.log('AllArticle');
-        console.log(AllArticle); 
-        console.log('user_name');
-        console.log(user_name);             
-    }
-}
