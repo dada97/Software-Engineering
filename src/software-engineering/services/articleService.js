@@ -1,6 +1,6 @@
-import articleRepository  from '../repositories/articleRepository.js'
-import friendRepository from '../repositories/friendRepository.js'
-import groupRepository from '../repositories/groupRepository.js'
+import ArticleRepository  from '../repositories/articleRepository.js'
+import FriendRepository from '../repositories/friendRepository.js'
+import GroupRepository from '../repositories/groupRepository.js'
 import RedisService from './redisService.js'
 import AccountRepository  from '../repositories/accountRepository.js'
 
@@ -16,9 +16,9 @@ const sort = function(arr){
 
 export default class Article {
     constructor() {
-        this.articleRepository  = new articleRepository()
-        this.friendRepository = new friendRepository()
-        this.groupRepository = new groupRepository()
+        this.ArticleRepository  = new ArticleRepository()
+        this.FriendRepository = new FriendRepository()
+        this.GroupRepository = new GroupRepository()
         this.RedisService = new RedisService()
         this.AccountRepository = new AccountRepository()
     }
@@ -29,7 +29,7 @@ export default class Article {
         if(ID != specID){
             throw 'not found'
         }
-        const articles = await this.articleRepository.getAllArticle()
+        const articles = await this.ArticleRepository.getAllArticle()
         if(articles == undefined){
             throw 'not found'
         }
@@ -37,7 +37,7 @@ export default class Article {
     }
 
     async getArticleByAccountId(id){
-        let articles = await this.articleRepository.getArticleByAccountId(id)
+        let articles = await this.ArticleRepository.getArticleByAccountId(id)
         if(articles == undefined){
             throw 'not found'
         }
@@ -47,7 +47,7 @@ export default class Article {
 
     //取得特定帳戶貼文
     async getArticleById(id){
-        const articles = await this.articleRepository.getArticleById(id)
+        const articles = await this.ArticleRepository.getArticleById(id)
         if(articles==undefined){
             throw 'not found'
         }
@@ -64,7 +64,7 @@ export default class Article {
         if(id == undefined){
             throw 'update fail'
         }
-        const article = await this.articleRepository.getArticleById(id)
+        const article = await this.ArticleRepository.getArticleById(id)
         if(article == undefined){
             throw 'update fail'
         }
@@ -81,7 +81,7 @@ export default class Article {
                 obj[i] = data[i]
             }
         }
-        await this.articleRepository.update(id,obj)
+        await this.ArticleRepository.update(id,obj)
     }
 
     //刪除貼文
@@ -93,14 +93,14 @@ export default class Article {
         if(id == undefined) {
             throw 'delete fail'
         }
-        const article = await this.articleRepository.getArticleById(id)
+        const article = await this.ArticleRepository.getArticleById(id)
         if(article == undefined){
             throw 'not found'
         }
         if(ID != article.userid){
             throw 'delete fail'
         }
-        await this.articleRepository.deleteArticleById(id)
+        await this.ArticleRepository.deleteArticleById(id)
     }
 
     //取得好友貼文
@@ -109,13 +109,13 @@ export default class Article {
         if(ID == undefined){
             throw 'not found'
         }
-        const friends = await this.friendRepository.getFriendByAccountId(ID)
+        const friends = await this.FriendRepository.getFriendByAccountId(ID)
         if(friend == undefined){
             throw 'no friends'
         }
         let articles = []
         for(var i in friends){
-            articles.push(await this.articleRepository.getArticleByAccountId(friends[i]))
+            articles.push(await this.ArticleRepository.getArticleByAccountId(friends[i]))
         }
         articles = sort(articles)
         return articles
@@ -124,7 +124,7 @@ export default class Article {
 
     //用家族id取得家族貼文
     async getGroupArticleById(id){
-        let articles = await this.groupRepository.getGroupArticleById(id)
+        let articles = await this.GroupRepository.getGroupArticleById(id)
         if(articles==undefined){
             throw 'not found'
         }
@@ -141,7 +141,7 @@ export default class Article {
         }
         data.userid = ID
         console.log(data)
-        await this.articleRepository.createArticle(data)
+        await this.ArticleRepository.createArticle(data)
     }
 
 
@@ -150,7 +150,7 @@ export default class Article {
         if(id == undefined){
             throw 'not found'
         }
-        let articles = await this.articleRepository.getBoradArticleById(id)
+        let articles = await this.ArticleRepository.getBoradArticleById(id)
         articles = sort(articles)
         return articles
     }
