@@ -4,15 +4,15 @@ export default class Friend {
     constructor() {
         this.FriendService = new FriendService()
 
-        this.getFriendByAccountId = this.getFriendByAccountId.bind(this)
+        this.getFriendByAccountToken = this.getFriendByAccountToken.bind(this)
         this.createFriend = this.createFriend.bind(this)
         this.deleteFriend = this.deleteFriend.bind(this)
     }
    
     //取得帳戶的好友資訊
-    async getFriendByAccountId(req,res){
+    async getFriendByAccountToken(req,res){
         try{
-            res.status(200).json({friends: await FriendService.getFriendByAccountId(req.params.id)})
+            res.status(200).json({friends: await FriendService.getFriendByAccountToken(req.params.id,req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -21,7 +21,7 @@ export default class Friend {
     //新增好友
     async createFriend(req,res){
         try{
-            await FriendService.createFriend(req.params.id,req.body)
+            await FriendService.createFriend(req.params.id,req.header.authorization)
             res.status(200).json({succeed: 'create succeed'})
         }catch(e){
             res.status(400).json({error:'create fail'})
@@ -31,7 +31,7 @@ export default class Friend {
     //刪除好友
     async deleteFriend(req,res){
         try{
-            await FriendService.deleteFriend(req.params.id)
+            await FriendService.deleteFriend(req.params.id,req.header.authorization)
             res.status(200).json({succeed: 'delete succeed'})
         }catch(e){
             res.status(400).json({error:'delete fail'})

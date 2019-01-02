@@ -1,14 +1,23 @@
 import FriendRepository  from '../repositories/friendRepository.js'
+import RedisService from './redisService.js'
+import AccountRepository  from '../repositories/accountRepository.js'
 
+const specID = '1'
 
 export default class Friend {
     constructor() {
         this.FriendRepository  = new FriendRepository()
+        this.RedisService = new RedisService()
+        this.AccountRepository = new AccountRepository()
     }
 
     //取得帳戶好友資訊
-    async getFriendByAccountId(id){
-        const friends = await FriendRepository.getFriendByAccountId(id)
+    async getFriendByAccountToken(id,token){
+        const ID = this.RedisService.Verify(token)
+        if(ID == undefined){
+            throw 'create fail'
+        }
+        const friends = await this.FriendRepository.getFriendByAccountId(id)
         if(friends == undefined){
             throw 'not found'
         }
@@ -16,19 +25,40 @@ export default class Friend {
     }
 
     //新增好友
-    async createFriend(id,data){ 
+    async createFriend(id,token){
+        const ID = this.RedisService.Verify(token)
+        if(ID == undefined){
+            throw 'not found'
+        }
+
+        const account = await this.AccountRepository.getAccountById(id)
+
+        if(account == undefined){
+            throw 'not found'
+        }
+
         let obj ={
-            userId: id,
-            friendId: data.id 
+            userId: ID,
+            friendId: id 
         }
 
         await this.FriendRepository.createFriend(obj)
     }
 
-    async deleteFriend(id,data){
+    async deleteFriend(id,token){
+        const ID = await this.RedisService.Verify(token)
+        if(ID == undefined){
+            throw 'delete error'
+        }
+
+        const account = await this.AccountRepository.getAccountById(id)
+        if(account == undefined){
+            throw 'not found'
+        }
+
         let obj ={
-            userId: id,
-            friendId: data.id 
+            userId: ID,
+            friendId: id 
         }
 
         await this.FriendRepository.deleteFriend(obj)
