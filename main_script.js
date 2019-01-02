@@ -9,8 +9,9 @@ var limit_time = 10;
 var is_logout = false;
 var is_online = false;
 var sex_url = "images/boy.png";
-var AllArticle = [];
+//var AllArticle = [];
 var token;
+/*
 AllArticle[0]={ ID: "6" ,context : "666666666666666666"}
 AllArticle[1]={ ID: "2" ,context : "context2"}
 AllArticle[2]={ ID: "1" ,context : "context3"}
@@ -36,7 +37,7 @@ AllArticle[21]={ ID: "2" ,context : "context22"}
 AllArticle[22]={ ID: "1" ,context : "context23"}
 AllArticle[23]={ ID: "2" ,context : "context24"}
 AllArticle[24]={ ID: "1" ,context : "context25"}
-AllArticle[25]={ ID: "2" ,context : "context26\n1123"}
+AllArticle[25]={ ID: "2" ,context : "context26\n1123"}*/
 var Account_Data;
 
 var myfriends = [];
@@ -56,7 +57,7 @@ window.onload = function () {
     //顯示search
     $('#Search-block').find("input[name='friend_search']").css('display','block');
    
-    dispaly_Article();
+   
 
   //  $(document).scrollTop() = 0;
 }
@@ -215,6 +216,8 @@ function get_AllArticlebyfriend(){ //not ok
             AllArticle = data.articles
             console.log('AllArticle');
             console.log(AllArticle);
+ 
+            dispaly_Article();
         },
         error: function(data){
            console.log("get_AllArticlebyfriend error");
@@ -253,10 +256,11 @@ $('#Article_submit').click(function () { //ok
 //顯示貼文
 function dispaly_Article(){
  
-    var Article_Context;
+    var Article_content;
     var Article_ID;
     var max_random;
     for(var i = 0 ; i < 10 ; i++){
+      //  console.log('AllArticle.length :' +  AllArticle.length)
 
         if(AllArticle.length == 0)
                  break;
@@ -267,13 +271,23 @@ function dispaly_Article(){
 
         var random_number = Math.floor((Math.random() * max_random));
         Article_ID =  AllArticle[random_number].ID;
-        Article_Context = AllArticle[random_number].context;
+        Article_content = AllArticle[random_number].content;
+        Article_User_ID = AllArticle[random_number].userid;
+
         AllArticle.splice(random_number, 1);
        
-       // console.log(Article_ID);
-       // console.log(Article_Context);
-      //  console.log(random_number);
-        Article_Context = Article_Context.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
+     //   console.log(Article_ID);
+      //  console.log(Article_content);
+     //   console.log(random_number);
+     Article_content  = Article_content .replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
+     var edit_and_delete_obj = '';
+
+        if(Article_User_ID == Account_Data.ID)
+        {
+            edit_and_delete_obj = '<div class="article-delete-button"><i class="far fa-trash-alt article-delete-icon"></i></div>'+
+            '<div class="article-edit-button"> <i class="far fa-edit article-edit-icon"></i></div>';      
+        }
+     
 
         var articele_obj = '<div class="article" articleid="'+ Article_ID +'">'+
     '<div class="article-header"> '+               
@@ -281,13 +295,11 @@ function dispaly_Article(){
             '<div class="article-title">'+
                 '<div class="article-name" name="username">熊熊</div>'+
                 '<div class="article-time" name="username">3分鐘前</div>'+
-            '</div>'+      
-            '<div class="article-edit-button"><i class="far fa-trash-alt article-delete-icon"></i></div>'+
-            '<div class="article-delete-button"> <i class="far fa-edit article-edit-icon"></i></div>'+            
+            '</div>'+  edit_and_delete_obj +                
         '</div>'+
         
     '<div class="article-main">'+                
-    Article_Context +     //文章內容
+    Article_content +     //文章內容
     '</div>'+
 
     '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
@@ -309,7 +321,7 @@ function dispaly_Article(){
 //案讚
 $("#section").on('click', ".nice-b", function () {   
     var articleid =  $(this).parents('.article').attr("articleid");
-    console.log(articleid);//getarticleid
+    console.log('like' + articleid);//getarticleid
 
     $.ajax({
         url: 'like/' + articleid,
@@ -327,7 +339,7 @@ $("#section").on('click', ".nice-b", function () {
 });
 
 //留言
-$("#section").on('click', ".message-b", function () {
+$("#section").on('click', ".message-b", function () {//ok
     var articleid =  $(this).parents('.article').attr("articleid");
     var $article_footer_obj =  $(this).parents('.article').find(".article-footer");
     var message_obj = '<div class="article-message">'+
@@ -358,13 +370,13 @@ $("#section").on('click', ".message-b", function () {
 
 
 //編輯貼文
-$("#section").on('click', ".article-edit-button", function () {   
+$("#section").on('click', ".article-edit-button", function () {   //ok
     var articleid =  $(this).parents('.article').attr("articleid");
-    console.log(articleid);//getarticleid
+    console.log('edit' + articleid);//getarticleid
    
-    context ='12545465645643';
+    content ='12545465645643';
     var jsonStr = JSON.stringify({
-        context: context
+        content: content
     })
 
     $.ajax({
@@ -386,9 +398,9 @@ $("#section").on('click', ".article-edit-button", function () {
 });
 
 //刪除貼文
-$("#section").on('click', ".article-delete-button", function () {   
+$("#section").on('click', ".article-delete-button", function () {   //ok
     var articleid =  $(this).parents('.article').attr("articleid");
-    console.log(articleid);//getarticleid
+    console.log('delete' + articleid);//getarticleid
 
    
     $.ajax({
@@ -419,7 +431,7 @@ $("#section").on('click', ".article-delete-button", function () {
 //好友相關
 
 var myfriends;
-function get_Friend(){// not ok
+function get_Friend(){//  ok
   
     $.ajax({
         url: 'friend/token',
@@ -446,7 +458,7 @@ function dispaly_add_friend(){
 }
 
 //新增好友
-$("#section").on('click', ".new-friend-button", function () {
+$("#section").on('click', ".new-friend-button", function () { //ok
     $this =$(this);
     var friend_id  = $this.parents('.friend').attr("friendid");
    console.log('friend/' + friend_id);
@@ -467,7 +479,7 @@ $("#section").on('click', ".new-friend-button", function () {
 $("#section").on('click', ".delete-friend-button", function () {
     $this =$(this);
     var friend_id  = $this.parents('.friend').attr("friendid");
-
+    console.log('delete friend : ' + friend_id )
     $.ajax({
         url: 'friend/' + friend_id,
         method: 'delete',
@@ -487,8 +499,8 @@ $('#display_friend_button').click(function () {
 
 
     for(var i = 0 ; i < myfriends.length ; i++)
-    {
-        var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '1">'+
+    {   
+        var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '">'+
         '<div class="friend-header">' +             
                 '<img class="photo" src="images/1.jpg">'+
                  '<div class="friend-title">'+

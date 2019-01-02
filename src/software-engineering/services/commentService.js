@@ -29,7 +29,7 @@ export default class Comment {
             throw 'not found'
         }
         data.articleid = id
-        return await this.CommentRepository.createComment(data)
+        await this.CommentRepository.createComment(data)
     }
 
     async getCommentById(id){
@@ -65,7 +65,7 @@ export default class Comment {
         }
         data.articleid = comment.articleid
         data.userid = comment.userid
-        return await this.CommentRepository.update(id,data)
+        await this.CommentRepository.update(id,data)
     }
 
     async deleteComment(id,token){
@@ -84,6 +84,6 @@ export default class Comment {
         {
             throw 'delete fail'
         }
-        return await this.CommentRepository.deleteCommentById(id)
+        await this.CommentRepository.deleteCommentById(id)
     }
 }
