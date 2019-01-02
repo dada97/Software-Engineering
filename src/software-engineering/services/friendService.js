@@ -12,16 +12,30 @@ export default class Friend {
     }
 
     //取得帳戶好友資訊
-    async getFriendByAccountToken(id,token){
+    async getFriendByAccountToken(token){
+      
         const ID = await this.RedisService.Verify(token)
         if(ID == undefined){
             throw 'create fail'
         }
-        const friends = await this.FriendRepository.getFriendByAccountId(id)
+        console.log(ID)
+        const friends = await this.FriendRepository.getFriendByAccountId(ID)
         if(friends == undefined){
             throw 'not found'
         }
-        return friends
+        let obj = []
+        for(var i in friends){
+            let t ={
+
+            }
+            t.ID = friends[i].friendID
+            var account  = await this.AccountRepository.getAccountById(t.ID)
+            t.username = account.username
+            obj.push(t)
+            
+        }
+        console.log(obj)
+        return obj
     }
 
     //新增好友
@@ -36,6 +50,19 @@ export default class Friend {
 
         if(account == undefined){
             throw 'not found'
+        }
+
+        if(id == ID){
+            throw 'create fail'
+        }
+
+        const friends = await this.FriendRepository.getFriendByAccountId(ID)
+
+
+        for(var i in friends){
+            if(friends[i].friendID == id){
+                throw 'create fail'
+            }
         }
 
         let obj ={
