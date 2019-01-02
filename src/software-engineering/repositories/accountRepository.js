@@ -7,7 +7,6 @@ export default class Account {
 
     //建立帳戶
     async createAccount(data){
-		data.createtime = new Date().toJSON().slice(0, 19).replace('T', ' ');
 		data.coin=0;
 		return this.AccountModel.insert(this.AccountModel.table,data);
     }
@@ -15,14 +14,16 @@ export default class Account {
     //用帳號搜尋帳戶資訊
     async getAccountByAccount(account){
 		let accounts = []
-		accounts  = await this.AccountModel.where(this.AccountModel.table,"account",account);
+    accounts  = await this.AccountModel.where(this.AccountModel.table,"account",account);
 		return accounts[0]
     }
 
 
     //用id取得帳戶資訊
     async getAccountById(id){
-		return this.AccountModel.where(this.AccountModel.table,"ID",id);
+    let accounts = []
+    accounts = await  this.AccountModel.where(this.AccountModel.table,"ID",id);
+     return accounts[0]
     }
 
     //取得全部帳戶資訊
@@ -37,7 +38,7 @@ export default class Account {
 
     //更新帳戶資訊
     async update(id,data){
-		return this.AccountModel.update(this.AccountModel.table,id,data);
+		return await this.AccountModel.update(this.AccountModel.table,id,data);
     }
 
     //用userName取得帳戶資訊

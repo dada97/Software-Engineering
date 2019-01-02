@@ -45,7 +45,6 @@ export default class Account {
 
     async getAllAccount(req,res){
         try{
-			console.log(req.header.authorization)
             res.status(200).json({accounts:await this.AccountService.getAllAccount(req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'login fail'})
@@ -54,7 +53,7 @@ export default class Account {
 
     async deleteAccountById(req,res){
         try{
-            await this.AccountService.deleteAccountById(res.params.id,req.header.authorization)
+            await this.AccountService.deleteAccountById(req.params.id,req.header.authorization)
             res.status(200).json({succeed:'delete succeed'})
         }catch(e){
             res.status(400).json({error:'login fail'})

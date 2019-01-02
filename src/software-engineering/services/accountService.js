@@ -75,6 +75,7 @@ export default class Account {
     }
 
     async deleteAccountById(id,token){
+        console.log("test")
         const ID = await this.RedisService.Verify(token)
         if(ID !== specID){
             權限不足
@@ -82,6 +83,7 @@ export default class Account {
         if(id == undefined){
             throw '帳戶不存在'
         }
+        console.log(ID)
         const account = await this.getAccountById(id)
         if(account == undefined){
             throw '帳戶不存在'
