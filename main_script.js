@@ -92,20 +92,14 @@ function send_token(){
 
 function initial()
 {
-$('#Username').text(Account_Data.username);
-    user_name = Account_Data.username;
-    if(Account_Data.gender == 'M')<<<<<<< .mine
-    user_name = Account_Data.username;
-    if(Account_Data.gender == 'M')
-=======
+    $('#Username').text(Account_Data[0].username);
 
     if(Account_Data[0].gender == 'M')
->>>>>>> .theirs
     {
         console.log('男');
         sex_url = "images/boy.png";
     }
-    else if(Account_Data.gender == 'F')
+    else if(Account_Data[0].gender == 'F')
     {
         console.log('女');
         sex_url = "images/girl.png"
