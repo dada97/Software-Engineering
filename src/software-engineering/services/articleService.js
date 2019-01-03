@@ -2,7 +2,9 @@ import ArticleRepository  from '../repositories/articleRepository.js'
 import FriendRepository from '../repositories/friendRepository.js'
 import GroupRepository from '../repositories/groupRepository.js'
 import RedisService from './redisService.js'
-import AccountRepository  from '../repositories/accountRepository.js'
+
+import AccountRepository from '../repositories/accountRepository.js'
+import LikeRepository  from '../repositories/likeRepository.js'
 
 const specID = '1'
 
@@ -21,6 +23,7 @@ export default class Article {
         this.GroupRepository = new GroupRepository()
         this.RedisService = new RedisService()
         this.AccountRepository = new AccountRepository()
+        this.LikeRepository = new LikeRepository()
     }
 
     //取得所有貼文
@@ -125,6 +128,22 @@ export default class Article {
                 obj.push(articles[i])
             }
         obj = sort(obj)
+        for(var i in obj){
+            let account = await this.AccountRepository.getAccountById(obj[i].userid)
+            obj[i].gender = account.gender
+            obj[i].username = account.username
+        }
+        for(var i in obj){
+            let likeData = await this.LikeRepository.getLikeByArticleId(obj[i].ID)
+            //console.log(likeData)
+            //obj[i].like = []
+            // for(var j in likeData){
+            //     obj[i].like.push(likeData[j])
+            // }
+            obj[i].like = likeData
+            //console.log(obj[i])
+        }
+        console.log(obj)
         return obj
 
     }
