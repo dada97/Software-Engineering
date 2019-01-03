@@ -233,8 +233,7 @@ function group_edit(group_edit_button) {
 
     var edit_button = $The_group_list.find(".edit_button")[0];
 
-    console.log(edit_button);
-    if (password_input.style.display == 'none') {
+    if (groupname_input.style.display == 'none') {
         groupname_input.style.display = 'inline-block';
         groupname_view.style.display = 'none';
 
@@ -349,8 +348,7 @@ function board_edit(board_edit_button) {
 
     var edit_button = $The_board_list.find(".edit_button")[0];
 
-    console.log(edit_button);
-    if (password_input.style.display == 'none') {
+    if (groupname_input.style.display == 'none') {
         boardname_input.style.display = 'inline-block';
         boardname_view.style.display = 'none';
 
