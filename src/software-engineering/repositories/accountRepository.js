@@ -42,6 +42,7 @@ export default class Account {
 
     //用userName取得帳戶資訊
     async getAccountByName(name){
+    
 		return await this.AccountModel.where(this.AccountModel.table,"username",name);
     }
 
