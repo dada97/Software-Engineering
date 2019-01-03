@@ -9,40 +9,8 @@ var limit_time = 10;
 var is_logout = false;
 var is_online = false;
 var sex_url = "images/boy.png";
-//var AllArticle = [];
 var token;
-/*
-AllArticle[0]={ ID: "6" ,context : "666666666666666666"}
-AllArticle[1]={ ID: "2" ,context : "context2"}
-AllArticle[2]={ ID: "1" ,context : "context3"}
-AllArticle[3]={ ID: "2" ,context : "context4"}
-AllArticle[4]={ ID: "1" ,context : "context5"}
-AllArticle[5]={ ID: "2" ,context : "context6"}
-AllArticle[6]={ ID: "1" ,context : "context7"}
-AllArticle[7]={ ID: "2" ,context : "context8"}
-AllArticle[8]={ ID: "1" ,context : "context9"}
-AllArticle[9]={ ID: "2" ,context : "context10"}
-AllArticle[10]={ ID: "1" ,context : "context11"}
-AllArticle[11]={ ID: "2" ,context : "context12"}
-AllArticle[12]={ ID: "1" ,context : "context13"}
-AllArticle[13]={ ID: "2" ,context : "context14"}
-AllArticle[14]={ ID: "1" ,context : "context15"}
-AllArticle[15]={ ID: "2" ,context : "context16"}
-AllArticle[16]={ ID: "1" ,context : "context17"}
-AllArticle[17]={ ID: "2" ,context : "context18"}
-AllArticle[18]={ ID: "1" ,context : "context19"}
-AllArticle[19]={ ID: "2" ,context : "context20"}
-AllArticle[20]={ ID: "1" ,context : "context21"}
-AllArticle[21]={ ID: "2" ,context : "context22"}
-AllArticle[22]={ ID: "1" ,context : "context23"}
-AllArticle[23]={ ID: "2" ,context : "context24"}
-AllArticle[24]={ ID: "1" ,context : "context25"}
-AllArticle[25]={ ID: "2" ,context : "context26\n1123"}*/
 var Account_Data;
-
-var myfriends = [];
-myfriends[0] ={ ID : '0' ,username : "朋友0" }
-myfriends[1] ={ ID : '1' ,username : "朋友1" }
 
 window.onload = function () {
     send_token();
@@ -57,9 +25,6 @@ window.onload = function () {
     //顯示search
     $('#Search-block').find("input[name='friend_search']").css('display','block');
    
-   
-
-  //  $(document).scrollTop() = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +52,6 @@ function send_token(){//ok
           Account_Data = data.account;
           console.log(Account_Data);
           initial();
-          get_Friend();
           get_AllArticlebyfriend();
         },
         error: function(data){
@@ -366,7 +330,7 @@ $("#section").on('click', ".message-b", function () {//ok
          {
             var message_obj = '<div class="article-message">'+
             '<div class="name">'+ comments[i].username +'</div>' +
-            '<div class="message">'+ comments[i].comment+'</div>' +
+            '<div class="message">'+ comments[i].content+'</div>' +
             '</div>';
 
         $article_article_line_obj.before(message_obj);
@@ -396,6 +360,7 @@ function enter_submit(textarea_obj){
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',    
+            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
             data: jsonStr,
     
             success: function (data) {                 
@@ -491,6 +456,7 @@ $("#section").on('click', ".article-delete-button", function () {   //ok
 //好友相關
 
 var myfriends;
+
 function get_Friend(){//  ok
   
     $.ajax({
@@ -501,10 +467,28 @@ function get_Friend(){//  ok
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: {},
 
-        success: function (data) {
+        success: function (data) {   
           myfriends = data.friends
-          console.log('myfriend');
-          console.log(myfriends);
+        
+          $('#section').html('');
+
+          for(var i = 0 ; i < myfriends.length ; i++)
+          {   
+              var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '">'+
+              '<div class="friend-header">' +             
+                      '<img class="photo" src="images/1.jpg">'+
+                       '<div class="friend-title">'+
+                          '<div class="friend-name" name="username">'+ myfriends[i].username+'</div>'+
+                         // '<div class="friend-count" name="">153名好友</div>'+
+                      '</div>'+                    
+                  '</div>'+
+                  '<div class="delete-friend-button">'+
+                  '<i class="fas fa-user-minus friend-icon"></i>' +                           
+                  '</div>'+
+              '</div>';
+              $('#section').append(friend_obj);
+          }
+
         },
         error: function(data){
            console.log("getFriendByAccountId error");
@@ -527,10 +511,11 @@ $("#section").on('click', ".new-friend-button", function () { //ok
         method: 'POST',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
-            alert("新增好友成功");
+            $('#display_friend_button').click();
+           // alert("新增好友成功");
         },
         error: function(data){
-            alert("新增好友失敗");
+           // alert("新增好友失敗");
          }
     });
 });
@@ -545,35 +530,20 @@ $("#section").on('click', ".delete-friend-button", function () {
         method: 'delete',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
-            alert("刪除好友成功");
+            $('#display_friend_button').click()
+            //alert("刪除好友成功");
         },
         error: function(data){
-            alert("刪除好友失敗");
+           // alert("刪除好友失敗");
          }
     });
 });
 
 //顯示好友列表 並且可以刪除
 $('#display_friend_button').click(function () {
-    $('#section').html('');
-
-
-    for(var i = 0 ; i < myfriends.length ; i++)
-    {   
-        var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '">'+
-        '<div class="friend-header">' +             
-                '<img class="photo" src="images/1.jpg">'+
-                 '<div class="friend-title">'+
-                    '<div class="friend-name" name="username">'+ myfriends[i].username+'</div>'+
-                   // '<div class="friend-count" name="">153名好友</div>'+
-                '</div>'+                    
-            '</div>'+
-            '<div class="delete-friend-button">'+
-            '<i class="fas fa-user-minus friend-icon"></i>' +                           
-            '</div>'+
-        '</div>';
-        $('#section').append(friend_obj);
-    }
+    
+    get_Friend();
+   
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -713,7 +683,7 @@ $('#Search').click(function () {
                 
                 $('#section').append(friend_obj);
                 }
-                   
+                    history(0);
                     console.log("搜尋成功");
                 },
                 error: function(data){
