@@ -2,6 +2,7 @@ import GroupRepository  from '../repositories/groupRepository.js'
 import AccountRepository from '../repositories/accountRepository.js'
 import RedisService from './redisService.js'
 import GroupMemberRepository  from '../repositories/groupMemberRepository.js'
+import { createSocket } from 'dgram';
 
 
 const specID = '1'
@@ -16,22 +17,22 @@ export default class Group {
     }
 
     async createGroup(token,data){
-        const acID = this.RedisService.Verify(token)
+        const acID = await this.RedisService.Verify(token)
         if(acID == undefined){
             throw 'create fail'
         }
-        if(data.name == undefined){
+        if(data.groupname == undefined){
             throw 'create fail'
         }
-        const group = await this.GroupRepository.getGroupByName(data.name)
+        const group = await this.GroupRepository.getGroupByName(data.groupname)
         if(group !==undefined){
             throw 'group name exist'
         }
         await this.GroupRepository.createGroup(data)
-        const newGroup = await this.GroupRepository.getGroupByName(data.name)
+        const newGroup = await this.GroupRepository.getGroupByName(data.groupname)
         let obj = {
-            ID: newGroup.ID,
-            userID: acID
+            groupID: newGroup.ID,
+            memberID: acID
         }
         await this.GroupMemberRepository.join(obj)
 
@@ -47,8 +48,8 @@ export default class Group {
             throw 'not found'
         }
         let obj = {
-            ID: id,
-            userID : acID
+            groupID: id,
+            memberID : acID
         }
         await this.GroupMemberRepository.join(obj)
     }
@@ -65,14 +66,13 @@ export default class Group {
         if(group == undefined){
             throw 'update fail'
         }
-        if(ID == specID){
-            return await this.GroupRepository.update(id,data)
-        }
-
-        const Group = await this.GroupRepository.getGroupByName(data.name)
-
+        const Group = await this.GroupRepository.getGroupByName(data.groupname)
+        console.log(Group)
         if(Group !== undefined){
             throw 'update fail'
+        }
+        if(ID == specID){
+            return await this.GroupRepository.update(id,data)
         }
 
         const groupmember = await this.GroupMemberRepository.getGroupMemberByGroupID(id)
@@ -88,7 +88,7 @@ export default class Group {
         }
     }
 
-    async quit(token,id){
+    async quit(id,token){
         const acID = await this.RedisService.Verify(token)
         if(acID==undefined || id == undefined){
             throw 'quit fail'
@@ -99,7 +99,7 @@ export default class Group {
         }
         const groupmember = await this.GroupMemberRepository.getGroupMemberByGroupID(id)
         for(var i in groupmember){
-            if(groupmember[i].memberID == ID){
+            if(groupmember[i].memberID == acID){
                 await this.GroupMemberRepository.quit(groupmember[i].ID)
                 break
             }
@@ -110,7 +110,7 @@ export default class Group {
         if(searchStr == undefined){
             throw 'not found'
         }
-        const groups = await GroupRepository.search(searchStr)
+        const groups = await this.GroupRepository.search(searchStr)
         if(groups == undefined){
             throw 'not found'
         }
@@ -118,7 +118,7 @@ export default class Group {
     }
 
     async deleteGroup(id,token){
-        const ID = this.RedisService.Verify(token)
+        const ID = await this.RedisService.Verify(token)
         if(ID == undefined || ID !== specID){
             throw 'delete fail'
         }

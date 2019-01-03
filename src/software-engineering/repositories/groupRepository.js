@@ -2,7 +2,7 @@ import Model from '../models/MySQL'
 
 export default class Group {
     constructor() {
-        this.GroupModel = new Model('group')
+        this.GroupModel = new Model('grouptable')
     }
   
     async getGroupById(id){
@@ -20,7 +20,9 @@ export default class Group {
     }
 
     async getGroupByName(name){
-      return await this.GroupModel.where(this.GroupModel.table,"groupname",name);
+      let groups = []
+      groups =  await this.GroupModel.where(this.GroupModel.table,"groupname",name);
+      return groups[0]
     }
 
     async update(id,data){
@@ -28,6 +30,7 @@ export default class Group {
     }
 
     async search(name){
+      console.log(name)
       return await this.GroupModel.where(this.GroupModel.table,"groupname",name);
     }
 

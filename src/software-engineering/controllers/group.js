@@ -48,7 +48,7 @@ export default class Group {
     //退出家族
     async quit(req,res){
         try{
-            await this.GroupService.quit(req.params.id,req.body)
+            await this.GroupService.quit(req.params.id,req.header.authorization)
             res.status(200).json({succeed:'quit succeed'})
         }catch(e){
             res.status(400).json({error:'quit fail'})

@@ -1,21 +1,21 @@
-import boardRepository  from '../repositories/boardRepository.js'
+import BoardRepository  from '../repositories/boardRepository.js'
 import RedisService from './redisService.js'
 
 const specID = '1'
 
 export default class Board {
     constructor() {
-        this.boardRepository  = new boardRepository()
+        this.BoardRepository  = new BoardRepository()
         this.RedisService = new RedisService()
     }
 
     //取得所有看板
     async getAllBoard(){
-        const boards = await this.boardRepository.getAllBoard()
+        const boards = await this.BoardRepository.getAllBoard()
         if(boards == undefined){
             throw 'not found'
         }
-        return articles
+        return boards
     }
 
     async createBoard(token,data){
@@ -26,11 +26,11 @@ export default class Board {
         if(data.boardname == '' || data.boardname == undefined){
             throw 'create fail'
         }
-        const board = await this.getBoardByName(data.boardname) //檢查此看板名稱是否已存在
+        const board = await this.BoardRepository.getBoardByName(data.boardname) //檢查此看板名稱是否已存在
         if(board !== undefined){
             throw 'create fail'
         }
-        await boardRepository.createBoard(data)
+        await this.BoardRepository.createBoard(data)
     }
 
     async deleteBoard(id,token){
@@ -41,11 +41,12 @@ export default class Board {
         if(id == undefined){
             throw 'delete fail'
         }
-        const board = await this.boardRepository.getBoardById(id)
+        const board = await this.BoardRepository.getBoardById(id)
+        console.log(board)
         if(board == undefined){
             throw 'delete fail'
         }
-        await this.boardRepository.deleteBoard(id)
+        await this.BoardRepository.deleteBoard(id)
     }
 
     async update(id,token,data){
@@ -56,14 +57,14 @@ export default class Board {
         if(id == undefined){
             throw 'update fail'
         }
-        const board = await this.boardRepository.getBoardById(id)
+        const board = await this.BoardRepository.getBoardById(id)
         if(board == undefined){
             throw 'update fail'
         }
         let obj={
         }
         obj.boardname = data.boardname
-        await this.boardRepository.update(id,obj)
+        await this.BoardRepository.update(id,obj)
     }
     
     

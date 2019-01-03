@@ -134,16 +134,17 @@ export default class Article {
             obj[i].username = account.username
         }
         for(var i in obj){
-            let likeData = await this.LikeRepository.getLikeByArticleId(obj[i].ID)
-            //console.log(likeData)
-            //obj[i].like = []
-            // for(var j in likeData){
-            //     obj[i].like.push(likeData[j])
-            // }
-            obj[i].like = likeData
-            //console.log(obj[i])
+            let like = await this.LikeRepository.getLikeByArticleId(obj[i].ID)
+            obj[i].likes = like.length
+            obj[i].liked = false
+            for(var j in like){
+                if(like[j].userid == ID)
+                {
+                    obj[i].liked = true
+                    break;
+                }
+            }
         }
-        console.log(obj)
         return obj
 
     }

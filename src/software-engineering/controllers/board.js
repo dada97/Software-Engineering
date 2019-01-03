@@ -6,11 +6,14 @@ export default class Board {
 
         this.getAllBoard = this.getAllBoard.bind(this)
         this.createBoard = this.createBoard.bind(this)
+        this.deleteBoard = this.deleteBoard.bind(this)
+        this.update = this.update.bind(this)
     }
 
     //取得所有看板
     async getAllBoard(req,res){
         try{
+            console.log("test")
             res.status(200).json({boards: await this.BoardService.getAllBoard()})
         }catch(e){
             res.status(400).json({error:'not found'})
@@ -38,7 +41,7 @@ export default class Board {
 
     async update(req,res){
         try{
-            await this.BoardService.deleteBoard(req.params.id,req.header.authorization,req.body)
+            await this.BoardService.update(req.params.id,req.header.authorization,req.body)
             res.status(200).json({succeed: "update succeed"})
         }catch(e){
             res.status(400).json({error:'update fail'})

@@ -1,6 +1,6 @@
 import Router from '../router.js'
 
-import BoardController from '../software-engineering/controllers/board'
+import BoardController from '../software-engineering/controllers/board.js'
 
 class Board extends Router {
     constructor() {

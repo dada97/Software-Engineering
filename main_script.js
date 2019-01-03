@@ -171,14 +171,7 @@ function get_AllArticlebyfriend(){ //not ok
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
             AllArticle = data.articles
-
-            for(var i = 0 ; i < AllArticle.length ; i++)
-            {
-                AllArticle[i].like =  getlike(AllArticle[i].ID)
-                //console.log(await getlike(AllArticle[i].ID));
-                console.log(AllArticle[i].like)
-            }
-             
+            console.log(AllArticle)
             dispaly_Article();
         },
         error: function(data){

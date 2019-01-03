@@ -11,19 +11,22 @@ export default class Board {
     }
 
     async createBoard(data){
-        return await this.BaordModel.insert(this.BoardModel.table,data);
+        console.log(data)
+        return await this.BoardModel.insert(this.BoardModel.table,data);
     }
 
-    async getBaordById(id){
+    async getBoardById(id){
+        console.log(id)
         let boards = []
         boards = await  this.BoardModel.where(this.BoardModel.table,"ID",id);
+        console.log(boards)
          return boards[0]
     }
 
     async getBoardByName(name){
         let boards = []
         boards = await  this.BoardModel.where(this.BoardModel.table,"boardname",name);
-         return boards[0]
+        return boards[0]
     }
 
     async deleteBoard(id){

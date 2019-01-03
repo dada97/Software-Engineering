@@ -35,6 +35,7 @@ async insert(table,data){
 					sql+=","
 			}
 			sql+=")"
+			//console.log(sql)
 			con.query(sql, function (err, result) {
 			if (result == undefined) {
 				reject()
