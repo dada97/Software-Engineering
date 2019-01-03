@@ -14,6 +14,7 @@ import GroupRouter from './routes/groupRouter.js'
 import FileRouter from './routes/fileRouter.js'
 import BoardRouter from './routes/boardRouter.js'
 import CommentRouter from './routes/commentRouter.js'
+import LikeRouter from './routes/likeRouter.js'
 
 const router = new Router()
 
@@ -32,6 +33,7 @@ router.use('/group',    GroupRouter)
 router.use('/file',     FileRouter)
 router.use('/board',     BoardRouter)
 router.use('/comment', CommentRouter)
+router.use('/like',  LikeRouter)
 
 
 const server = http.createServer(async (req, res) => {

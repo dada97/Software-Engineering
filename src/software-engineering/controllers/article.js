@@ -32,10 +32,12 @@ export default class Article {
         }
     }
 
-    //用帳戶Id取得所有好友貼文
+    //用帳戶token取得所有好友貼文
     async getFriendArticleByAccountToken(req,res){
         try{
-            res.status(200).json({articles:await this.ArticleService.getFriendArticleByAccountId(req.header.authorization)})
+            const articles = await this.ArticleService.getFriendArticleByAccountToken(req.header.authorization)
+            //console.log(articles)
+            res.status(200).json({articles:articles})
         }catch(e){
             res.status(400).json({error:'not found'})
         }

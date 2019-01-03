@@ -8,40 +8,9 @@ var user_name;
 var limit_time = 10;
 var is_logout = false;
 var is_online = false;
-var sex_url = "images/boy.png";
-var AllArticle = [];
+var sex_url = "http://140.118.127.93:8080/SE/images/boy.png";
 var token;
-AllArticle[0]={ ID: "6" ,context : "666666666666666666"}
-AllArticle[1]={ ID: "2" ,context : "context2"}
-AllArticle[2]={ ID: "1" ,context : "context3"}
-AllArticle[3]={ ID: "2" ,context : "context4"}
-AllArticle[4]={ ID: "1" ,context : "context5"}
-AllArticle[5]={ ID: "2" ,context : "context6"}
-AllArticle[6]={ ID: "1" ,context : "context7"}
-AllArticle[7]={ ID: "2" ,context : "context8"}
-AllArticle[8]={ ID: "1" ,context : "context9"}
-AllArticle[9]={ ID: "2" ,context : "context10"}
-AllArticle[10]={ ID: "1" ,context : "context11"}
-AllArticle[11]={ ID: "2" ,context : "context12"}
-AllArticle[12]={ ID: "1" ,context : "context13"}
-AllArticle[13]={ ID: "2" ,context : "context14"}
-AllArticle[14]={ ID: "1" ,context : "context15"}
-AllArticle[15]={ ID: "2" ,context : "context16"}
-AllArticle[16]={ ID: "1" ,context : "context17"}
-AllArticle[17]={ ID: "2" ,context : "context18"}
-AllArticle[18]={ ID: "1" ,context : "context19"}
-AllArticle[19]={ ID: "2" ,context : "context20"}
-AllArticle[20]={ ID: "1" ,context : "context21"}
-AllArticle[21]={ ID: "2" ,context : "context22"}
-AllArticle[22]={ ID: "1" ,context : "context23"}
-AllArticle[23]={ ID: "2" ,context : "context24"}
-AllArticle[24]={ ID: "1" ,context : "context25"}
-AllArticle[25]={ ID: "2" ,context : "context26\n1123"}
 var Account_Data;
-
-var myfriends = [];
-myfriends[0] ={ ID : '0' ,username : "朋友0" }
-myfriends[1] ={ ID : '1' ,username : "朋友1" }
 
 window.onload = function () {
     send_token();
@@ -56,9 +25,6 @@ window.onload = function () {
     //顯示search
     $('#Search-block').find("input[name='friend_search']").css('display','block');
    
-    dispaly_Article();
-
-  //  $(document).scrollTop() = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +52,6 @@ function send_token(){//ok
           Account_Data = data.account;
           console.log(Account_Data);
           initial();
-          get_Friend();
           get_AllArticlebyfriend();
         },
         error: function(data){
@@ -213,8 +178,8 @@ function get_AllArticlebyfriend(){ //not ok
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
             AllArticle = data.articles
-            console.log('AllArticle');
-            console.log(AllArticle);
+        
+            dispaly_Article();
         },
         error: function(data){
            console.log("get_AllArticlebyfriend error");
@@ -222,6 +187,184 @@ function get_AllArticlebyfriend(){ //not ok
     });
 
 }
+
+
+//顯示貼文
+function dispaly_Article(){
+ 
+    var Article_content;
+    var Article_ID;
+    var max_random;
+    for(var i = 0 ; i < 10 ; i++){
+      //  console.log('AllArticle.length :' +  AllArticle.length)
+
+        if(AllArticle.length == 0)
+                 break;
+        else if(AllArticle.length > 10)
+            max_random = 10;
+        else
+            max_random =  AllArticle.length;
+
+        var random_number = Math.floor((Math.random() * max_random));
+        Article_ID =  AllArticle[random_number].ID;
+        Article_content = AllArticle[random_number].content;
+        Article_User_ID = AllArticle[random_number].userid;
+
+        AllArticle.splice(random_number, 1);
+       
+     //   console.log(Article_ID);
+      //  console.log(Article_content);
+     //   console.log(random_number);
+     Article_content  = Article_content.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
+     var edit_and_delete_obj = '';
+    var edit_input_boj = '';
+        if(Article_User_ID == Account_Data.ID)
+        {
+            edit_and_delete_obj = '<div class="article-delete-button"><i class="far fa-trash-alt article-delete-icon"></i></div>'+
+            '<div class="article-edit-button"> <i class="far fa-edit article-edit-icon"></i></div>';  
+            edit_input_boj = '<textarea class="article-edit-input" placeholder="編輯文章"></textarea>' +
+            '<button class="btn btn-lg btn-primary center-block article-edit-submit">送出</button>';    
+        }
+     
+
+        var articele_obj = '<div class="article" articleid="'+ Article_ID +'">'+
+    '<div class="article-header"> '+               
+            '<img class="photo" src="'+ sex_url +'">'+           
+            '<div class="article-title">'+
+                '<div class="article-name" name="username">熊熊</div>'+
+                '<div class="article-time" name="username">3分鐘前</div>'+
+            '</div>'+  edit_and_delete_obj +                
+        '</div>'+
+        
+    '<div class="article-main">'+                
+    Article_content +     //文章內容
+    '</div>'+ 
+    edit_input_boj +
+    '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
+    '100'+ //案讚人數
+    '</span></div>'+
+
+    '<div class="article-footer">'+
+         '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>'+
+         '<div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>'+
+        '<div class="article-line"></div>'+
+    '</div>' +            
+'</div>';
+
+    $('#Article_list').append(articele_obj);
+    }
+}
+
+//案讚
+$("#section").on('click', ".nice-b", function () {   
+    var articleid =  $(this).parents('.article').attr("articleid");
+    console.log('like' + articleid);//getarticleid
+
+    $.ajax({
+        url: 'like/' + articleid,
+        method: 'post',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+
+        success: function (data) {
+            alert('案讚成功');
+        },
+        error: function(data){
+            alert('案讚失敗');         
+        }
+    });
+   
+});
+
+//顯示留言
+$("#section").on('click', ".message-b", function () {//ok
+    var articleid =  $(this).parents('.article').attr("articleid");
+    var $article_article_line_obj =  $(this).parents('.article').find(".article-line");
+    var message_input_obj ='<textarea class="article-message-edit-input" onKeyDown="enter_submit(this)" placeholder="我要留言"></textarea>';
+
+    if($(this).parents('.article').find(".article-message-edit-input").length == 0)
+    $article_article_line_obj.after(message_input_obj);
+
+    $.ajax({
+        url: 'comment/'+ articleid,
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',    
+        data: {},
+
+        success: function (data) {
+         var comments = data.comments;
+         $article_article_line_obj.html('');
+
+         for(var i = 0 ; i < comments.length ; i++)
+         {
+            var message_obj = '<div class="article-message">'+
+            '<div class="name">'+ comments[i].username +'</div>' +
+            '<div class="message">'+ comments[i].content+'</div>' +
+            '</div>';
+
+            $article_article_line_obj.append(message_obj);
+         }         
+        },
+        error: function(data){
+            alert('取得留言失敗');         
+        }
+    });
+   
+});
+//新增留言
+function enter_submit(textarea_obj){
+
+    if (event.which == 13 || event.keyCode == 13 || event.whitch == 13)//whitch ie
+    {             
+        var articleid = $(textarea_obj).parents('.article').attr("articleid"); 
+        var content = $(textarea_obj).val();
+        var jsonStr = JSON.stringify({
+            content: content
+        })
+        console.log('articleid : ' + articleid + ' content : ' + content);
+
+        $.ajax({
+            url: 'comment/' + articleid,
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',    
+            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+            data: jsonStr,
+    
+            success: function (data) { 
+                $("#section").on('click', ".message-b");                
+                alert('留言成功');
+            },
+            error: function(data){
+                alert('留言失敗');         
+            }
+        });
+    }
+}
+//編輯留言
+
+//刪除留言
+
+//按下編輯顯示編輯輸入
+$("#section").on('click', ".article-edit-button", function () {
+
+    var $submit_obj =  $(this).parents('.article').find(".article-edit-submit");
+    var $input_obj =  $(this).parents('.article').find(".article-edit-input");
+    var $article_main = $(this).parents('.article').find(".article-main");
+
+    if($submit_obj.css("display") == 'none')
+    {
+        $article_main.css("display","none");
+        $submit_obj.css("display","block");
+        $input_obj.css("display","block");
+    }
+    else
+    {
+        $article_main.css("display","block");
+        $submit_obj.css("display","none");
+        $input_obj.css("display","none");
+    }
+});
 
 //發文 新增貼文
 $('#Article_submit').click(function () { //ok
@@ -241,7 +384,8 @@ $('#Article_submit').click(function () { //ok
         data: jsonStr,
 
         success: function (data) {
-            alert('發文成功');
+            document.location.href = "main.html";  
+            alert('發文成功');          
         },
         error: function(data){
             alert('發文失敗');         
@@ -250,121 +394,17 @@ $('#Article_submit').click(function () { //ok
 
 });
 
-//顯示貼文
-function dispaly_Article(){
- 
-    var Article_Context;
-    var Article_ID;
-    var max_random;
-    for(var i = 0 ; i < 10 ; i++){
-
-        if(AllArticle.length == 0)
-                 break;
-        else if(AllArticle.length > 10)
-            max_random = 10;
-        else
-            max_random =  AllArticle.length;
-
-        var random_number = Math.floor((Math.random() * max_random));
-        Article_ID =  AllArticle[random_number].ID;
-        Article_Context = AllArticle[random_number].context;
-        AllArticle.splice(random_number, 1);
-       
-       // console.log(Article_ID);
-       // console.log(Article_Context);
-      //  console.log(random_number);
-        Article_Context = Article_Context.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
-
-        var articele_obj = '<div class="article" articleid="'+ Article_ID +'">'+
-    '<div class="article-header"> '+               
-            '<img class="photo" src="'+ sex_url +'">'+           
-            '<div class="article-title">'+
-                '<div class="article-name" name="username">熊熊</div>'+
-                '<div class="article-time" name="username">3分鐘前</div>'+
-            '</div>'+      
-            '<div class="article-edit-button"><i class="far fa-trash-alt article-delete-icon"></i></div>'+
-            '<div class="article-delete-button"> <i class="far fa-edit article-edit-icon"></i></div>'+            
-        '</div>'+
-        
-    '<div class="article-main">'+                
-    Article_Context +     //文章內容
-    '</div>'+
-
-    '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
-    '100'+ //案讚人數
-    '</span></div>'+
-
-    '<div class="article-footer">'+
-         '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>'+
-         '<div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>'+
-    '</div>' +            
-'</div>';
-
-    $('#Article_list').append(articele_obj);
-
-    $('#Article_input').val('');
-    }
-}
-
-//案讚
-$("#section").on('click', ".nice-b", function () {   
-    var articleid =  $(this).parents('.article').attr("articleid");
-    console.log(articleid);//getarticleid
-
-    $.ajax({
-        url: 'like/' + articleid,
-        method: 'post',
-        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-
-        success: function (data) {
-            alert('案讚成功');
-        },
-        error: function(data){
-            alert('案讚失敗');         
-        }
-    });
-   
-});
-
-//留言
-$("#section").on('click', ".message-b", function () {
-    var articleid =  $(this).parents('.article').attr("articleid");
-    var $article_footer_obj =  $(this).parents('.article').find(".article-footer");
-    var message_obj = '<div class="article-message">'+
-    '<div class="name"></div>' +
-    '<div class="message"></div>' +
-'</div>';
-    $article_footer_obj.after(message_obj);
-
-  //  console.log(articleid);//getarticleid
-  
-    $.ajax({
-        url: 'comment/'+ articleid,
-        method: 'GET',
-        dataType: 'json',
-        contentType: 'application/json',    
-        data: {},
-
-        success: function (data) {
-         
-            alert('取得留言成功');
-        },
-        error: function(data){
-            alert('取得留言失敗');         
-        }
-    });
-   
-});
-
-
 //編輯貼文
-$("#section").on('click', ".article-edit-button", function () {   
+$("#section").on('click', ".article-edit-submit", function () {   //ok
+
     var articleid =  $(this).parents('.article').attr("articleid");
-    console.log(articleid);//getarticleid
-   
-    context ='12545465645643';
+    var content = $(this).parents('.article').find(".article-edit-input").val();
+    var $submit_obj =  $(this).parents('.article').find(".article-edit-submit");
+    var $input_obj =  $(this).parents('.article').find(".article-edit-input");
+    var $article_main = $(this).parents('.article').find(".article-main");
+
     var jsonStr = JSON.stringify({
-        context: context
+        content: content
     })
 
     $.ajax({
@@ -376,6 +416,12 @@ $("#section").on('click', ".article-edit-button", function () {
         data: jsonStr,
 
         success: function (data) {
+            content = content.replace(new RegExp("\n", "gm"), '<br/>');
+            $(this).parents('.article').find(".article-main").text(content);           
+            $article_main.css("display","block");
+            $submit_obj.css("display","none");
+            $input_obj.css("display","none");
+
             alert('編輯文章成功');
         },
         error: function(data){
@@ -386,16 +432,17 @@ $("#section").on('click', ".article-edit-button", function () {
 });
 
 //刪除貼文
-$("#section").on('click', ".article-delete-button", function () {   
+$("#section").on('click', ".article-delete-button", function () {   //ok
+    var article_obj = $(this).parents('.article');
     var articleid =  $(this).parents('.article').attr("articleid");
-    console.log(articleid);//getarticleid
+    console.log('delete' + articleid);//getarticleid
 
-   
     $.ajax({
         url: 'article/' + articleid,
         method: 'delete',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
+            article_obj.remove();
             alert('刪除文章成功');
         },
         error: function(data){
@@ -419,7 +466,8 @@ $("#section").on('click', ".article-delete-button", function () {
 //好友相關
 
 var myfriends;
-function get_Friend(){// not ok
+
+function get_Friend(){//  ok
   
     $.ajax({
         url: 'friend/token',
@@ -429,10 +477,28 @@ function get_Friend(){// not ok
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: {},
 
-        success: function (data) {
+        success: function (data) {   
           myfriends = data.friends
-          console.log('myfriend');
-          console.log(myfriends);
+        
+          $('#section').html('');
+
+          for(var i = 0 ; i < myfriends.length ; i++)
+          {   
+              var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '">'+
+              '<div class="friend-header">' +             
+                      '<img class="photo" src="images/1.jpg">'+
+                       '<div class="friend-title">'+
+                          '<div class="friend-name" name="username">'+ myfriends[i].username+'</div>'+
+                         // '<div class="friend-count" name="">153名好友</div>'+
+                      '</div>'+                    
+                  '</div>'+
+                  '<div class="delete-friend-button">'+
+                  '<i class="fas fa-user-minus friend-icon"></i>' +                           
+                  '</div>'+
+              '</div>';
+              $('#section').append(friend_obj);
+          }
+
         },
         error: function(data){
            console.log("getFriendByAccountId error");
@@ -446,7 +512,7 @@ function dispaly_add_friend(){
 }
 
 //新增好友
-$("#section").on('click', ".new-friend-button", function () {
+$("#section").on('click', ".new-friend-button", function () { //ok
     $this =$(this);
     var friend_id  = $this.parents('.friend').attr("friendid");
    console.log('friend/' + friend_id);
@@ -455,10 +521,11 @@ $("#section").on('click', ".new-friend-button", function () {
         method: 'POST',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
-            alert("新增好友成功");
+            $('#display_friend_button').click();
+           // alert("新增好友成功");
         },
         error: function(data){
-            alert("新增好友失敗");
+           // alert("新增好友失敗");
          }
     });
 });
@@ -467,41 +534,24 @@ $("#section").on('click', ".new-friend-button", function () {
 $("#section").on('click', ".delete-friend-button", function () {
     $this =$(this);
     var friend_id  = $this.parents('.friend').attr("friendid");
-
+    console.log('delete friend : ' + friend_id )
     $.ajax({
         url: 'friend/' + friend_id,
         method: 'delete',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
-            alert("刪除好友成功");
+            $('#display_friend_button').click()
+            //alert("刪除好友成功");
         },
         error: function(data){
-            alert("刪除好友失敗");
+           // alert("刪除好友失敗");
          }
     });
 });
 
 //顯示好友列表 並且可以刪除
-$('#display_friend_button').click(function () {
-    $('#section').html('');
-
-
-    for(var i = 0 ; i < myfriends.length ; i++)
-    {
-        var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '1">'+
-        '<div class="friend-header">' +             
-                '<img class="photo" src="images/1.jpg">'+
-                 '<div class="friend-title">'+
-                    '<div class="friend-name" name="username">'+ myfriends[i].username+'</div>'+
-                   // '<div class="friend-count" name="">153名好友</div>'+
-                '</div>'+                    
-            '</div>'+
-            '<div class="delete-friend-button">'+
-            '<i class="fas fa-user-minus friend-icon"></i>' +                           
-            '</div>'+
-        '</div>';
-        $('#section').append(friend_obj);
-    }
+$('#display_friend_button').click(function () { 
+    get_Friend();  
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -641,7 +691,7 @@ $('#Search').click(function () {
                 
                 $('#section').append(friend_obj);
                 }
-                   
+                    history(0);
                     console.log("搜尋成功");
                 },
                 error: function(data){

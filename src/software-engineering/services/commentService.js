@@ -1,10 +1,7 @@
-import * as crypto from 'crypto'
-
 import CommentRepository  from '../repositories/commentRepository.js'
 import ArticleRepository  from '../repositories/articleRepository.js'
 import RedisService from './redisService.js'
 import AccountRepository  from '../repositories/accountRepository.js'
-
 
 
 export default class Comment {
@@ -17,20 +14,28 @@ export default class Comment {
 
     async createComment(id,token,data){
         const ID = await this.RedisService.Verify(token)
-        if(ID==undefined){
+        if(ID == undefined){
             throw 'create fail'
         }
-        data.userid = ID
-        if(id == ''){
-            throw 'not found'
-        }
-        const article = await this.ArticleRepository.getArticleById(id)
         if(id == undefined){
             throw 'not found'
         }
-        data.articleid = id
-        return await this.CommentRepository.createComment(data)
+        const article = await this.ArticleRepository.getArticleById(id)
+        if(article == undefined){
+            throw 'not found'
+        }
+        if(data.content == ''){
+            throw 'create fail'
+        }
+        let obj = {
+
+        }
+        obj.articleid = id
+        obj.userid = ID
+        obj.content = data.content
+        await this.CommentRepository.createComment(obj)
     }
+
 
     async getCommentById(id){
         if(id == undefined){
@@ -63,13 +68,17 @@ export default class Comment {
         {
             throw 'update fail'
         }
-        data.articleid = comment.articleid
-        data.userid = comment.userid
-        return await this.CommentRepository.update(id,data)
+        let obj={
+
+        }
+        obj.articleid = comment.articleid
+        obj.userid = comment.userid
+        obj.content = data.content
+        await this.CommentRepository.update(id,obj)
     }
 
     async deleteComment(id,token){
-        ID = await this.RedisService.Verify(token)
+        const ID = await this.RedisService.Verify(token)
         if(ID == undefined){
             throw 'not found'
         }
@@ -80,10 +89,11 @@ export default class Comment {
         if(comment == undefined){
             throw 'not found'
         }
-        if(ID !== comment.userid)
+        if(ID != comment.userid)
         {
             throw 'delete fail'
         }
-        return await this.CommentRepository.deleteCommentById(id)
+        console.log(id)
+        await this.CommentRepository.deleteCommentById(id)
     }
 }

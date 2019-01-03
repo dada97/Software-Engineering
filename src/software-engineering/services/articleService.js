@@ -9,7 +9,7 @@ const specID = '1'
 //用id從大到小排序
 const sort = function(arr){
     arr = arr.sort(function(a,b){
-        return a.id < b.id ? 1 : -1
+        return a.ID < b.ID ? 1 : -1
     })
     return arr
 }
@@ -105,20 +105,27 @@ export default class Article {
 
     //取得好友貼文
     async getFriendArticleByAccountToken(token){
-        const ID = this.RedisService.Verify(token)
+        const ID = await this.RedisService.Verify(token)
         if(ID == undefined){
             throw 'not found'
         }
         const friends = await this.FriendRepository.getFriendByAccountId(ID)
-        if(friend == undefined){
+        if(friends == undefined){
             throw 'no friends'
         }
-        let articles = []
+        let obj = []
         for(var i in friends){
-            articles.push(await this.ArticleRepository.getArticleByAccountId(friends[i]))
+            let articles = await this.ArticleRepository.getArticleByAccountId(friends[i].friendID)
+            for(var j in articles){
+                obj.push(articles[j])
+            }
         }
-        articles = sort(articles)
-        return articles
+        let articles = await this.ArticleRepository.getArticleByAccountId(ID)
+            for(var i in articles){
+                obj.push(articles[i])
+            }
+        obj = sort(obj)
+        return obj
 
     }
 
