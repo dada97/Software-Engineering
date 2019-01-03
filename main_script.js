@@ -10,6 +10,7 @@ var is_logout = false;
 var is_online = false;
 var token;
 var Account_Data;
+var now_board_id;
 
 window.onload = function () {
     send_token();
@@ -54,6 +55,7 @@ function send_token(){//ok
           get_AllArticlebyfriend();
         },
         error: function(data){
+            document.location.href = "index.html";
             console.log("token error");
          }
     });
@@ -442,12 +444,52 @@ $('#Article_submit').click(function () { //ok
     if(Article_Text.toUpperCase().indexOf('<') != -1)
             return;
             
-    var jsonStr = JSON.stringify({
-        content: Article_Text
-    })
-
-    if($this.attr("name") == 'article')
+    var input_name =  $('#Article_input').attr("name");
+           
+    if(input_name == 'article')
     {
+        var jsonStr = JSON.stringify({
+            content: Article_Text
+        })
+
+        $.ajax({
+            url: 'article/',
+            method: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+            data: jsonStr,
+    
+            success: function (data) {        
+
+                $.ajax({
+                    url: 'article/friend/token',
+                    method: 'GET',
+                    beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+                    success: function (data) {
+                        $('#Article_list').html('');
+                        AllArticle = data.articles
+                        console.log(AllArticle)
+                        dispaly_Article();
+                    },
+                    error: function(data){
+                       console.log("get_AllArticlebyfriend error");
+                    }
+                });                  
+            },
+            error: function(data){
+                alert('發文失敗');         
+            }
+        });   
+    }
+    else if (input_name == 'board'){
+        console.log(now_board_id)
+        var jsonStr = JSON.stringify({
+            content: Article_Text,
+            boardid : now_board_id
+        })
+
+        
         $.ajax({
             url: 'article/',
             method: 'post',
@@ -457,32 +499,30 @@ $('#Article_submit').click(function () { //ok
             data: jsonStr,
     
             success: function (data) {
-                document.location.href = "main.html";                   
-            },
-            error: function(data){
-                alert('發文失敗');         
-            }
-        });   
-    }
-    else if ($this.attr("name") == 'board'){
+        
+            //GET 
+               $.ajax({
+                   url: 'article/board/' + now_board_id,
+                   method: 'GET',
+                   success: function (data) {
+                       $('#Article_list').html('');
+                       AllArticle = data.articles;
+                       console.log(AllArticle);
+                       dispaly_Article();
+                   },
+                   error: function(data){
+                       console.log("get board error");
+                    }
+               });
 
-        $.ajax({
-            url: 'article/board/',
-            method: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-            data: jsonStr,
-    
-            success: function (data) {
-                document.location.href = "main.html";                   
+                             
             },
             error: function(data){
                 alert('發文失敗');         
             }
         });   
     }
-    else if ($this.attr("name") == 'group'){
+    else if (input_name == 'group'){
         
     }
 });
@@ -873,24 +913,26 @@ function get_board(){//ok
     });
 }
 
+
 $("#aside").on('click', ".board-button", function () {
     $this =$(this);
-    var board_id  = $this.attr("board_id");
+     now_board_id  = $this.attr("board_id");
    
     $('#Search-block').find("input[name='title_search']").css('display','block');
     $('#Search-block').find("input[name='friend_search']").css('display','none');   
     $('#Search-block').find("input[name='group_search']").css('display','none');
     $('#Article_list').html('');
-    console.log('board_id : ' + board_id )
-
+    $('#Article_input').attr('name','board');
+    
+    console.log('board_id : ' + now_board_id )
 
     $.ajax({
-        url: 'article/board/' + board_id,
+        url: 'article/board/' + now_board_id,
         method: 'GET',
         success: function (data) {
             AllArticle = data.articles;
             console.log(AllArticle);
-           dispaly_Article();
+            dispaly_Article();
         },
         error: function(data){
             console.log("get board error");

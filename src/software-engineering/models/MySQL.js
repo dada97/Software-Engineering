@@ -89,6 +89,8 @@ async where(table,col_name,target){
 	});
 }
 
+
+
 async delete_(table,col_name,target){
 	return new Promise((resolve, reject) => {
 	this.connection.getConnection(function(err,con) {

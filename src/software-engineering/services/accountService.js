@@ -131,6 +131,7 @@ export default class Account {
     }
 
     async getAccountByName(name){
+
         if(name==undefined){
             throw 'not found'
         }

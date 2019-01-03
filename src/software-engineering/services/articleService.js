@@ -120,12 +120,16 @@ export default class Article {
         for(var i in friends){
             let articles = await this.ArticleRepository.getArticleByAccountId(friends[i].friendID)
             for(var j in articles){
-                obj.push(articles[j])
+                if(articles[j].boardid == undefined && articles[j].groupid == undefined){
+                    obj.push(articles[j])
+                }
             }
         }
         let articles = await this.ArticleRepository.getArticleByAccountId(ID)
             for(var i in articles){
-                obj.push(articles[i])
+                if(articles[i].boardid == undefined && articles[i].groupid == undefined){
+                    obj.push(articles[i])
+                }
             }
         obj = sort(obj)
         for(var i in obj){
@@ -145,6 +149,7 @@ export default class Article {
                 }
             }
         }
+        console.log(obj)
         return obj
 
     }
@@ -154,6 +159,23 @@ export default class Article {
         let articles = await this.GroupRepository.getGroupArticleById(id)
         if(articles==undefined){
             throw 'not found'
+        }
+        for(var i in articles){
+            let account = await this.AccountRepository.getAccountById(articles[i].userid)
+            articles[i].gender = account.gender
+            articles[i].username = account.username
+        }
+        for(var i in articles){
+            let like = await this.LikeRepository.getLikeByArticleId(articles[i].ID)
+            articles[i].likes = like.length
+            articles[i].liked = false
+            for(var j in like){
+                if(like[j].userid == ID)
+                {
+                    articles[i].liked = true
+                    break;
+                }
+            }
         }
         articles = sort(articles)
         return articles
@@ -173,12 +195,31 @@ export default class Article {
 
 
     //用看板id取得看板文章
-    async getBoradArticleById(id){
+    async getBoardArticleById(id){
+        
         if(id == undefined){
             throw 'not found'
         }
-        let articles = await this.ArticleRepository.getBoradArticleById(id)
+        let articles = await this.ArticleRepository.getBoardArticleById(id)
+        for(var i in articles){
+            let account = await this.AccountRepository.getAccountById(articles[i].userid)
+            articles[i].gender = account.gender
+            articles[i].username = account.username
+        }
+        for(var i in articles){
+            let like = await this.LikeRepository.getLikeByArticleId(articles[i].ID)
+            articles[i].likes = like.length
+            articles[i].liked = false
+            for(var j in like){
+                if(like[j].userid == ID)
+                {
+                    articles[i].liked = true
+                    break;
+                }
+            }
+        }
         articles = sort(articles)
+        console.log(articles)
         return articles
     }
 
