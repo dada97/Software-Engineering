@@ -67,12 +67,12 @@ function initial()//ok
     if(Account_Data.gender == 'M')
     {
         console.log('男');
-        sex_url = "http://140.118.127.93:8080/SE/images/boy.png";
+        sex_url = "images/boy.png";
     }
     else if(Account_Data.gender == 'F')
     {
         console.log('女');
-        sex_url = "http://140.118.127.93:8080/SE/images/girl.png"
+        sex_url = "images/girl.png"
     }
     else
     {
@@ -178,9 +178,7 @@ function get_AllArticlebyfriend(){ //not ok
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
             AllArticle = data.articles
-            console.log('AllArticle');
-            console.log(AllArticle);
- 
+        
             dispaly_Article();
         },
         error: function(data){
@@ -190,32 +188,6 @@ function get_AllArticlebyfriend(){ //not ok
 
 }
 
-//發文 新增貼文
-$('#Article_submit').click(function () { //ok
-
-    var Article_Text =  $('#Article_input').val();
-
-    var jsonStr = JSON.stringify({
-        content: Article_Text
-    })
-
-    $.ajax({
-        url: 'article/',
-        method: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
-        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: jsonStr,
-
-        success: function (data) {
-            alert('發文成功');          
-        },
-        error: function(data){
-            alert('發文失敗');         
-        }
-    });
-
-});
 
 //顯示貼文
 function dispaly_Article(){
@@ -244,7 +216,7 @@ function dispaly_Article(){
      //   console.log(Article_ID);
       //  console.log(Article_content);
      //   console.log(random_number);
-     Article_content  = Article_content .replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
+     Article_content  = Article_content.replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
      var edit_and_delete_obj = '';
     var edit_input_boj = '';
         if(Article_User_ID == Account_Data.ID)
@@ -281,8 +253,6 @@ function dispaly_Article(){
 '</div>';
 
     $('#Article_list').append(articele_obj);
-
-    $('#Article_input').val('');
     }
 }
 
@@ -306,7 +276,7 @@ $("#section").on('click', ".nice-b", function () {
    
 });
 
-//留言
+//顯示留言
 $("#section").on('click', ".message-b", function () {//ok
     var articleid =  $(this).parents('.article').attr("articleid");
     var $article_article_line_obj =  $(this).parents('.article').find(".article-line");
@@ -314,9 +284,7 @@ $("#section").on('click', ".message-b", function () {//ok
 
     if($(this).parents('.article').find(".article-message-edit-input").length == 0)
     $article_article_line_obj.after(message_input_obj);
-  
-  //  console.log(articleid);//getarticleid
-  
+
     $.ajax({
         url: 'comment/'+ articleid,
         method: 'GET',
@@ -326,6 +294,7 @@ $("#section").on('click', ".message-b", function () {//ok
 
         success: function (data) {
          var comments = data.comments;
+         $article_article_line_obj.html('');
 
          for(var i = 0 ; i < comments.length ; i++)
          {
@@ -334,9 +303,8 @@ $("#section").on('click', ".message-b", function () {//ok
             '<div class="message">'+ comments[i].content+'</div>' +
             '</div>';
 
-        $article_article_line_obj.before(message_obj);
+            $article_article_line_obj.append(message_obj);
          }         
-            alert('取得留言成功');
         },
         error: function(data){
             alert('取得留言失敗');         
@@ -344,7 +312,7 @@ $("#section").on('click', ".message-b", function () {//ok
     });
    
 });
-
+//新增留言
 function enter_submit(textarea_obj){
 
     if (event.which == 13 || event.keyCode == 13 || event.whitch == 13)//whitch ie
@@ -364,7 +332,8 @@ function enter_submit(textarea_obj){
             beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
             data: jsonStr,
     
-            success: function (data) {                 
+            success: function (data) { 
+                $("#section").on('click', ".message-b");                
                 alert('留言成功');
             },
             error: function(data){
@@ -373,7 +342,11 @@ function enter_submit(textarea_obj){
         });
     }
 }
+//編輯留言
 
+//刪除留言
+
+//按下編輯顯示編輯輸入
 $("#section").on('click', ".article-edit-button", function () {
 
     var $submit_obj =  $(this).parents('.article').find(".article-edit-submit");
@@ -394,13 +367,43 @@ $("#section").on('click', ".article-edit-button", function () {
     }
 });
 
+//發文 新增貼文
+$('#Article_submit').click(function () { //ok
+
+    var Article_Text =  $('#Article_input').val();
+
+    var jsonStr = JSON.stringify({
+        content: Article_Text
+    })
+
+    $.ajax({
+        url: 'article/',
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: jsonStr,
+
+        success: function (data) {
+            document.location.href = "main.html";  
+            alert('發文成功');          
+        },
+        error: function(data){
+            alert('發文失敗');         
+        }
+    });
+
+});
+
 //編輯貼文
 $("#section").on('click', ".article-edit-submit", function () {   //ok
 
     var articleid =  $(this).parents('.article').attr("articleid");
     var content = $(this).parents('.article').find(".article-edit-input").val();
-   
-    console.log(content)
+    var $submit_obj =  $(this).parents('.article').find(".article-edit-submit");
+    var $input_obj =  $(this).parents('.article').find(".article-edit-input");
+    var $article_main = $(this).parents('.article').find(".article-main");
+
     var jsonStr = JSON.stringify({
         content: content
     })
@@ -414,6 +417,12 @@ $("#section").on('click', ".article-edit-submit", function () {   //ok
         data: jsonStr,
 
         success: function (data) {
+            content = content.replace(new RegExp("\n", "gm"), '<br/>');
+            $(this).parents('.article').find(".article-main").text(content);           
+            $article_main.css("display","block");
+            $submit_obj.css("display","none");
+            $input_obj.css("display","none");
+
             alert('編輯文章成功');
         },
         error: function(data){
@@ -425,15 +434,16 @@ $("#section").on('click', ".article-edit-submit", function () {   //ok
 
 //刪除貼文
 $("#section").on('click', ".article-delete-button", function () {   //ok
+    var article_obj = $(this).parents('.article');
     var articleid =  $(this).parents('.article').attr("articleid");
     console.log('delete' + articleid);//getarticleid
 
-   
     $.ajax({
         url: 'article/' + articleid,
         method: 'delete',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
+            article_obj.remove();
             alert('刪除文章成功');
         },
         error: function(data){
@@ -477,7 +487,7 @@ function get_Friend(){//  ok
           {   
               var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '">'+
               '<div class="friend-header">' +             
-                      '<img class="photo" src="http://140.118.127.93:8080/SE/images/1.jpg">'+
+                      '<img class="photo" src="images/1.jpg">'+
                        '<div class="friend-title">'+
                           '<div class="friend-name" name="username">'+ myfriends[i].username+'</div>'+
                          // '<div class="friend-count" name="">153名好友</div>'+
@@ -541,10 +551,8 @@ $("#section").on('click', ".delete-friend-button", function () {
 });
 
 //顯示好友列表 並且可以刪除
-$('#display_friend_button').click(function () {
-    
-    get_Friend();
-   
+$('#display_friend_button').click(function () { 
+    get_Friend();  
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -671,7 +679,7 @@ $('#Search').click(function () {
                 {
                     var friend_obj = '<div class="friend" friendid="'+ accounts[i].id +'">' +
                     '<div class="friend-header">' +             
-                            '<img class="photo" src="http://140.118.127.93:8080/SE/images/1.jpg">'+
+                            '<img class="photo" src="images/1.jpg">'+
                              '<div class="friend-title">'+
                                 '<div class="friend-name" name="username">'+ accounts[i].username +'</div>'+
                                 //'<div class="friend-count" name="">153名好友</div>'+
