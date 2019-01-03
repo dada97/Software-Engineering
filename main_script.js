@@ -223,9 +223,10 @@ function dispaly_Article(){
     var Article_content;
     var Article_ID;
     var max_random;
+    console.log(AllArticle[0])
     for(var i = 0 ; i < 10 ; i++){
       //  console.log('AllArticle.length :' +  AllArticle.length)
-
+      
         if(AllArticle.length == 0)
                  break;
         else if(AllArticle.length > 10)
