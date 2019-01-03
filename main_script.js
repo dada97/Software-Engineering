@@ -281,11 +281,13 @@ function dispaly_Article(){
      //   console.log(random_number);
      Article_content  = Article_content .replace(new RegExp("\n", "gm"), '<br/>');//將所有\n換成<br/>
      var edit_and_delete_obj = '';
-
+    var edit_input_boj = '';
         if(Article_User_ID == Account_Data.ID)
         {
             edit_and_delete_obj = '<div class="article-delete-button"><i class="far fa-trash-alt article-delete-icon"></i></div>'+
-            '<div class="article-edit-button"> <i class="far fa-edit article-edit-icon"></i></div>';      
+            '<div class="article-edit-button"> <i class="far fa-edit article-edit-icon"></i></div>';  
+            edit_input_boj = '<textarea class="article-edit-input" placeholder="編輯文章"></textarea>' +
+            '<button class="btn btn-lg btn-primary center-block article-edit-submit">送出</button>';    
         }
      
 
@@ -300,8 +302,8 @@ function dispaly_Article(){
         
     '<div class="article-main">'+                
     Article_content +     //文章內容
-    '</div>'+
-
+    '</div>'+ 
+    edit_input_boj +
     '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
     '100'+ //案讚人數
     '</span></div>'+
@@ -341,13 +343,12 @@ $("#section").on('click', ".nice-b", function () {
 //留言
 $("#section").on('click', ".message-b", function () {//ok
     var articleid =  $(this).parents('.article').attr("articleid");
-    var $article_footer_obj =  $(this).parents('.article').find(".article-footer");
-    var message_obj = '<div class="article-message">'+
-    '<div class="name"></div>' +
-    '<div class="message"></div>' +
-'</div>';
-    $article_footer_obj.after(message_obj);
+    var $article_article_line_obj =  $(this).parents('.article').find(".article-line");
+    var message_input_obj ='<textarea class="article-message-edit-input" onKeyDown="enter_submit(this)" placeholder="我要留言"></textarea>';
 
+    if($(this).parents('.article').find(".article-message-edit-input").length == 0)
+    $article_article_line_obj.after(message_input_obj);
+  
   //  console.log(articleid);//getarticleid
   
     $.ajax({
@@ -358,7 +359,17 @@ $("#section").on('click', ".message-b", function () {//ok
         data: {},
 
         success: function (data) {
-         
+         var comments = data.comments;
+
+         for(var i = 0 ; i < comments.length ; i++)
+         {
+            var message_obj = '<div class="article-message">'+
+            '<div class="name">'+ comments[i].username +'</div>' +
+            '<div class="message">'+ comments[i].comment+'</div>' +
+            '</div>';
+
+        $article_article_line_obj.before(message_obj);
+         }         
             alert('取得留言成功');
         },
         error: function(data){
@@ -368,13 +379,61 @@ $("#section").on('click', ".message-b", function () {//ok
    
 });
 
+function enter_submit(textarea_obj){
+
+    if (event.which == 13 || event.keyCode == 13 || event.whitch == 13)//whitch ie
+    {             
+        var articleid = $(textarea_obj).parents('.article').attr("articleid"); 
+        var content = $(textarea_obj).val();
+        var jsonStr = JSON.stringify({
+            content: content
+        })
+        console.log('articleid : ' + articleid + ' content : ' + content);
+
+        $.ajax({
+            url: 'comment/' + articleid,
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',    
+            data: jsonStr,
+    
+            success: function (data) {                 
+                alert('留言成功');
+            },
+            error: function(data){
+                alert('留言失敗');         
+            }
+        });
+    }
+}
+
+$("#section").on('click', ".article-edit-button", function () {
+
+    var $submit_obj =  $(this).parents('.article').find(".article-edit-submit");
+    var $input_obj =  $(this).parents('.article').find(".article-edit-input");
+    var $article_main = $(this).parents('.article').find(".article-main");
+
+    if($submit_obj.css("display") == 'none')
+    {
+        $article_main.css("display","none");
+        $submit_obj.css("display","block");
+        $input_obj.css("display","block");
+    }
+    else
+    {
+        $article_main.css("display","block");
+        $submit_obj.css("display","none");
+        $input_obj.css("display","none");
+    }
+});
 
 //編輯貼文
-$("#section").on('click', ".article-edit-button", function () {   //ok
+$("#section").on('click', ".article-edit-submit", function () {   //ok
+
     var articleid =  $(this).parents('.article').attr("articleid");
-    console.log('edit' + articleid);//getarticleid
+    var content = $(this).parents('.article').find(".article-edit-input").val();
    
-    content ='12545465645643';
+    console.log(content)
     var jsonStr = JSON.stringify({
         content: content
     })
