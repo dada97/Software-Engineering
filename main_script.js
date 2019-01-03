@@ -13,12 +13,12 @@ var Account_Data;
 
 window.onload = function () {
     send_token();
+    get_board();
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
 
-    var timer = new Date();
-    last_click_time = timer.getTime();
+   
     var userAgent = navigator.userAgent;
 
     //顯示search
@@ -138,13 +138,15 @@ $('#update_data_button').click(function () {
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         data: jsonStr,
         success: function (data) {
-            console.log("帳號資訊更新成功");
+           
+            $('#update_password_view').css('display','none');
+            alert("帳號資訊更新成功");
+            document.location.href = "main.html";  
         },
         error: function(data){
-            console.log("帳號資訊更新失敗");
+            alert("帳號資訊更新失敗");
          }
     });
-
 
     $('#update_password_form').find("input[name='username']").val('');
     $('#update_password_form').find("input[name='password']").val('');
@@ -206,6 +208,13 @@ function dispaly_Article(){
         var sex_url;  
         var gender = AllArticle[0].gender;      
         var username = AllArticle[0].username;
+        var likes = AllArticle[0].likes;
+        var liked_text;
+
+        if( AllArticle[0].liked == true)
+        liked_text = '已按讚';
+        else
+        liked_text = '讚';
 
         if(gender == 'M')
         sex_url = "http://140.118.127.93:8080/SE/images/boy.png"
@@ -242,11 +251,11 @@ function dispaly_Article(){
        '</div>'+ 
        edit_input_boj +
        '<div class="article-news"><i class="far fa-thumbs-up"></i> <span class="mag-l-10">'+
-       '100' + //案讚人數
+       likes + //案讚人數
        '</span></div>'+
    
        '<div class="article-footer">'+
-            '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>'+
+            '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">'+ liked_text +'</span></div>'+
             '<div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>'+
            '<div class="article-line"></div>'+
        '</div>' +            
@@ -258,20 +267,28 @@ function dispaly_Article(){
 }
 
 //案讚
-$("#section").on('click', ".nice-b", function () {   
+$("#section").on('click', ".nice-b", function () { 
+
+    var article_obj = $(this).parents('.article');
     var articleid =  $(this).parents('.article').attr("articleid");
     console.log('like' + articleid);//getarticleid
-    getlike(this);
+    //getlike(this);
+    
     $.ajax({
         url: 'like/' + articleid,
         method: 'post',
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
+            article_obj.find('.nice-b').find('span').text('已按讚');
+            var like_count = article_obj.find('.article-news').find('span').text();
+            like_count++;
+            article_obj.find('.article-news').find('span').text('');
+            article_obj.find('.article-news').find('span').text(like_count);
            // getlike(this);
-            alert('案讚success'); 
+          //  alert('案讚success'); 
         },
         error: function(data){
-            alert('案讚失敗');         
+          //  alert('案讚失敗');         
         }
     });
    
@@ -339,6 +356,7 @@ $("#section").on('click', ".message-b", function () {//ok
     });
    
 });
+var last_message_time;
 //新增留言
 function enter_submit(textarea_obj){
 
@@ -347,7 +365,16 @@ function enter_submit(textarea_obj){
         var articleid = $(textarea_obj).parents('.article').attr("articleid"); 
         var $article_article_line_obj =  $(textarea_obj).parents('.article').find(".article-line");  
         var content = $(textarea_obj).val();
-   
+        $(textarea_obj).val('');
+
+        if(content.toUpperCase().indexOf('<') != -1)
+                     return;
+        var timer1 = new Date();
+
+        
+       if(timer1.getTime() - last_message_time < 3000)
+                          return;
+
         var jsonStr = JSON.stringify({
             content: content
         })
@@ -358,12 +385,15 @@ function enter_submit(textarea_obj){
             url: 'comment/' + articleid,
             method: 'POST',
             dataType: 'json',
+            async: true,
             contentType: 'application/json',    
             beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
             data: jsonStr,
     
             success: function (data) { 
                    
+                var timer = new Date();
+                last_message_time = timer.getTime();
                 content = content.replace(new RegExp("\n", "gm"), '<br/>');
                 var message_obj = '<div class="article-message">'+
                 '<div class="name">'+ Account_Data.username +'</div>' +
@@ -371,7 +401,7 @@ function enter_submit(textarea_obj){
                 '</div>';
    
                 $article_article_line_obj.append(message_obj);
-                $(textarea_obj).val('');
+               
             },
             error: function(data){
                // alert('留言失敗');         
@@ -409,30 +439,52 @@ $('#Article_submit').click(function () { //ok
 
     var Article_Text =  $('#Article_input').val();
 
-    if(Article_Text.toUpperCase().indexOf('<SCRIPT>') != -1)
+    if(Article_Text.toUpperCase().indexOf('<') != -1)
             return;
             
     var jsonStr = JSON.stringify({
         content: Article_Text
     })
 
-    $.ajax({
-        url: 'article/',
-        method: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
-        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
-        data: jsonStr,
+    if($this.attr("name") == 'article')
+    {
+        $.ajax({
+            url: 'article/',
+            method: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+            data: jsonStr,
+    
+            success: function (data) {
+                document.location.href = "main.html";                   
+            },
+            error: function(data){
+                alert('發文失敗');         
+            }
+        });   
+    }
+    else if ($this.attr("name") == 'board'){
 
-        success: function (data) {
-            document.location.href = "main.html";  
-            alert('發文成功');          
-        },
-        error: function(data){
-            alert('發文失敗');         
-        }
-    });
-
+        $.ajax({
+            url: 'article/board/',
+            method: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+            data: jsonStr,
+    
+            success: function (data) {
+                document.location.href = "main.html";                   
+            },
+            error: function(data){
+                alert('發文失敗');         
+            }
+        });   
+    }
+    else if ($this.attr("name") == 'group'){
+        
+    }
 });
 
 //編輯貼文
@@ -521,14 +573,13 @@ function get_Friend(){//  ok
 
         success: function (data) {   
           myfriends = data.friends
-        
           $('#section').html('');
-            console.log(myfriends)
+           
           for(var i = 0 ; i < myfriends.length ; i++)
           {   
               var gender = myfriends[i].gender;
               var sex_url;
-
+             // console.log(myfriends[i].gender)
               if(gender == 'M')
               sex_url = "http://140.118.127.93:8080/SE/images/boy.png"
               else
@@ -573,7 +624,11 @@ $("#section").on('click', ".new-friend-button", function () { //ok
            // alert("新增好友成功");
         },
         error: function(data){
-           // alert("新增好友失敗");
+
+        if(friend_id != Account_Data.ID)
+           alert("已經是好友");
+        else
+            alert("???");
          }
     });
 });
@@ -707,25 +762,58 @@ function keypressInBox() {
 //搜尋帳戶(好友) (看板) (家族)
 $('#Search').click(function () {
     
+
+    var Searchmyfriend;
+
+    $.ajax({
+        url: 'friend/token',
+        method: 'GET',
+        dataType: 'json',
+        async: false,
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+        success: function (data) {   
+            Searchmyfriend = data.friends
+        },
+        error: function(data){
+           console.log("getFriendByAccountId error");
+        }
+    });
+
+    
     $('#Search-block').find('input').each(function () {
         if ($(this).css('display') == 'block')
         {
+           if($(this).attr("name") == 'friend_search') {
+         
             $.ajax({
                 url: 'account/search/' + $(this).val(),
                 method: 'GET',
                 dataType: 'json',
+                async: false,
                 contentType: 'application/json',              
                 data: {},
                 success: function (data) {   
                     
-                    var accounts = data.accounts;
-                    
+                    var accounts = data.accounts;                    
                     $('#section').html('');
-
+                    
                 for(var i = 0 ; i < accounts.length ; i++)
                 {
+                    var new_friend_obj = '<div class="new-friend-button"><i class="fas fa-user-plus friend-icon"></i></div>';
+                    for(var j = 0; j < Searchmyfriend.length ; j ++)
+                    {                     
+                        if(accounts[i].id == Searchmyfriend[j].ID  ||  accounts[i].id == Account_Data.ID )
+                        {
+                            
+                            new_friend_obj = '';
+                            break;
+                        }
+                    }
+
                     var sex_url;  
-                    var gender = accounts.gender;      
+                    var gender = accounts[i].gender;      
                              
                     if(gender == 'M')
                     sex_url = "http://140.118.127.93:8080/SE/images/boy.png"
@@ -740,9 +828,8 @@ $('#Search').click(function () {
                                 //'<div class="friend-count" name="">153名好友</div>'+
                             '</div>'+                    
                         '</div>'+
-                        '<div class="new-friend-button">'+
-                        '<i class="fas fa-user-plus friend-icon"></i>' +                           
-                        '</div>'+
+                        new_friend_obj +
+                        
                 '</div>';
                 
                 $('#section').append(friend_obj);
@@ -753,7 +840,60 @@ $('#Search').click(function () {
                     console.log("搜尋無此結果");
                  }
             });        
+
+           }
+           else if($(this).attr("name") == 'title_search'){
+                console.log('title_search')
+           } else if($(this).attr("name") == 'group_search'){
+            console.log('group_search')
+           }
             return;
         }   
+    });
+});
+
+
+var boards;
+function get_board(){//ok
+   
+    $.ajax({
+        url: 'board/',
+        method: 'GET',
+        success: function (data) {
+            boards = data.boards;                                                                   
+            for(var i=0 ; i < boards.length ; i++)
+            {
+                var board_obj = '<li><div ><i class="fas_control_right"></i><a board_id="'+ boards[i].ID +'" class="board-button">'+ boards[i].boardname+'</a></div></li>'
+                $('#Board').append(board_obj);
+            }
+        },
+        error: function(data){
+            console.log("board error");
+         }
+    });
+}
+
+$("#aside").on('click', ".board-button", function () {
+    $this =$(this);
+    var board_id  = $this.attr("board_id");
+   
+    $('#Search-block').find("input[name='title_search']").css('display','block');
+    $('#Search-block').find("input[name='friend_search']").css('display','none');   
+    $('#Search-block').find("input[name='group_search']").css('display','none');
+    $('#Article_list').html('');
+    console.log('board_id : ' + board_id )
+
+
+    $.ajax({
+        url: 'article/board/' + board_id,
+        method: 'GET',
+        success: function (data) {
+            AllArticle = data.articles;
+            console.log(AllArticle);
+           dispaly_Article();
+        },
+        error: function(data){
+            console.log("get board error");
+         }
     });
 });

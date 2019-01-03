@@ -31,6 +31,7 @@ export default class Friend {
             t.ID = friends[i].friendID
             var account  = await this.AccountRepository.getAccountById(t.ID)
             t.username = account.username
+            t.gender = account.gender
             obj.push(t)
             
         }

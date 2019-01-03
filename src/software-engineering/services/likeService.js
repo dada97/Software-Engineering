@@ -30,13 +30,12 @@ export default class Like {
             throw 'not found'
         }
 
-        // const likes = await this.LikeRepository.getLikeByArticleId(id)
-        // console.log("test")
-        // for(var i in likes){
-        //     if(likes[i].userid == ID){
-        //         throw 'like error'
-        //     }
-        // }
+        const likes = await this.LikeRepository.getLikeByArticleId(id)
+        for(var i in likes){
+            if(likes[i].userid == ID){
+                throw 'like error'
+            }
+        }
         let obj = {
         }
         obj.articleid = id

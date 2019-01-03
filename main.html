@@ -70,16 +70,10 @@
             <ul class="drop-down-menu">
                 <li>
                     <div onclick="Expand(this)">
-                        <a id="tag1-1" href="#">我的看板</a>
+                        <a href="#">我的看板</a>
                         <i class="fas fa-angle-down fas_control_menu"></i>
                     </div>
-                    <ul>
-                        <li>
-                            <div onclick="Expand(this)">
-                                <i class="fas_control_right"></i>
-                                <a id="tag1-1-1" href="#">看板1</a>
-                            </div>                           
-                        </li>                    
+                    <ul id="Board">                                 
                     </ul>
                 </li>
 
@@ -102,7 +96,7 @@
         
         <section id="section">
 
-            <textarea id="Article_input" class="article-input center-block mar-t-30" placeholder="在想些甚麼呢？"></textarea>
+            <textarea id="Article_input" name="article" class="article-input center-block mar-t-30" placeholder="在想些甚麼呢？"></textarea>
             <button id="Article_submit" class="btn btn-lg btn-primary center-block">送出</button>
             
             <div id="Article_list">
