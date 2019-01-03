@@ -244,7 +244,7 @@ $('#Article_submit').click(function () { //ok
         data: jsonStr,
 
         success: function (data) {
-            alert('發文成功');
+            alert('發文成功');          
         },
         error: function(data){
             alert('發文失敗');         
@@ -311,6 +311,7 @@ function dispaly_Article(){
     '<div class="article-footer">'+
          '<div class="article-footer-button nice-b"><i class="far fa-thumbs-up"></i><span class="mag-l-10">棒</span></div>'+
          '<div class="article-footer-button message-b"><i class="far fa-comment"></i><span class="mag-l-10">我要留言</span></div>'+
+        '<div class="article-line"></div>'+
     '</div>' +            
 '</div>';
 
