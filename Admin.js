@@ -1,13 +1,4 @@
 ﻿var Users = [];
-Users[0]={ username: "1230" ,account : "fuck0",password:"you0",gender:"1"};
-Users[1]={ username: "1231" ,account : "fuck1",password:"you1",gender:"2"};
-Users[2]={ username: "1232" ,account : "fuck2",password:"you2",gender:"1"};
-Users[3]={ username: "1233" ,account : "fuck3",password:"you3",gender:"2"};
-Users[4]={ username: "1234" ,account : "fuck4",password:"you4",gender:"1"};
-Users[5]={ username: "1235" ,account : "fuck5",password:"you5",gender:"2"};
-Users[6]={ username: "1236" ,account : "fuck6",password:"you6",gender:"1"};
-Users[7]={ username: "1237" ,account : "fuck7",password:"you7",gender:"2"};
-Users[8]={ username: "1238" ,account : "fuck8",password:"you8",gender:"1"};
 var pages = $("[name='page']");
 
 var token;
@@ -295,11 +286,11 @@ function resetGroupList(){
                    '<li style="width : 5%">#' + (i + 1) + '</li>' +
                    '<li name="groupname" style = "width : 15%">'+ Groups.groups[i].groupname +' </li>' +
                    '<li name="groupname_input" style="width : 15% ; display :none"><input class="form-control user_p_up" type="text" name="groupname" placeholder="家族名稱" /></li>' +
-                   '<li name="user_management" style="width : 35%">' +
+                   '<li name="group_management" style="width : 35%">' +
                    '<li name="ID" style="display:none">' + Groups.groups[i].ID + '</li>' +
-                   '<div onclick=user_edit(this) class="icon_box"><i class="fas fa-edit"></i></div>' +
-                   '<div onclick=user_delete(this) class="icon_box"><i class="fas fa-trash-alt"></i></div>' +
-                   '<div onclick=user_edit_submit(this) class="edit_button" > <i class="fas fa-plus-square" style="color: white;"></i>Edit</div>' +
+                   '<div onclick=group_edit(this) class="icon_box"><i class="fas fa-edit"></i></div>' +
+                   '<div onclick=group_delete(this) class="icon_box"><i class="fas fa-trash-alt"></i></div>' +
+                   '<div onclick=group_edit_submit(this) class="edit_button" > <i class="fas fa-plus-square" style="color: white;"></i>Edit</div>' +
                    '</li></ul>';
 
                $('#GroupList').append(string);
@@ -411,11 +402,11 @@ function resetBoardList(){
                    '<li style="width : 5%">#' + (i + 1) + '</li>' +
                    '<li name="boardname" style = "width : 15%">'+ Boards.boards[i].boardname +' </li>' +
                    '<li name="boardname_input" style="width : 15% ; display :none"><input class="form-control user_p_up" type="text" name="boardname" placeholder="看板名稱" /></li>' +
-                   '<li name="user_management" style="width : 35%">' +
+                   '<li name="board_management" style="width : 35%">' +
                    '<li name="ID" style="display:none">' + Boards.boards[i].ID + '</li>' +
-                   '<div onclick=user_edit(this) class="icon_box"><i class="fas fa-edit"></i></div>' +
-                   '<div onclick=user_delete(this) class="icon_box"><i class="fas fa-trash-alt"></i></div>' +
-                   '<div onclick=user_edit_submit(this) class="edit_button" > <i class="fas fa-plus-square" style="color: white;"></i>Edit</div>' +
+                   '<div onclick=board_edit(this) class="icon_box"><i class="fas fa-edit"></i></div>' +
+                   '<div onclick=board_delete(this) class="icon_box"><i class="fas fa-trash-alt"></i></div>' +
+                   '<div onclick=board_edit_submit(this) class="edit_button" > <i class="fas fa-plus-square" style="color: white;"></i>Edit</div>' +
                    '</li></ul>';
 
                $('#BoardList').append(string);
@@ -496,14 +487,15 @@ $('#group_add_submit').click(function () {
 
     var name = $('#group_add_form').find("input[name='name']").val();
     var jsonStr = JSON.stringify({
-        name: name,
+        groupname: name,
     });
 
     $.ajax({
         url: 'group/',
         method: 'POST',
         dataType: 'json',
-        data: jsonStr,           
+        data: jsonStr,    
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },       
         contentType: 'application/json',
         success: function (obj) {
             alert('新增成功');
@@ -527,7 +519,7 @@ $('#board_add_submit').click(function () {
 
     var name = $('#board_add_form').find("input[name='name']").val();
     var jsonStr = JSON.stringify({
-        name: name,
+        boardname: name,
     });
 
     $.ajax({
@@ -535,6 +527,7 @@ $('#board_add_submit').click(function () {
         method: 'POST',
         dataType: 'json',
         data: jsonStr,           
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         contentType: 'application/json',
         success: function (obj) {
             alert('新增成功');

@@ -3,6 +3,7 @@ import AccountRepository from '../repositories/accountRepository.js'
 import RedisService from './redisService.js'
 import GroupMemberRepository  from '../repositories/groupMemberRepository.js'
 import { createSocket } from 'dgram';
+import { resolve } from 'dns';
 
 
 const specID = '1'
@@ -18,6 +19,7 @@ export default class Group {
 
     async createGroup(token,data){
         const acID = await this.RedisService.Verify(token)
+        console.log(acID)
         if(acID == undefined){
             throw 'create fail'
         }
@@ -30,12 +32,13 @@ export default class Group {
         }
         await this.GroupRepository.createGroup(data)
         const newGroup = await this.GroupRepository.getGroupByName(data.groupname)
-        let obj = {
-            groupID: newGroup.ID,
-            memberID: acID
+        if(acID !==specID){
+            let obj = {
+                groupID: newGroup.ID,
+                memberID: acID
+            }
+            await this.GroupMemberRepository.join(obj)
         }
-        await this.GroupMemberRepository.join(obj)
-
     }
 
     async join(token,id){
@@ -67,7 +70,6 @@ export default class Group {
             throw 'update fail'
         }
         const Group = await this.GroupRepository.getGroupByName(data.groupname)
-        console.log(Group)
         if(Group !== undefined){
             throw 'update fail'
         }
