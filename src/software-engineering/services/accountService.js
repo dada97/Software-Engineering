@@ -53,10 +53,8 @@ export default class Account {
     async getAllAccount(token){
         const ID = await this.RedisService.Verify(token)
         if(ID !== specID){
-			console.log("test")
             throw '權限不足'
-        }
-		console.log("test")
+        }	
         const accounts = await this.AccountRepository.getAllAccount()
         if(accounts == undefined){
             throw '帳戶不存在'
@@ -76,7 +74,6 @@ export default class Account {
     }
 
     async deleteAccountById(id,token){
-        console.log("test")
         const ID = await this.RedisService.Verify(token)
         if(ID !== specID){
             權限不足
@@ -84,7 +81,6 @@ export default class Account {
         if(id == undefined){
             throw '帳戶不存在'
         }
-        console.log(ID)
         const account = await this.getAccountById(id)
         if(account == undefined){
             throw '帳戶不存在'
@@ -151,9 +147,7 @@ export default class Account {
             throw 'not found'
         }
         let obj = []
-		//console.log(accounts)
         for(var i in accounts){
-		//	console.log(accounts[0])
             var t ={
                 id: accounts[i].ID,
                 username: accounts[i].username,

@@ -93,7 +93,6 @@ export default class Comment {
         {
             throw 'delete fail'
         }
-        console.log(id)
         await this.CommentRepository.deleteCommentById(id)
     }
 }

@@ -55,7 +55,6 @@ export default class Article {
 
     //刪除特定id的article
     async deleteArticleById(req,res){
-        console.log("test")
         try{
             await this.ArticleService.deleteArticleById(req.params.id,req.header.authorization)
             res.status(200).json({succeed:'delete succeed'})
@@ -85,7 +84,7 @@ export default class Article {
 
     async getGroupArticleById(req,res){
         try{
-            res.status(200).json({articles: await this.ArticleService.getGroupArticleById(req.params.id)})
+            res.status(200).json({articles: await this.ArticleService.getGroupArticleById(req.params.id,req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }
@@ -93,7 +92,7 @@ export default class Article {
 
     async getBoardArticleById(req,res){
         try{
-            res.status(200).json({articles: await this.ArticleService.getBoardArticleById(req.params.id)})
+            res.status(200).json({articles: await this.ArticleService.getBoardArticleById(req.params.id,req.header.authorization)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }

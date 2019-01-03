@@ -14,7 +14,7 @@ var now_board_id;
 
 window.onload = function () {
     send_token();
-    get_board();
+   
     aside_obj = document.getElementById('aside');
     section_obj = document.getElementById('section');
     nav_obj = document.getElementById('nav'); 
@@ -24,6 +24,8 @@ window.onload = function () {
 
     //顯示search
     $('#Search-block').find("input[name='friend_search']").css('display','block');
+    get_board();
+    get_group();
    
 }
 
@@ -445,13 +447,12 @@ $('#Article_submit').click(function () { //ok
             return;
             
     var input_name =  $('#Article_input').attr("name");
-           
+
     if(input_name == 'article')
     {
         var jsonStr = JSON.stringify({
             content: Article_Text
         })
-
         $.ajax({
             url: 'article/',
             method: 'post',
@@ -483,7 +484,7 @@ $('#Article_submit').click(function () { //ok
         });   
     }
     else if (input_name == 'board'){
-        console.log(now_board_id)
+
         var jsonStr = JSON.stringify({
             content: Article_Text,
             boardid : now_board_id
@@ -504,6 +505,7 @@ $('#Article_submit').click(function () { //ok
                $.ajax({
                    url: 'article/board/' + now_board_id,
                    method: 'GET',
+                   beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
                    success: function (data) {
                        $('#Article_list').html('');
                        AllArticle = data.articles;
@@ -524,7 +526,47 @@ $('#Article_submit').click(function () { //ok
     }
     else if (input_name == 'group'){
         
+        var jsonStr = JSON.stringify({
+            content: Article_Text,
+            groupid : now_group_id
+        })
+      
+        $.ajax({
+            url: 'article/',
+            method: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+            data: jsonStr,
+    
+            success: function (data) {
+        
+            //GET 
+               $.ajax({
+                   url: 'article/group/' + now_group_id,
+                   method: 'GET',
+                   beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+                   success: function (data) {
+                       $('#Article_list').html('');
+                       AllArticle = data.articles;
+                       console.log(AllArticle);
+                       dispaly_Article();
+                   },
+                   error: function(data){
+                       console.log("get group error");
+                    }
+               });
+
+                             
+            },
+            error: function(data){
+                alert('發文失敗');         
+            }
+        });   
+
     }
+
+    $('#Article_input').val('');
 });
 
 //編輯貼文
@@ -825,17 +867,21 @@ $('#Search').click(function () {
     $('#Search-block').find('input').each(function () {
         if ($(this).css('display') == 'block')
         {
+           
+
            if($(this).attr("name") == 'friend_search') {
-         
+
+            var jsonStr = JSON.stringify({
+                name: $(this).val(),
+            })
             $.ajax({
-                url: 'account/search/' + $(this).val(),
-                method: 'GET',
+                url: 'account/search/',
+                method: 'post',
                 dataType: 'json',
                 async: false,
                 contentType: 'application/json',              
-                data: {},
+                data: jsonStr,
                 success: function (data) {   
-                    
                     var accounts = data.accounts;                    
                     $('#section').html('');
                     
@@ -929,6 +975,7 @@ $("#aside").on('click', ".board-button", function () {
     $.ajax({
         url: 'article/board/' + now_board_id,
         method: 'GET',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
         success: function (data) {
             AllArticle = data.articles;
             console.log(AllArticle);
@@ -936,6 +983,89 @@ $("#aside").on('click', ".board-button", function () {
         },
         error: function(data){
             console.log("get board error");
+         }
+    });
+});
+
+
+function get_group()
+{
+    $.ajax({
+        url: 'group/token',
+        method: 'GET',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },     
+        success: function (data) {
+            groups = data.groups;    
+            console.log(groups);                                                               
+            for(var i=0 ; i <  groups.length ; i++)
+            {
+                console.log(groups[i]); 
+                var  groups_obj = '<li><div ><i class="fas_control_right"></i><a group_id="'+  groups[i].groupID +'" class="group-button">'+  groups[i].groupname+'</a></div></li>'
+                $('#Group').append(groups_obj);
+            }
+        },
+        error: function(data){
+            console.log("groups error");
+         }
+    });
+}
+
+function group_input(input)
+{
+    if (event.which == 13 || event.keyCode == 13 || event.whitch == 13)//whitch ie
+    {             
+        $this = $(input);
+        console.log($this.val())
+
+        var jsonStr = JSON.stringify({          
+            groupname: $this.val()
+        })
+
+        $.ajax({
+            url: 'group/',
+            method: 'post',
+            dataType: 'json',
+            contentType: 'application/json', 
+            beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },             
+            data: jsonStr,
+            success: function (data) {   
+                document.location.href = "index.html";
+            },
+            error: function(data){
+                console.log("has group");
+             }
+        });        
+
+        $this.val('')
+    }
+    
+}
+
+var now_group_id;
+$("#aside").on('click', ".group-button", function () {
+    $this =$(this);
+    now_group_id  = $this.attr("group_id");
+   
+    $('#Search-block').find("input[name='group_search']").css('display','block');
+    $('#Search-block').find("input[name='title_search']").css('display','none');
+    $('#Search-block').find("input[name='friend_search']").css('display','none');   
+   
+    $('#Article_list').html('');
+    $('#Article_input').attr('name','group');
+    
+    console.log('group_id : ' + now_group_id )
+
+    $.ajax({
+        url: 'article/group/' + now_group_id,
+        method: 'GET',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },  
+        success: function (data) {
+            AllArticle = data.articles;
+            console.log(AllArticle);
+            dispaly_Article();
+        },
+        error: function(data){
+            console.log("get group error");
          }
     });
 });

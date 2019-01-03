@@ -18,7 +18,6 @@ export default class Friend {
         if(ID == undefined){
             throw 'create fail'
         }
-        console.log(ID)
         const friends = await this.FriendRepository.getFriendByAccountId(ID)
         if(friends == undefined){
             throw 'not found'
@@ -35,13 +34,11 @@ export default class Friend {
             obj.push(t)
             
         }
-        console.log(obj)
         return obj
     }
 
     //新增好友
     async createFriend(id,token){
-       console.log("test")
         const ID = await this.RedisService.Verify(token)
         if(ID == undefined){
             throw 'not found'

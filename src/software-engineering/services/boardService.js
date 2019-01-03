@@ -42,7 +42,6 @@ export default class Board {
             throw 'delete fail'
         }
         const board = await this.BoardRepository.getBoardById(id)
-        console.log(board)
         if(board == undefined){
             throw 'delete fail'
         }

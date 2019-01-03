@@ -6,7 +6,9 @@ export default class Group {
     }
   
     async getGroupById(id){
-      return await this.GroupModel.where(this.GroupModel.table,"ID",id);
+      let groups = []
+      groups =  await this.GroupModel.where(this.GroupModel.table,"ID",id);
+      return groups[0]
     }
 
     //建立group

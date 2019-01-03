@@ -87,7 +87,7 @@ export default class Account {
 
     async search(req,res){
         try{
-            res.status(200).json({accounts:await this.AccountService.search(req.params.search)})
+            res.status(200).json({accounts:await this.AccountService.search(req.body.name)})
         }catch(e){
 			console.log(e)
             res.status(400).json({error:'not found'})

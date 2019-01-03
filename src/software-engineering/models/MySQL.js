@@ -41,7 +41,7 @@ async insert(table,data){
 				reject()
 				return				
 			}		
-			console.log("1 record inserted");
+			//console.log("1 record inserted");
 			resolve(result);
 			});
 		con.release();
@@ -53,14 +53,14 @@ async insert(table,data){
 async select(table){
 	return new Promise((resolve, reject) => {
 		this.connection.getConnection(function(err,con) {
-			console.log("db connected");
+			//console.log("db connected");
 			con.query("SELECT * FROM "+table, function (err, result) {
 			
 			if (result == undefined) {
 				reject()
 				return				
 			}
-			console.log("return all data");
+			//console.log("return all data");
 			
 			resolve(result);
 			});
@@ -74,14 +74,14 @@ async where(table,col_name,target){
 	return new Promise((resolve, reject) => {
 
 		this.connection.getConnection(function(err,con) {
-			console.log("db connected");
-			console.log("SELECT * FROM "+table+" WHERE " +col_name +" = '"+target+"'");
+			//console.log("db connected");
+			//console.log("SELECT * FROM "+table+" WHERE " +col_name +" = '"+target+"'");
 			con.query("SELECT * FROM "+table+" WHERE " +col_name +" = '"+target+"'", function (err, result) {
 			if (result == undefined) {
 				reject()
 				return				
 			}
-			console.log("found");
+			//console.log("found");
 			resolve(result);
 			});	
 		con.release();
@@ -94,13 +94,13 @@ async where(table,col_name,target){
 async delete_(table,col_name,target){
 	return new Promise((resolve, reject) => {
 	this.connection.getConnection(function(err,con) {
-			console.log("db connected");
+			//console.log("db connected");
 			con.query("DELETE FROM "+table+" WHERE " +col_name +" = '"+target+"'", function (err, result) {	
 			if (result == undefined) {
 				reject()
 				return				
 			}
-			console.log("delete one record");
+			//console.log("delete one record");
 			resolve(result);
 			});
 		con.release();
@@ -111,7 +111,7 @@ async delete_(table,col_name,target){
 async update(table,id,data){
 	return new Promise((resolve, reject) => {
 	this.connection.getConnection(function(err,con) {
-			console.log("db connected");
+			//console.log("db connected");
 			var sql="UPDATE "+table+" SET "
 			var keys = Object.keys(data);
 			for(var i=0;i<keys.length;i++){
@@ -123,14 +123,14 @@ async update(table,id,data){
 					sql+=", "
 			}
 			sql+=" WHERE ID = '"+id+"'";
-			console.log(sql);
+			//console.log(sql);
 			con.query(sql, function (err, result) {
 			if (result == undefined) {
 				console.log("reject")
 				reject()
 				return				
 			}	
-			console.log("record(s) updated");
+			//console.log("record(s) updated");
 			resolve(result);
 			});		
 		con.release();

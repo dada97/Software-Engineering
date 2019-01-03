@@ -141,4 +141,18 @@ export default class Group {
         }
         return await this.GroupRepository.getAllGroup()
     }
+
+    
+    async getGroupByToken(token){
+        const ID = await this.RedisService.Verify(token)
+        if(ID == undefined){
+            throw 'get fail'
+        }
+        let groups =  await this.GroupMemberRepository.getGrounpByAccountId(ID)
+        for(var i in groups){
+            let group = await this.GroupRepository.getGroupById(groups[i].groupID)
+            groups[i].groupname = group.groupname
+        }
+        return groups
+    }
 }

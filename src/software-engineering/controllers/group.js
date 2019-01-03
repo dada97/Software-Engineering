@@ -12,7 +12,16 @@ export default class Group {
         this.getGroupByName = this.getGroupByName.bind(this)
         this.deleteGroup = this.deleteGroup.bind(this)
         this.getAllGroup = this.getAllGroup.bind(this)
+        this.getGroupByToken = this.getGroupByToken.bind(this)
     }
+
+    async getGroupByToken(req,res){
+        try{
+            res.status(200).json({groups: await this.GroupService.getGroupByToken(req.header.authorization)})
+        }catch(e){
+            res.status(400).json({error:'not fail'})
+        }
+    }  
     
     //創建家族
     async createGroup(req,res){

@@ -149,14 +149,17 @@ export default class Article {
                 }
             }
         }
-        console.log(obj)
         return obj
 
     }
 
     //用家族id取得家族貼文
-    async getGroupArticleById(id){
-        let articles = await this.GroupRepository.getGroupArticleById(id)
+    async getGroupArticleById(id,token){
+        const ID = await this.RedisService.Verify(token)
+        if(ID == undefined){
+            throw 'not found'
+        }
+        let articles = await this.ArticleRepository.getGroupArticleById(id)
         if(articles==undefined){
             throw 'not found'
         }
@@ -189,14 +192,16 @@ export default class Article {
             throw 'create fail'
         }
         data.userid = ID
-        console.log(data)
         await this.ArticleRepository.createArticle(data)
     }
 
 
     //用看板id取得看板文章
-    async getBoardArticleById(id){
-        
+    async getBoardArticleById(id,token){
+        const ID = await this.RedisService.Verify(token)
+        if(ID == undefined){
+            throw 'notfound'
+        }
         if(id == undefined){
             throw 'not found'
         }
@@ -210,16 +215,16 @@ export default class Article {
             let like = await this.LikeRepository.getLikeByArticleId(articles[i].ID)
             articles[i].likes = like.length
             articles[i].liked = false
-            for(var j in like){
-                if(like[j].userid == ID)
+            for(var k in like){
+                if(like[k].userid == ID)
                 {
-                    articles[i].liked = true
+                    articles[k].liked = true
                     break;
                 }
             }
         }
         articles = sort(articles)
-        console.log(articles)
+
         return articles
     }
 
