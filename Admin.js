@@ -423,7 +423,7 @@ function resetBoardList(){
          
        },
        error:function(error){
-           alert("獲取家族資訊失敗");
+           alert("獲取看板資訊失敗");
        }
    }); 
 
