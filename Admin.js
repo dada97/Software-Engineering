@@ -201,11 +201,11 @@ function resetUserList(){
 /**發送修改家族資料 */
 function group_edit_submit(group_edit_submit) {
     var $The_group_list =$(group_edit_submit.parentElement);
-    var name = $The_group_list.find("input[name='groupname']").val();
+    var groupname = $The_group_list.find("input[name='groupname']").val();
     var ID = $The_group_list.find("li[name='ID']").text();
 
     var jsonStr = JSON.stringify({
-        name: name,//JSON修改此處
+        groupname: groupname,//JSON修改此處
     });
      $.ajax({
         url: 'group/' + ID,
@@ -216,7 +216,7 @@ function group_edit_submit(group_edit_submit) {
         data: jsonStr,
         success: function (obj) {
             alert('更改成功');
-            $The_group_list.find("[name='groupname']").text(name);
+            $The_group_list.find("[name='groupname']").text(groupname);
 
             var groupname_input = $The_group_list.children("li[name='groupname_input']")[0];
             var groupname_view = $The_group_list.children("li[name='groupname']")[0];
@@ -317,11 +317,11 @@ function resetGroupList(){
 /**發送修改看板資料 */
 function board_edit_submit(board_edit_submit) {
     var $The_board_list =$(board_edit_submit.parentElement);
-    var name = $The_board_list.find("input[name='boardname']").val();
+    var boardname = $The_board_list.find("input[name='boardname']").val();
     var ID = $The_board_list.find("li[name='ID']").text();
 
     var jsonStr = JSON.stringify({
-        name: name,//JSON修改此處
+        boardname: boardname,//JSON修改此處
     });
      $.ajax({
         url: 'board/' + ID,
@@ -332,7 +332,7 @@ function board_edit_submit(board_edit_submit) {
         data: jsonStr,
         success: function (obj) {
             alert('更改成功');
-            $The_board_list.find("[name='boardname']").text(name);
+            $The_board_list.find("[name='boardname']").text(boardname);
 
             var boardname_input = $The_board_list.children("li[name='boardname_input']")[0];
             var boardname_view = $The_board_list.children("li[name='boardname']")[0];
