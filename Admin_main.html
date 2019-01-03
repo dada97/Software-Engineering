@@ -47,7 +47,7 @@
                     <option value="M">男生</option>
                     <option value="F">女生</option>
                 </select>
-                <div id="user_add_submit" class="submit_button" value="true" ><i class="fas fa-plus-square"></i> 新增</div>
+                <div id="user_add_submit" class="submit_button" value="true" ><i class="fas fa-plus-square"></i>新增用戶</div>
             </form>
 
             <ul class="trstyle">
@@ -62,6 +62,10 @@
                 <li style="width : 15%">
                     帳號<i class="fas fa-caret-down"></i>
                 </li>
+                
+                <li style="width : 15%">
+                    密碼(僅輸入)<i class="fas fa-caret-down"></i>
+                </li>
 
                 <li style="width : 5%">
                     性別<i class="fas fa-caret-down"></i>
@@ -75,21 +79,53 @@
             <div id="UserList">
             </div>
         </div>
-        
-        <div name="page" page_tag="society_management">
-            <form id="">
-                <input class="form-control" type="text" name="" placeholder="看板名稱" />
-                <input class="form-control" type="text" name="" placeholder="看板..." />
+
+        <div name="page" page_tag="group_management">
+            <form id="group_add_form">
+                <input class="form-control" type="text" name="name" placeholder="家族名稱" style="width :33%" />
+                <div id="group_add_submit" class="submit_button" value="true" ><i class="fas fa-plus-square"></i>新增家族</div>
             </form>
-            <div id="" class="submit_button" value="true"><i class="fas fa-plus-square"></i> 新增</div>
+
+            <ul class="trstyle">
+                <li style="width : 5%">
+                    #<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 15%">
+                    家族名稱<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 35%">
+                    管理<i class="fas fa-caret-down"></i>
+                </li>
+
+            </ul>
+            <div id="GroupList">
+            </div>
         </div>
 
-        <div name="page" page_tag="ad_management">
-            <form id="">
-                <input class="form-control" type="text" name="" placeholder="廣告名稱" />
-                <input class="form-control" type="text" name="" placeholder="看板..." />
+        <div name="page" page_tag="board_management">
+            <form id="board_add_form">
+                <input class="form-control" type="text" name="name" placeholder="看板名稱" style="width :33%" />
+                <div id="board_add_submit" class="submit_button" value="true" ><i class="fas fa-plus-square"></i>新增看板</div>
             </form>
-            <div id="" class="submit_button" value="true"><i class="fas fa-plus-square"></i> 新增</div>
+
+            <ul class="trstyle">
+                <li style="width : 5%">
+                    #<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 15%">
+                    看板名稱<i class="fas fa-caret-down"></i>
+                </li>
+
+                <li style="width : 35%">
+                    管理<i class="fas fa-caret-down"></i>
+                </li>
+
+            </ul>
+            <div id="BoardList">
+            </div>
         </div>
 
     </section>
