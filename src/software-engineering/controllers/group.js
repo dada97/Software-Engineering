@@ -10,6 +10,8 @@ export default class Group {
         this.quit = this.quit.bind(this)
         this.search = this.search.bind(this)
         this.getGroupByName = this.getGroupByName.bind(this)
+        this.deleteGroup = this.deleteGroup.bind(this)
+        this.getAllGroup = this.getAllGroup.bind(this)
     }
     
     //創建家族
@@ -72,5 +74,21 @@ export default class Group {
         }
     }
 
+    async deleteGroup(req,res){
+        try{
+            await this.GroupService.deleteGroup(req.params.id,req.header.authorization)
+            res.status(200).json({succeed:'delete succeed'})
+        }catch(e){
+            res.status(400).json({error:'delete fail'})
+        }
+    }
+
+    async getAllGroup(req,res){
+        try{
+            res.status(200).json({groups: await this.GroupService.getAllGroup(req.header.authorization)})
+        }catch(e){
+            res.status(400).json({error:'not found'})
+        }
+    }
     
 }
