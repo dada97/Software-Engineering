@@ -8,7 +8,7 @@ var user_name;
 var limit_time = 10;
 var is_logout = false;
 var is_online = false;
-var sex_url = "images/boy.png";
+var sex_url = "http://140.118.127.93:8080/SE/images/boy.png";
 var token;
 var Account_Data;
 
@@ -67,12 +67,12 @@ function initial()//ok
     if(Account_Data.gender == 'M')
     {
         console.log('男');
-        sex_url = "images/boy.png";
+        sex_url = "http://140.118.127.93:8080/SE/images/boy.png";
     }
     else if(Account_Data.gender == 'F')
     {
         console.log('女');
-        sex_url = "images/girl.png"
+        sex_url = "http://140.118.127.93:8080/SE/images/girl.png"
     }
     else
     {
@@ -476,7 +476,7 @@ function get_Friend(){//  ok
           {   
               var friend_obj = '<div class="friend" friendid="'+ myfriends[i].ID+ '">'+
               '<div class="friend-header">' +             
-                      '<img class="photo" src="images/1.jpg">'+
+                      '<img class="photo" src="http://140.118.127.93:8080/SE/images/1.jpg">'+
                        '<div class="friend-title">'+
                           '<div class="friend-name" name="username">'+ myfriends[i].username+'</div>'+
                          // '<div class="friend-count" name="">153名好友</div>'+
@@ -670,7 +670,7 @@ $('#Search').click(function () {
                 {
                     var friend_obj = '<div class="friend" friendid="'+ accounts[i].id +'">' +
                     '<div class="friend-header">' +             
-                            '<img class="photo" src="images/1.jpg">'+
+                            '<img class="photo" src="http://140.118.127.93:8080/SE/images/1.jpg">'+
                              '<div class="friend-title">'+
                                 '<div class="friend-name" name="username">'+ accounts[i].username +'</div>'+
                                 //'<div class="friend-count" name="">153名好友</div>'+

@@ -21,7 +21,9 @@ export default class Board {
     }
 
     async getBoardByName(name){
-        
+        let boards = []
+        boards = await  this.BoardModel.where(this.BoardModel.table,"boardname",name);
+         return boards[0]
     }
 
     async deleteBoard(id){
@@ -29,7 +31,7 @@ export default class Board {
     }
 
     async update(id,data){
-
+    	return await this.BoardModel.update(this.BoardModel.table,id,data);
     }
 
 }
