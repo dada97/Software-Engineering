@@ -866,14 +866,13 @@ $('#Search').click(function () {
     
     $('#Search-block').find('input').each(function () {
         if ($(this).css('display') == 'block')
-        {
-           
-
-           if($(this).attr("name") == 'friend_search') {
+        {          
+           if($(this).attr("name") == 'friend_search') { //ok
 
             var jsonStr = JSON.stringify({
                 name: $(this).val(),
             })
+
             $.ajax({
                 url: 'account/search/',
                 method: 'post',
@@ -928,12 +927,56 @@ $('#Search').click(function () {
             });        
 
            }
-           else if($(this).attr("name") == 'title_search'){
+           else if($(this).attr("name") == 'title_search'){ // undefind
                 console.log('title_search')
-           } else if($(this).attr("name") == 'group_search'){
-            console.log('group_search')
+           } else if($(this).attr("name") == 'group_search'){ // not test not ok
+           
+            var jsonStr = JSON.stringify({
+                name: $(this).val(),
+            })
+
+            $.ajax({
+                url: 'group/search/',
+                method: 'post',
+                dataType: 'json',
+                async: false,
+                contentType: 'application/json',              
+                data: jsonStr,
+                success: function (data) {   
+                    var groups = data.groups;                    
+                    $('#section').html('');
+                    
+                for(var i = 0 ; i < groups.length ; i++)
+                {
+                    var new_group_obj = '<div class="new-group-button"><i class="fas fa-users group-icon"></i></div>';
+                 
+
+                    var image_url = 'http://140.118.127.93:8080/SE/images/group-icon.jpg';  
+                 
+                    var group_obj = '<div class="group" groupid="'+ groups[i].id +'">' +
+                    '<div class="friend-header">' +             
+                            '<img class="photo" src="'+  image_url +'">'+
+                             '<div class="friend-title">'+
+                                '<div class="friend-name" name="username">'+ groups[i].groupname +'</div>'+
+                                //'<div class="friend-count" name="">153名好友</div>'+
+                            '</div>'+                    
+                        '</div>'+
+                        new_group_obj +
+                        
+                '</div>';
+                
+                $('#section').append(friend_obj);
+                }
+                    console.log("搜尋成功");
+                },
+                error: function(data){
+                    console.log("搜尋無此結果");
+                 }
+            });        
            }
-            return;
+
+
+            return; // block return
         }   
     });
 });
@@ -960,7 +1003,7 @@ function get_board(){//ok
 }
 
 
-$("#aside").on('click', ".board-button", function () {
+$("#aside").on('click', ".board-button", function () { //ok
     $this =$(this);
      now_board_id  = $this.attr("board_id");
    
@@ -988,7 +1031,7 @@ $("#aside").on('click', ".board-button", function () {
 });
 
 
-function get_group()
+function get_group() //ok
 {
     $.ajax({
         url: 'group/token',
@@ -996,11 +1039,12 @@ function get_group()
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },     
         success: function (data) {
             groups = data.groups;    
-            console.log(groups);                                                               
+           // console.log(groups);   
+           $('#Group').html('');                                                            
             for(var i=0 ; i <  groups.length ; i++)
             {
                 console.log(groups[i]); 
-                var  groups_obj = '<li><div ><i class="fas_control_right"></i><a group_id="'+  groups[i].groupID +'" class="group-button">'+  groups[i].groupname+'</a></div></li>'
+                var  groups_obj = '<li><div ><i class="fas_control_right"></i><a group_id="'+  groups[i].groupID +'" class="group-button">'+  groups[i].groupname+'</a> <i class="fas fa-trash group-trash-icon"></i</div></li>'
                 $('#Group').append(groups_obj);
             }
         },
@@ -1010,13 +1054,17 @@ function get_group()
     });
 }
 
-function group_input(input)
+function group_input(input) //ok
 {
     if (event.which == 13 || event.keyCode == 13 || event.whitch == 13)//whitch ie
     {             
         $this = $(input);
         console.log($this.val())
-
+        if($this.val() > 10)
+        {
+            alert('GroupName too long')
+            return;
+        }
         var jsonStr = JSON.stringify({          
             groupname: $this.val()
         })
@@ -1029,7 +1077,8 @@ function group_input(input)
             beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },             
             data: jsonStr,
             success: function (data) {   
-                document.location.href = "index.html";
+                get_group()
+              //  document.location.href = "main.html";
             },
             error: function(data){
                 console.log("has group");
@@ -1042,7 +1091,7 @@ function group_input(input)
 }
 
 var now_group_id;
-$("#aside").on('click', ".group-button", function () {
+$("#aside").on('click', ".group-button", function () { //ok
     $this =$(this);
     now_group_id  = $this.attr("group_id");
    
@@ -1066,6 +1115,49 @@ $("#aside").on('click', ".group-button", function () {
         },
         error: function(data){
             console.log("get group error");
+         }
+    });
+});
+
+//new group
+$("#section").on('click', ".new-group-button", function () { // not test
+    $this =$(this);
+    var group_id  = $this.parents('.group').attr("groupid");
+   console.log('group/' + friend_id);
+
+    $.ajax({
+        url: 'group/join/' + group_id,
+        method: 'POST',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        success: function (data) {
+            alert("add group success");
+            document.location.href = "main.html";
+        },
+        error: function(data){
+         }
+    });
+});
+
+
+
+//quit group
+$("#aside").on('click', ".group-trash-icon", function () { //ok
+    $this =$(this);
+    var $li_obj = $this.parent().parent();
+    var group_id  = $this.parent().find('.group-button').attr('group_id');
+  
+    console.log('quit group_id  : ' + group_id  )
+
+    $.ajax({
+        url: 'group/quit/' + group_id,
+        method: 'delete',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        success: function (data) {
+            $li_obj.remove();
+            console.log("quit group success");
+        },
+        error: function(data){
+            console.log("quit group  error");
          }
     });
 });
