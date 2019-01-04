@@ -3,6 +3,7 @@ import * as crypto from 'crypto'
 import AccountRepository  from '../repositories/accountRepository.js'
 import FileService  from './fileService.js'
 import RedisService from './redisService.js'
+import FriendRepository  from '../repositories/friendRepository.js'
 
 const specID = '1'
 
@@ -15,6 +16,7 @@ export default class Account {
         this.AccountRepository  = new AccountRepository()
         this.FileService  = new FileService()
         this.RedisService = new RedisService()
+        this.FriendRepository = new FriendRepository()
     }
 
     async login(data){
@@ -156,5 +158,28 @@ export default class Account {
             obj.push(t)
         }
         return obj
+    }
+
+    async card(token){
+        const ID = await this.RedisService.Verify(token)
+        if(ID == undefined){
+            throw 'card fail'
+        }
+        let accounts = await this.AccountRepository.getAllAccount()
+        let friends = await this.FriendRepository.getFriendByAccountId(ID)
+        while(1){
+            var item = accounts[Math.floor(Math.random()*accounts.length)]
+            let flag = false
+            for(var i in friends){
+                if(item.ID == friends.friendID){
+                    flag = true
+                    break;
+                }
+            }
+            if(flag == false){
+                return item
+            }
+        }
+        
     }
 }

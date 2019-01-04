@@ -283,8 +283,8 @@ function resetGroupList(){
            for (var i = 0; i < Groups.groups.length; i++) {
                var string = '<ul class="trstyle">' +
                    '<li style="width : 5%">#' + (i + 1) + '</li>' +
-                   '<li name="groupname" style = "width : 15%">'+ Groups.groups[i].groupname +' </li>' +
-                   '<li name="groupname_input" style="width : 15% ; display :none"><input class="form-control user_p_up" type="text" name="groupname" placeholder="家族名稱" /></li>' +
+                   '<li name="groupname" style = "width : 50%">'+ Groups.groups[i].groupname +' </li>' +
+                   '<li name="groupname_input" style="width : 50% ; display :none"><input class="form-control user_p_up" type="text" name="groupname" placeholder="家族名稱" /></li>' +
                    '<li name="group_management" style="width : 35%">' +
                    '<li name="ID" style="display:none">' + Groups.groups[i].ID + '</li>' +
                    '<div onclick=group_edit(this) class="icon_box"><i class="fas fa-edit"></i></div>' +
@@ -348,7 +348,7 @@ function board_edit(board_edit_button) {
 
     var edit_button = $The_board_list.find(".edit_button")[0];
 
-    if (groupname_input.style.display == 'none') {
+    if (boardname_input.style.display == 'none') {
         boardname_input.style.display = 'inline-block';
         boardname_view.style.display = 'none';
 
@@ -398,8 +398,8 @@ function resetBoardList(){
            for (var i = 0; i < Boards.boards.length; i++) {
                var string = '<ul class="trstyle">' +
                    '<li style="width : 5%">#' + (i + 1) + '</li>' +
-                   '<li name="boardname" style = "width : 15%">'+ Boards.boards[i].boardname +' </li>' +
-                   '<li name="boardname_input" style="width : 15% ; display :none"><input class="form-control user_p_up" type="text" name="boardname" placeholder="看板名稱" /></li>' +
+                   '<li name="boardname" style = "width : 50%">'+ Boards.boards[i].boardname +' </li>' +
+                   '<li name="boardname_input" style="width : 50% ; display :none"><input class="form-control user_p_up" type="text" name="boardname" placeholder="看板名稱" /></li>' +
                    '<li name="board_management" style="width : 35%">' +
                    '<li name="ID" style="display:none">' + Boards.boards[i].ID + '</li>' +
                    '<div onclick=board_edit(this) class="icon_box"><i class="fas fa-edit"></i></div>' +

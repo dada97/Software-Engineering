@@ -75,7 +75,7 @@ async where(table,col_name,target){
 
 		this.connection.getConnection(function(err,con) {
 			//console.log("db connected");
-			//console.log("SELECT * FROM "+table+" WHERE " +col_name +" = '"+target+"'");
+			console.log("SELECT * FROM "+table+" WHERE " +col_name +" = '"+target+"'");
 			con.query("SELECT * FROM "+table+" WHERE " +col_name +" = '"+target+"'", function (err, result) {
 			if (result == undefined) {
 				reject()

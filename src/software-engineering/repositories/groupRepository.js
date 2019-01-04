@@ -6,8 +6,10 @@ export default class Group {
     }
   
     async getGroupById(id){
+      console.log(id)
       let groups = []
       groups =  await this.GroupModel.where(this.GroupModel.table,"ID",id);
+      console.log(groups)
       return groups[0]
     }
 
@@ -33,7 +35,7 @@ export default class Group {
 
     async search(name){
       console.log(name)
-      return await this.GroupModel.where(this.GroupModel.table,"groupname",name);
+      return await this.GroupModel.where(this.GroupModel.table,"groupname",name.name);
     }
 
     async getAllGroup(){

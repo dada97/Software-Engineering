@@ -50,6 +50,12 @@ export default class Group {
         if(group == undefined){
             throw 'not found'
         }
+        const groupmember = await this.GroupMemberRepository.getGroupMemberByGroupID(id)
+        for(var i in groupmember){
+            if(groupmember[i].memberID == acID){
+                throw 'join fail'
+            }
+        }
         let obj = {
             groupID: id,
             memberID : acID
@@ -149,10 +155,15 @@ export default class Group {
             throw 'get fail'
         }
         let groups =  await this.GroupMemberRepository.getGrounpByAccountId(ID)
+        console.log(groups)
+        let obj = []
         for(var i in groups){
             let group = await this.GroupRepository.getGroupById(groups[i].groupID)
-            groups[i].groupname = group.groupname
+            if(group !==undefined){
+                groups[i].groupname = group.groupname
+                obj.push(groups[i])
+            }
         }
-        return groups
+        return obj
     }
 }

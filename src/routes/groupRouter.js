@@ -9,7 +9,7 @@ class Group extends Router {
     }
 
     init() {  
-        this.get('/search/:search',this.controller.search)     //搜尋家族
+        this.post('/search',this.controller.search)     //搜尋家族
         this.get('/token',this.controller.getGroupByToken)
         this.get('/',   this.controller.getAllGroup)        //取得所有家族
         this.post('/join/:id',  this.controller.join)           //加入家族(:id為家族id)

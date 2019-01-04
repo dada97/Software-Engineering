@@ -68,7 +68,7 @@ export default class Group {
     //搜尋家族
     async search(req,res){
         try{
-            res.status(200).json({groups: await this.GroupService.search(req.params.search)})
+            res.status(200).json({groups: await this.GroupService.search(req.body)})
         }catch(e){
             res.status(400).json({error:'not found'})
         }

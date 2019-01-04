@@ -123,12 +123,14 @@ a{
     cursor:pointer;
 }
 
+
 .group-trash-icon{
     float: left;
     font-size :16px;
     text-indent: 20px;
 }
 
+.new-group-button,
 .article-delete-button,
 .article-edit-button,
 .delete-friend-button,
@@ -145,6 +147,7 @@ a{
     border-bottom-left-radius: 10px;
 }
 
+.new-group-button,
 .article-delete-button,
 .article-edit-button,
 .delete-friend-button,
@@ -153,7 +156,9 @@ a{
     margin-top :10px;
 }
 
-
+.new-group-button{
+    margin-right: 30px;
+}
 .article-delete-button,
 .article-edit-button{
     border-top-right-radius: 10px;
@@ -434,6 +439,15 @@ ul.drop-down-menu li li{ /*2*/
     text-indent: 40px;
 }
 
+.card{
+    margin-top :10px;
+    font-size: 30px;
+    text-align: center;
+    height: 50px;
+    border:2px #ccc solid;
+    background-color: rgb(235, 232, 232);
+    cursor: pointer;
+}
 
 @media only screen and (max-width: 1300px)
 {

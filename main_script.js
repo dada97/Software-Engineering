@@ -199,10 +199,10 @@ function dispaly_Article(){
 
         if(AllArticle.length == 0)
                  break;
-        else if(AllArticle.length > 10)
+       /* else if(AllArticle.length > 10)
             max_random = 10;
         else
-            max_random =  AllArticle.length;
+            max_random =  AllArticle.length;*/
 
        // var random_number = Math.floor((Math.random() * max_random));
         Article_ID =  AllArticle[0].ID;
@@ -215,6 +215,7 @@ function dispaly_Article(){
         var likes = AllArticle[0].likes;
         var liked_text;
 
+        console.log(AllArticle[0])
         if( AllArticle[0].liked == true)
         liked_text = '已按讚';
         else
@@ -691,6 +692,10 @@ function get_Friend(){//  ok
 
 }
 
+function get_group_member()
+{
+
+}
 
 //新增好友
 $("#section").on('click', ".new-friend-button", function () { //ok
@@ -761,10 +766,29 @@ $('#Home_button').click(function () {
 //展開
 function Expand(form) {
 
+    if($('#Article_list').length == 0)
+    document.location.href = "main.html";
+  
+    if($(form).find('a').text() == '我的看板')
+    {
+        $('#Search-block').find("input[name='title_search']").css('display','block');
+        $('#Search-block').find("input[name='friend_search']").css('display','none');   
+        $('#Search-block').find("input[name='group_search']").css('display','none');
+    }
+    else if($(form).find('a').text() == '我的家族')
+    {
+        $('#Search-block').find("input[name='title_search']").css('display','none');
+        $('#Search-block').find("input[name='friend_search']").css('display','none');   
+        $('#Search-block').find("input[name='group_search']").css('display','block');
+    }
+
     var form_parent_obj = form.parentElement;
     var form_ul = form_parent_obj.getElementsByTagName('ul');
     var form_parent_ul_obj = form.parentElement.parentElement;
     var $ul_obj = $(form_parent_ul_obj);
+
+    
+
     if (form_ul.length != 0) {
      
         if (form_ul[0].style.display != 'block') {
@@ -935,37 +959,38 @@ $('#Search').click(function () {
                 name: $(this).val(),
             })
 
+            console.log("test")
+
             $.ajax({
-                url: 'group/search/',
+                url: 'group/search',
                 method: 'post',
                 dataType: 'json',
-                async: false,
                 contentType: 'application/json',              
                 data: jsonStr,
                 success: function (data) {   
-                    var groups = data.groups;                    
+                    
+                    var groups = data.groups; 
+                    console.log(groups)                   
                     $('#section').html('');
                     
                 for(var i = 0 ; i < groups.length ; i++)
                 {
                     var new_group_obj = '<div class="new-group-button"><i class="fas fa-users group-icon"></i></div>';
                  
-
                     var image_url = 'http://140.118.127.93:8080/SE/images/group-icon.jpg';  
                  
-                    var group_obj = '<div class="group" groupid="'+ groups[i].id +'">' +
+                    var group_obj = '<div class="group" groupid="'+ groups[i].ID +'">' +
                     '<div class="friend-header">' +             
                             '<img class="photo" src="'+  image_url +'">'+
                              '<div class="friend-title">'+
-                                '<div class="friend-name" name="username">'+ groups[i].groupname +'</div>'+
-                                //'<div class="friend-count" name="">153名好友</div>'+
+                                '<div class="friend-name" name="username">'+ groups[i].groupname +'</div>'+                                
                             '</div>'+                    
                         '</div>'+
                         new_group_obj +
                         
                 '</div>';
                 
-                $('#section').append(friend_obj);
+                $('#section').append(group_obj);
                 }
                     console.log("搜尋成功");
                 },
@@ -1004,6 +1029,10 @@ function get_board(){//ok
 
 
 $("#aside").on('click', ".board-button", function () { //ok
+
+    if($('#Article_list').length == 0)
+    document.location.href = "main.html";
+
     $this =$(this);
      now_board_id  = $this.attr("board_id");
    
@@ -1039,12 +1068,12 @@ function get_group() //ok
         beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },     
         success: function (data) {
             groups = data.groups;    
-           // console.log(groups);   
+           console.log(groups);   
            $('#Group').html('');                                                            
             for(var i=0 ; i <  groups.length ; i++)
             {
                 console.log(groups[i]); 
-                var  groups_obj = '<li><div ><i class="fas_control_right"></i><a group_id="'+  groups[i].groupID +'" class="group-button">'+  groups[i].groupname+'</a> <i class="fas fa-trash group-trash-icon"></i</div></li>'
+                var  groups_obj = '<li><div ><i class="fas_control_right"></i><a group_id="'+  groups[i].groupID +'" class="group-button">'+  groups[i].groupname+'</a> <i class="fas fa-sign-out-alt group-trash-icon"></div></li>'
                 $('#Group').append(groups_obj);
             }
         },
@@ -1059,8 +1088,11 @@ function group_input(input) //ok
     if (event.which == 13 || event.keyCode == 13 || event.whitch == 13)//whitch ie
     {             
         $this = $(input);
-        console.log($this.val())
-        if($this.val() > 10)
+     
+        if($this.val() == '')
+            return;
+
+        if($this.val().length > 10)
         {
             alert('GroupName too long')
             return;
@@ -1081,7 +1113,7 @@ function group_input(input) //ok
               //  document.location.href = "main.html";
             },
             error: function(data){
-                console.log("has group");
+                alert("此家族已存在");
              }
         });        
 
@@ -1094,6 +1126,9 @@ var now_group_id;
 $("#aside").on('click', ".group-button", function () { //ok
     $this =$(this);
     now_group_id  = $this.attr("group_id");
+    if($('#Article_list').length == 0)
+    document.location.href = "main.html";
+    
    
     $('#Search-block').find("input[name='group_search']").css('display','block');
     $('#Search-block').find("input[name='title_search']").css('display','none');
@@ -1123,7 +1158,7 @@ $("#aside").on('click', ".group-button", function () { //ok
 $("#section").on('click', ".new-group-button", function () { // not test
     $this =$(this);
     var group_id  = $this.parents('.group').attr("groupid");
-   console.log('group/' + friend_id);
+   console.log('group/' + group_id);
 
     $.ajax({
         url: 'group/join/' + group_id,
@@ -1160,4 +1195,83 @@ $("#aside").on('click', ".group-trash-icon", function () { //ok
             console.log("quit group  error");
          }
     });
+});
+
+$('#Card').click(function () {
+
+    var Searchmyfriend;
+
+    $.ajax({
+        url: 'friend/token',
+        method: 'GET',
+        dataType: 'json',
+        async: false,
+        contentType: 'application/json',
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },
+        data: {},
+        success: function (data) {   
+            Searchmyfriend = data.friends
+        },
+        error: function(data){
+           console.log("getFriendByAccountId error");
+        }
+    });
+
+    $.ajax({
+        url: 'account/card',
+        method: 'get',
+        dataType: 'json',
+        contentType: 'application/json', 
+        beforeSend: function (xhr) { xhr.setRequestHeader('authorization', token); },             
+        data: {},
+        success: function (data) {   
+           
+            var myfriend = data.account;
+            var new_friend_obj = '<div class="new-friend-button"><i class="fas fa-user-plus friend-icon"></i></div>';
+
+            console.log(myfriend )
+            
+            for(var j = 0; j < Searchmyfriend.length ; j ++)
+            {                     
+                if(myfriend.ID == Searchmyfriend[j].ID  || myfriend.ID == Account_Data.ID )
+                {                
+                    new_friend_obj = '';
+                    break;
+                }
+            }
+
+          
+        
+           $('#section').html('');
+         
+               var gender = myfriend.gender;
+               var sex_url;
+              // console.log(myfriends[i].gender)
+               if(gender == 'M')
+               sex_url = "http://140.118.127.93:8080/SE/images/boy.png"
+               else
+               sex_url = "http://140.118.127.93:8080/SE/images/girl.png"
+       
+ 
+               var friend_obj = '<div class="friend" friendid="'+ myfriend.ID+ '">'+
+               '<div class="friend-header">' +             
+                       '<img class="photo" src="'+ sex_url +'">'+
+                        '<div class="friend-title">'+
+                           '<div class="friend-name" name="username">'+ myfriend.username+'</div>'+
+                          // '<div class="friend-count" name="">153名好友</div>'+
+                       '</div>'+                    
+                   '</div>'+
+                   new_friend_obj  +
+                
+               '</div>';
+               $('#section').append(friend_obj);
+           
+          
+        },
+        error: function(data){
+          
+         }
+
+    });        
+
 });

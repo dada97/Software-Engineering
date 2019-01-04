@@ -215,10 +215,10 @@ export default class Article {
             let like = await this.LikeRepository.getLikeByArticleId(articles[i].ID)
             articles[i].likes = like.length
             articles[i].liked = false
-            for(var k in like){
-                if(like[k].userid == ID)
+            for(var j in like){
+                if(like[j].userid == ID)
                 {
-                    articles[k].liked = true
+                    articles[i].liked = true
                     break;
                 }
             }

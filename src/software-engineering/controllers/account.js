@@ -13,6 +13,7 @@ export default class Account {
         this.getAccountById = this.getAccountById.bind(this)
         this.getAccountByName = this.getAccountByName.bind(this)
         this.search = this.search.bind(this)
+        this.card = this.card.bind(this)
     }
 
     async getAccountByToken(req,res){
@@ -88,6 +89,15 @@ export default class Account {
     async search(req,res){
         try{
             res.status(200).json({accounts:await this.AccountService.search(req.body.name)})
+        }catch(e){
+			console.log(e)
+            res.status(400).json({error:'not found'})
+        }
+    }
+
+    async card(req,res){
+        try{
+            res.status(200).json({account:await this.AccountService.card()})
         }catch(e){
 			console.log(e)
             res.status(400).json({error:'not found'})

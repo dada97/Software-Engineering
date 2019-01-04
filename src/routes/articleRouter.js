@@ -14,7 +14,7 @@ class Article extends Router {
         this.get('/friend/token',      this.controller.getFriendArticleByAccountToken)  //用帳戶token取得所有好友貼文
         this.get('/group/:id',       this.controller.getGroupArticleById)   //用家族id取得家族貼文
         this.get('/board/:id',       this.controller.getBoardArticleById)   //用看板id取得看板貼文
-        this.get('/id/:id',             this.controller.getArticleById)  // 取得特定id的article
+        this.get('/id/:id',             this.controller.getArticleById)  // 取得特定id的article 
         this.get('/',                this.controller.getAllArticle)     //取得所有article
         this.post('/',               this.controller.createArticle)           //新增貼文
         this.put('/:id',             this.controller.update)             //更新某id的article

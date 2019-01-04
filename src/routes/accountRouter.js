@@ -12,7 +12,8 @@ class Account extends Router {
         this.get('/token',      this.controller.getAccountByToken)  //用token取得帳戶資訊
         this.post('/search',this.controller.search)          //搜尋
         this.get('/name/:name', this.controller.getAccountByName)   //用userName取得帳戶資訊
-		this.get('/id/:id',        this.controller.getAccountById)     //用id搜尋帳戶資訊
+        this.get('/id/:id',        this.controller.getAccountById)     //用id搜尋帳戶資訊
+        this.get('/card',       this.controller.card)  
 		this.get('/',           this.controller.getAllAccount)     //取得所有帳戶
         this.post('/register',  this.controller.register)           //註冊
         this.post('/login',     this.controller.login)              //登入
